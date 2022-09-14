@@ -139,6 +139,7 @@ async function playTrack() {
 }
 
 async function addTrackToQueue() {
+    DZ.player.addToQueue([selectedTrack.value]);
     isContextMenuVisible.value = false;
     //
 }

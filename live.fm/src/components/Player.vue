@@ -28,6 +28,12 @@
                                         </div>
                                     </div>
                                     <span class="font-monospace mx-2">{{duration}}</span>
+                                    <div class="d-flex ms-4">
+                                        <div class="btn-group">
+                                            <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
+                                                type=" button" v-on:click="buttonRepeat"></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -50,11 +56,22 @@ const track = ref({ title: '', id: '' });
 const album = ref({ title: '', id: '' });
 const artist = ref({ title: '', id: '' });
 
+const repeat = ref(0);
+const repeat_classes = {
+    0: 'bi-repeat text-muted',
+    1: 'bi-repeat',
+    2: 'bi bi-repeat-1'
+}
+
 const now = ref('00:00');
 const duration = ref('00:00');
 
 DZ.Event.subscribe('player_play', function () {
     isPlaying.value = true;
+});
+
+DZ.Event.subscribe('player_paused', function () {
+    isPlaying.value = false;
 });
 
 DZ.Event.subscribe('track_end', function () {
@@ -75,13 +92,18 @@ DZ.Event.subscribe('player_position', function (arr) {
     position.value = arr[0] / arr[1] * 100;
 });
 
-function buttonPlay() {
+async function buttonPlay() {
     if (isPlaying.value) {
         DZ.player.pause();
     } else {
         DZ.player.play();
     }
     isPlaying.value = !isPlaying.value;
+}
+
+async function buttonRepeat() {
+    repeat.value = (DZ.player.getRepeat() + 1) % 3;
+    DZ.player.setRepeat(repeat.value);
 }
 
 function padWithZero(num) {
