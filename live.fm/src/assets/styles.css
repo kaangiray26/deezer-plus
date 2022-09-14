@@ -1,0 +1,52 @@
+html {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+}
+
+a {
+    color: var(--bs-dark);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--bs-red);
+}
+
+.content {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.page-heading {
+    margin: 0;
+    padding: 0;
+}
+
+.page-heading-link {
+    color: var(--bs-black);
+    text-decoration: none !important;
+}
+
+.hover-color:hover {
+    color: var(--bs-red) !important;
+}
+
+td {
+    vertical-align: middle;
+}
+
+.context-menu {
+    position: fixed;
+    z-index: 1031;
+}
+
+#playerBar {
+    opacity: 0.90;
+}
