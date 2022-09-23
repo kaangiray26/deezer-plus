@@ -1,5 +1,9 @@
 <template>
-    <div class="container-fluid mb-4" style="height: 100%;width: 100%;margin: 0px;padding: 0px;">
+    <div class="container-fluid mb-4" style="height: 100%;width: 100%;margin: 0px;padding: 0px;"
+        @click="leftClick($event)">
+        <component v-if="isContextMenuVisible" :is="contextMenus[currentSearchField]"
+            :style="{'bottom':posY+'px', 'right':posX+'px'}" @context-menu-event="contextMenuEvent">
+        </component>
         <div class="card" style="width: 100%;">
             <div class="card-body">
                 <div class="d-flex align-items-center">
@@ -91,10 +95,10 @@
                             </ul>
                         </div>
                         <div id="tab-tracks" class="tab-pane active" role="tabpanel">
-                            <TrackContextMenu v-if="isTrackContextMenuVisible"
+                            <!-- <TrackContextMenu v-if="isTrackContextMenuVisible"
                                 :style="{'bottom':posY+'px', 'right':posX+'px'}" @playTrack="playTrack"
                                 @addTrackToQueue="addTrackToQueue" @launchTrackMix="launchTrackMix">
-                            </TrackContextMenu>
+                            </TrackContextMenu> -->
                             <ul class="list-group">
                                 <li class="list-group-item">
                                     <div class="table-responsive">
@@ -108,9 +112,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody v-for="item in tracks" @scroll.passive="onScroll($event)">
-                                                <TrackResult @click="leftClick($event)" :id="item.id"
-                                                    :cover="item.cover" :artist="item.artist" :album="item.album"
-                                                    :track="item.track" :duration="item.duration"
+                                                <TrackResult :id="item.id" :cover="item.cover" :artist="item.artist"
+                                                    :album="item.album" :track="item.track" :duration="item.duration"
                                                     @contextmenu="rightClick($event)">
                                                 </TrackResult>
                                             </tbody>
@@ -128,9 +131,11 @@
 
 <script setup>
 import { ref } from "vue";
+
 import TrackResult from "./TrackResult.vue";
 import ArtistResult from "./ArtistResult.vue";
 import AlbumResult from "./AlbumResult.vue";
+
 import TrackContextMenu from "./TrackContextMenu.vue";
 import AlbumContextMenu from "./AlbumContextMenu.vue";
 import ArtistContextMenu from './ArtistContextMenu.vue';
@@ -154,6 +159,7 @@ const searchVisible = ref(false);
 const searchFinished = ref(true);
 const currentSearchField = ref("tracks");
 
+const isContextMenuVisible = ref(false);
 const isTrackContextMenuVisible = ref(false);
 const isAlbumContextMenuVisible = ref(false);
 const isArtistContextMenuVisible = ref(false);
@@ -163,11 +169,34 @@ let posY = ref(0);
 
 let selectedTrack = ref(null);
 
+const contextMenus = {
+    "tracks": TrackContextMenu,
+    "albums": AlbumContextMenu,
+    "artists": ArtistContextMenu,
+};
+
 window.onscroll = () => {
     if (((window.innerHeight + window.scrollY) >= document.body.scrollHeight) && searchFinished.value) {
         next_search();
     }
 };
+
+async function contextMenuEvent(event) {
+    if (event == 'playTrack') {
+        DZ.player.playTracks([selectedTrack.value]);
+        return;
+    }
+
+    if (event == 'addTrackToQueue') {
+        DZ.player.addToQueue([selectedTrack.value]);
+        return;
+    }
+
+    if (event == 'launchTrackMix') {
+        //
+        return;
+    }
+}
 
 async function search(event) {
     if (!event.target.value.length) {
@@ -250,32 +279,16 @@ async function next_search() {
     searchFinished.value = true;
 }
 
-async function playTrack() {
-    DZ.player.playTracks([selectedTrack.value]);
-    isTrackContextMenuVisible.value = false;
-}
-
-async function addTrackToQueue() {
-    DZ.player.addToQueue([selectedTrack.value]);
-    isTrackContextMenuVisible.value = false;
-    //
-}
-
-async function launchTrackMix() {
-    isTrackContextMenuVisible.value = false;
-    //
-}
-
 function rightClick(event) {
     event.preventDefault();
     selectedTrack.value = event.currentTarget.firstChild.id
-    posX.value = window.innerWidth - event.screenX;
-    posY.value = window.innerHeight - event.screenY;
-    isTrackContextMenuVisible.value = true;
+    posX.value = window.innerWidth - event.screenX - 5;
+    posY.value = window.innerHeight - event.screenY + 20;
+    isContextMenuVisible.value = true;
 }
 
 function leftClick(event) {
-    isTrackContextMenuVisible.value = false;
+    isContextMenuVisible.value = false;
 }
 
 function handleTrackSearchResponse(item) {
