@@ -21,8 +21,6 @@
 import { onMounted, ref } from 'vue'
 import { Modal } from 'bootstrap'
 
-const emit = defineEmits(['created']);
-
 let modalEle = ref(null);
 let thisModalObj = null;
 

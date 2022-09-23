@@ -1,13 +1,11 @@
 <template>
     <ul class="dropdown-menu dropdown-menu-dark context-menu show">
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('playTrack')">Play</button>
+            <button class="dropdown-item" type="button" @click="$emit('openArtistPage')">Artist page</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('addTrackToQueue')">Add to queue</button>
-        </li>
-        <li>
-            <button class="dropdown-item" type="button" @click="$emit('launchTrackMix')">Launch Track mix</button>
+            <button class="dropdown-item" type="button" @click="$emit('addAlbumToFavourites')">Add to my
+                favourites</button>
         </li>
     </ul>
 </template>

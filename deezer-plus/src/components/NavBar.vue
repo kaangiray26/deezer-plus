@@ -44,8 +44,6 @@
                     </ul>
                     <div class="tab-content">
                         <div id="tab-artists" class="tab-pane" role="tabpanel">
-                            <ArtistContextMenu v-if="isArtistContextMenuVisible"
-                                :style="{'bottom':posY+'px', 'right':posX+'px'}"></ArtistContextMenu>
                             <ul class="list-group">
                                 <li class="list-group-item">
                                     <div class="table-responsive">
@@ -60,7 +58,7 @@
                                             <tbody v-for="item in artists" @scroll.passive="onScroll($event)">
                                                 <ArtistResult @click="leftClick($event)" :id="item.artist.id"
                                                     :cover="item.cover" :artist="item.artist" :nb_album="item.nb_album"
-                                                    :nb_fan="item.nb_fan">
+                                                    :nb_fan="item.nb_fan" @contextmenu="rightClick($event)">
                                                 </ArtistResult>
                                             </tbody>
                                         </table>
@@ -69,8 +67,6 @@
                             </ul>
                         </div>
                         <div id="tab-albums" class="tab-pane" role="tabpanel">
-                            <AlbumContextMenu v-if="isAlbumContextMenuVisible"
-                                :style="{'bottom':posY+'px', 'right':posX+'px'}"></AlbumContextMenu>
                             <ul class="list-group">
                                 <li class="list-group-item">
                                     <div class="table-responsive">
@@ -86,7 +82,8 @@
                                             <tbody v-for="item in albums" @scroll.passive="onScroll($event)">
                                                 <AlbumResult @click="leftClick($event)" :id="item.album.id"
                                                     :cover="item.cover" :artist="item.artist" :album="item.album"
-                                                    :nb_tracks="item.nb_tracks" :explicit_lyrics="item.explicit_lyrics">
+                                                    :nb_tracks="item.nb_tracks" :explicit_lyrics="item.explicit_lyrics"
+                                                    @contextmenu="rightClick($event)">
                                                 </AlbumResult>
                                             </tbody>
                                         </table>
@@ -95,10 +92,6 @@
                             </ul>
                         </div>
                         <div id="tab-tracks" class="tab-pane active" role="tabpanel">
-                            <!-- <TrackContextMenu v-if="isTrackContextMenuVisible"
-                                :style="{'bottom':posY+'px', 'right':posX+'px'}" @playTrack="playTrack"
-                                @addTrackToQueue="addTrackToQueue" @launchTrackMix="launchTrackMix">
-                            </TrackContextMenu> -->
                             <ul class="list-group">
                                 <li class="list-group-item">
                                     <div class="table-responsive">
@@ -160,14 +153,11 @@ const searchFinished = ref(true);
 const currentSearchField = ref("tracks");
 
 const isContextMenuVisible = ref(false);
-const isTrackContextMenuVisible = ref(false);
-const isAlbumContextMenuVisible = ref(false);
-const isArtistContextMenuVisible = ref(false);
 
-let posX = ref(0);
-let posY = ref(0);
+const posX = ref(0);
+const posY = ref(0);
 
-let selectedTrack = ref(null);
+const selectedTrack = ref(null);
 
 const contextMenus = {
     "tracks": TrackContextMenu,
