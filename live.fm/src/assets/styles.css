@@ -50,3 +50,7 @@ td {
 #playerBar {
     opacity: 0.90;
 }
+
+.right-0 {
+    right: 0 !important;
+}

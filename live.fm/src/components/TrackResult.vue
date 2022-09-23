@@ -1,8 +1,8 @@
 <template>
     <tr>
         <td v-bind:id="track.id">
-            <div><img class="me-2" v-bind:src="cover" width="40" height="40" /><a href="#" @click="playTrack($event)"
-                    v-bind:id="track.id">{{track.title}}</a>
+            <div><img class="me-2 img-thumbnail" v-bind:src="cover" width="40" height="40" /><a href="#"
+                    @click="playTrack($event)" v-bind:id="track.id">{{track.title}}</a>
             </div>
         </td>
         <td>

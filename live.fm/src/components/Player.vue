@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-light navbar-expand fixed-bottom" id="playerBar" style="width: 100%;">
+    <nav :name="player" class="navbar navbar-light navbar-expand fixed-bottom" id="playerBar" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
                 <div class="card-body border-dark d-flex flex-column">
@@ -98,7 +98,6 @@ async function buttonPlay() {
     } else {
         DZ.player.play();
     }
-    isPlaying.value = !isPlaying.value;
 }
 
 async function buttonRepeat() {

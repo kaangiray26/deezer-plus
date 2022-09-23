@@ -25,18 +25,12 @@ function hideModal() {
 }
 
 function getLoginStatus(response) {
-    console.log("Player:", response);
     let token = sessionStorage.getItem("token");
     if (token == null) {
         showModal();
         return;
     }
     hideModal();
-    DZ.getLoginStatus(function (response) {
-        console.log("Logged in:", response);
-    });
-
-
 }
 
 function login() {
