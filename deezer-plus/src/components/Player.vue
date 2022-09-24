@@ -1,5 +1,5 @@
 <template>
-    <nav :name="player" class="navbar navbar-light navbar-expand fixed-bottom" id="playerBar" style="width: 100%;">
+    <nav class="navbar navbar-light navbar-expand fixed-bottom" id="playerBar" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
                 <div class="card-body border-dark d-flex flex-column">
@@ -14,12 +14,12 @@
                                 <div class="d-flex flex-row align-items-center">
                                     <div class="btn-group btn-group-sm me-4" role="group"><button
                                             class="btn btn-dark bi-skip-start-fill hover-color" type="button"
-                                            onclick="buttonBack()"></button><button
+                                            v-on:click="buttonBack"></button><button
                                             :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
                                             class="btn btn-dark bi hover-color" type="button"
                                             v-on:click="buttonPlay"></button><button
                                             class="btn btn-dark bi-skip-end-fill hover-color" type="button"
-                                            onclick="buttonNext()"></button></div>
+                                            v-on:click="buttonNext"></button></div>
                                     <span class="font-monospace mx-2">{{now}}</span>
                                     <div class="progress flex-fill">
                                         <div class="progress-bar bg-dark progress-bar progress-bar-animated"
@@ -31,7 +31,7 @@
                                     <div class="d-flex ms-4">
                                         <div class="btn-group">
                                             <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
-                                                type=" button" v-on:click="buttonRepeat"></button>
+                                                type="button" v-on:click="buttonRepeat"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +53,6 @@ const isLoaded = ref(false);
 const position = ref(0);
 
 const track = ref({ title: '', id: '' });
-const album = ref({ title: '', id: '' });
 const artist = ref({ title: '', id: '' });
 
 const repeat = ref(0);
@@ -98,6 +97,14 @@ async function buttonPlay() {
     } else {
         DZ.player.play();
     }
+}
+
+async function buttonNext() {
+    DZ.player.next();
+}
+
+async function buttonBack() {
+    DZ.player.prev();
 }
 
 async function buttonRepeat() {

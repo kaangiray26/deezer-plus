@@ -1,11 +1,13 @@
 <template>
-    <div class="card h-100 w-100" :id="album_id" :artist_id="artist.id" type="albums">
+    <div class="card h-100 w-100 shadow-lg" :id="album_id" :artist_id="artist.id" type="albums">
         <div class="card-body d-flex flex-column">
             <figure class="d-flex flex-column">
                 <div class="d-flex justify-content-center position-relative overflow-hidden ratio-1x1">
                     <img class="img-fluid figure-img rounded" :src="cover" />
-                    <div class="position-absolute right-0 bottom-0"><button class="btn btn-danger btn-sm live-button"
-                            type="button">Live</button>
+                    <div class="position-absolute right-0 bottom-0">
+                        <button class="btn btn-light bi bi-play shadow m-1 me-2" type="button" style="opacity: 0.90;"
+                            @click="play(album_id)">
+                        </button>
                     </div>
                 </div>
             </figure>
@@ -34,4 +36,8 @@ defineProps({
         type: String,
     },
 });
+
+async function play(id) {
+    DZ.player.playAlbum(id);
+}
 </script>

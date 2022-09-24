@@ -23,9 +23,9 @@ a:hover {
     color: var(--bs-red);
 }
 
-/* .card {
+.card {
     --bs-card-border-width: 0px;
-} */
+}
 
 .figure-img {
     margin: 0px;

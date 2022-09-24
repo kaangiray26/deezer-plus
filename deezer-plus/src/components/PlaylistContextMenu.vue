@@ -1,17 +1,22 @@
 <template>
     <ul class="dropdown-menu shadow-lg context-menu show">
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('playAlbum')">Play</button>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event', 'playPlaylist')"><span
+                    class="bi bi-play-fill me-1"></span>Play</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('openAlbumPage')">Album page</button>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','addPlaylistToQueue')"><span
+                    class="bi bi-music-note-list me-1"></span>Add to queue</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('addAlbumToQueue')">Add to queue</button>
-        </li>
-        <li>
-            <button class="dropdown-item" type="button" @click="$emit('addAlbumToFavourites')">Add to my
+            <button class="dropdown-item" type="button"
+                @click="$emit('context-menu-event','addPlaylistToFavourites')"><span
+                    class="bi bi-heart-fill me-1"></span>Add to my
                 favourites</button>
+        </li>
+        <li>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openPlaylistPage')"><span
+                    class="bi bi-collection-fill me-1"></span>Playlist page</button>
         </li>
     </ul>
 </template>
