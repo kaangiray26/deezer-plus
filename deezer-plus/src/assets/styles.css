@@ -8,6 +8,10 @@ body {
     height: 100%;
 }
 
+figure {
+    margin: 0px;
+}
+
 a {
     color: var(--bs-dark);
     font-weight: bold;
@@ -17,6 +21,14 @@ a {
 a:hover {
     text-decoration: underline;
     color: var(--bs-red);
+}
+
+/* .card {
+    --bs-card-border-width: 0px;
+} */
+
+.figure-img {
+    margin: 0px;
 }
 
 .content {
@@ -51,6 +63,15 @@ td {
     opacity: 0.90;
 }
 
+#liveToast {
+    opacity: 0.90;
+    z-index: 1031;
+}
+
 .right-0 {
     right: 0 !important;
+}
+
+#app {
+    height: 100%;
 }

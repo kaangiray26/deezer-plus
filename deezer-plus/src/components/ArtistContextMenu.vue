@@ -1,5 +1,5 @@
 <template>
-    <ul class="dropdown-menu dropdown-menu-dark context-menu show">
+    <ul class="dropdown-menu shadow-lg context-menu show">
         <li>
             <button class="dropdown-item" type="button" @click="$emit('openArtistPage')">Artist page</button>
         </li>

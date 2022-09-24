@@ -1,16 +1,27 @@
 <template>
-    <ul class="dropdown-menu dropdown-menu-dark context-menu show">
+    <ul class="dropdown-menu shadow-lg context-menu show">
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('playAlbum')">Play</button>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event', 'playAlbum')"><span
+                    class="bi bi-play-fill me-1"></span>Play</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('openAlbumPage')">Album page</button>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','addAlbumToQueue')"><span
+                    class="bi bi-music-note-list me-1"></span>Add to queue</button>
+        </li>
+
+        <li>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openAlbumPage')"><span
+                    class="bi bi-vinyl-fill me-1"></span>Album page</button>
+        </li>
+
+        <li>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openArtistPage')"><span
+                    class="bi bi-person-fill me-1"></span>Artist page</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="$emit('addAlbumToQueue')">Add to queue</button>
-        </li>
-        <li>
-            <button class="dropdown-item" type="button" @click="$emit('addAlbumToFavourites')">Add to my
+            <button class="dropdown-item" type="button"
+                @click="$emit('context-menu-event','addAlbumToFavourites')"><span
+                    class="bi bi-heart-fill me-1"></span>Add to my
                 favourites</button>
         </li>
     </ul>

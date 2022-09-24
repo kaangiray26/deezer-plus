@@ -1,6 +1,5 @@
 <template>
-    <div class="container-fluid mb-4" style="height: 100%;width: 100%;margin: 0px;padding: 0px;"
-        @click="leftClick($event)">
+    <div class="container-fluid" style="height: 100%;width: 100%;margin: 0px;padding: 0px;" @click="leftClick($event)">
         <component v-if="isContextMenuVisible" :is="contextMenus[currentSearchField]"
             :style="{'bottom':posY+'px', 'right':posX+'px'}" @context-menu-event="contextMenuEvent">
         </component>
@@ -25,7 +24,7 @@
         </div>
         <router-view v-if="!searchVisible" />
         <div class="row justify-content-center gx-0" v-if="searchVisible">
-            <div class="col-11 mb-5">
+            <div class="col-11">
                 <div>
                     <ul class="nav nav-pills my-2" role="tablist">
                         <li class="nav-item" role="presentation"><a id="tracks-tab" class="nav-link active" role="tab"
@@ -118,6 +117,7 @@
                     </div>
                 </div>
             </div>
+            <div style="height: 100px;"></div>
         </div>
     </div>
 </template>
