@@ -1,11 +1,11 @@
 <template>
     <div class="card h-100 w-100 shadow-lg" :playlist_id="playlist_id" type="playlists">
         <div class="card-body d-flex flex-column">
-            <figure class="d-flex flex-column">
-                <div class="d-flex justify-content-center position-relative overflow-hidden ratio-1x1">
+            <figure class="d-flex flex-row justify-content-center">
+                <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
                     <img class="img-fluid figure-img rounded" :src="cover" />
-                    <div class="position-absolute right-0 bottom-0">
-                        <button class="btn btn-light bi bi-play shadow m-1 me-2" type="button" style="opacity: 0.90;"
+                    <div class="position-absolute bottom-0">
+                        <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                             @click="play(playlist_id)">
                         </button>
                     </div>

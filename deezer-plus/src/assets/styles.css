@@ -23,6 +23,11 @@ a:hover {
     color: var(--bs-red);
 }
 
+.accordion-button::after {
+    /* background-image: var(--bs-accordion-btn-active-icon) !important; */
+    background-image: unset !important;
+}
+
 .progress {
     cursor: pointer;
 }

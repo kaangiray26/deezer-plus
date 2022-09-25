@@ -3,8 +3,8 @@
         <div class="col">
             <div id="recommendationsAccordion" class="accordion" role="tablist">
                 <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-1"
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-1"
                             aria-expanded="true"
                             aria-controls="recommendationsAccordion .item-1"><strong>Albums</strong></button>
                     </h2>
@@ -23,8 +23,8 @@
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-2"
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-2"
                             aria-expanded="false"
                             aria-controls="recommendationsAccordion .item-2"><strong>Releases</strong></button>
                     </h2>
@@ -43,8 +43,8 @@
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-3"
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-3"
                             aria-expanded="false"
                             aria-controls="recommendationsAccordion .item-3"><strong>Artists</strong></button>
                     </h2>
@@ -63,8 +63,8 @@
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-4"
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-4"
                             aria-expanded="false"
                             aria-controls="recommendationsAccordion .item-4"><strong>Playlists</strong></button>
                     </h2>
@@ -84,8 +84,8 @@
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-5"
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-5"
                             aria-expanded="false"
                             aria-controls="recommendationsAccordion .item-5"><strong>Tracks</strong></button>
                     </h2>
@@ -105,8 +105,8 @@
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-6"
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-6"
                             aria-expanded="false"
                             aria-controls="recommendationsAccordion .item-6"><strong>Radios</strong></button>
                     </h2>

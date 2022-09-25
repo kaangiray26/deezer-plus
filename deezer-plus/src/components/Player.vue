@@ -22,7 +22,7 @@
                                             @click="buttonNext"></button>
                                     </div>
                                     <span class="font-monospace mx-2">{{now}}</span>
-                                    <div class="progress flex-fill" @click="seekProgress($event)">
+                                    <div id="seekProgress" class="progress flex-fill" @click="seekProgress($event)">
                                         <div class="progress-bar bg-dark progress-bar-animated" aria-valuenow="0"
                                             aria-valuemin="0" aria-valuemax="100" :style="{'width': position + '%'}">
                                             <span class="visually-hidden"></span>
@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
@@ -62,6 +62,10 @@ const repeat_classes = {
     1: 'bi-repeat',
     2: 'bi bi-repeat-1'
 }
+
+const progress_x = ref(0);
+const progress_width = ref(0);
+const progress_max = ref(0);
 
 const now = ref('00:00');
 const duration = ref('00:00');
@@ -92,20 +96,19 @@ async function buttonRepeat() {
 }
 
 async function seekProgress(event) {
-    let pos = event.clientX;
-    let elem = event.target.getBoundingClientRect();
-    let limit = elem.x + elem.width;
+    let pos = event.offsetX;
 
-    if (pos <= elem.x) {
+    if (pos <= 0) {
         DZ.player.seek(0);
         return;
     }
 
-    if (pos >= limit) {
+    if (pos >= progress_width.value) {
         DZ.player.seek(100);
         return;
     }
-    DZ.player.seek((pos - elem.x) / elem.width * 100);
+
+    DZ.player.seek(pos / progress_width.value * 100);
     return;
 }
 
@@ -147,5 +150,12 @@ DZ.Event.subscribe('player_position', function (arr) {
 
 DZ.Event.subscribe('tracklist_changed', function (response) {
     console.log("Tracklist changed.");
+});
+
+onMounted(() => {
+    let box = document.getElementById('seekProgress').getBoundingClientRect();
+    progress_x.value = box.x;
+    progress_width.value = box.width;
+    progress_max.value = box.x + box.width;
 });
 </script>
