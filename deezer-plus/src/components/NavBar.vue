@@ -55,7 +55,8 @@
                                             <tbody v-for="item in results.tracks" @scroll.passive="onScroll($event)">
                                                 <TrackResult :id="item.track.id" :cover="item.cover"
                                                     :artist="item.artist" :album="item.album" :track="item.track"
-                                                    :duration="item.duration" @contextmenu="rightClick($event)"
+                                                    :duration="item.duration"
+                                                    @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                                     @route-click="searchVisible=false">
                                                 </TrackResult>
                                             </tbody>
@@ -81,7 +82,7 @@
                                                 <AlbumResult @click="leftClick($event)" :id="item.album.id"
                                                     :cover="item.cover" :artist="item.artist" :album="item.album"
                                                     :nb_tracks="item.nb_tracks" :explicit_lyrics="item.explicit_lyrics"
-                                                    @contextmenu="rightClick($event)"
+                                                    @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                                     @route-click="searchVisible=false">
                                                 </AlbumResult>
                                             </tbody>
@@ -105,7 +106,8 @@
                                             <tbody v-for="item in results.artists" @scroll.passive="onScroll($event)">
                                                 <ArtistResult @click="leftClick($event)" :id="item.artist.id"
                                                     :cover="item.cover" :artist="item.artist" :nb_album="item.nb_album"
-                                                    :nb_fan="item.nb_fan" @contextmenu="rightClick($event)"
+                                                    :nb_fan="item.nb_fan"
+                                                    @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                                     @route-click="searchVisible=false">
                                                 </ArtistResult>
                                             </tbody>

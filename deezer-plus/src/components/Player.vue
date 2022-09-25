@@ -22,10 +22,10 @@
                                             @click="buttonNext"></button>
                                     </div>
                                     <span class="font-monospace mx-2">{{now}}</span>
-                                    <div class="progress flex-fill">
-                                        <div class="progress-bar bg-dark progress-bar progress-bar-animated"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                            :style="{'width': position + '%'}"><span class="visually-hidden"></span>
+                                    <div class="progress flex-fill" @click="seekProgress($event)">
+                                        <div class="progress-bar bg-dark progress-bar-animated" aria-valuenow="0"
+                                            aria-valuemin="0" aria-valuemax="100" :style="{'width': position + '%'}">
+                                            <span class="visually-hidden"></span>
                                         </div>
                                     </div>
                                     <span class="font-monospace mx-2">{{duration}}</span>
@@ -89,6 +89,24 @@ async function buttonPrev() {
 async function buttonRepeat() {
     repeat.value = (DZ.player.getRepeat() + 1) % 3;
     DZ.player.setRepeat(repeat.value);
+}
+
+async function seekProgress(event) {
+    let pos = event.clientX;
+    let elem = event.target.getBoundingClientRect();
+    let limit = elem.x + elem.width;
+
+    if (pos <= elem.x) {
+        DZ.player.seek(0);
+        return;
+    }
+
+    if (pos >= limit) {
+        DZ.player.seek(100);
+        return;
+    }
+    DZ.player.seek((pos - elem.x) / elem.width * 100);
+    return;
 }
 
 function padWithZero(num) {

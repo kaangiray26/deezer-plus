@@ -23,6 +23,10 @@ a:hover {
     color: var(--bs-red);
 }
 
+.progress {
+    cursor: pointer;
+}
+
 .track-link {
     color: var(--bs-dark) !important;
     font-weight: bold;
