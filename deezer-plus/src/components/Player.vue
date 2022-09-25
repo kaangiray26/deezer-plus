@@ -14,7 +14,7 @@
                                 <div class="d-flex flex-row align-items-center">
                                     <div class="btn-group btn-group-sm me-4" role="group"><button
                                             class="btn btn-dark bi-skip-start-fill hover-color" type="button"
-                                            v-on:click="buttonBack"></button><button
+                                            v-on:click="buttonPrev"></button><button
                                             :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
                                             class="btn btn-dark bi hover-color" type="button"
                                             v-on:click="buttonPlay"></button><button
@@ -103,7 +103,7 @@ async function buttonNext() {
     DZ.player.next();
 }
 
-async function buttonBack() {
+async function buttonPrev() {
     DZ.player.prev();
 }
 

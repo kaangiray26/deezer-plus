@@ -1,12 +1,14 @@
 <template>
-    <tr>
-        <td v-bind:id="album.id">
-            <div><img class="me-2 img-thumbnail" v-bind:src="cover" width="40" height="40" /><a
-                    :href="/album/ + album.id" v-bind:id="album.id">{{album.title}}</a>
+    <tr :id="album.id" type="albums">
+        <td>
+            <div><img class="me-2 img-thumbnail" :src="cover" width="40" height="40" />
+                <router-link :to="/album/+album.id" @click="$emit('route-click')">{{album.title}}</router-link>
             </div>
         </td>
         <td>
-            <div><a :href="/artist/ + artist.id">{{artist.title}}</a></div>
+            <div>
+                <router-link :to="/artist/+artist.id" @click="$emit('route-click')">{{artist.title}}</router-link>
+            </div>
         </td>
         <td>
             <div><span>{{nb_tracks}}</span></div>

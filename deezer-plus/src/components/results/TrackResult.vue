@@ -1,15 +1,20 @@
 <template>
-    <tr>
-        <td v-bind:id="track.id">
-            <div><img class="me-2 img-thumbnail" v-bind:src="cover" width="40" height="40" /><a href="#"
-                    @click="playTrack($event)" v-bind:id="track.id">{{track.title}}</a>
+    <tr :id="track.id" type="tracks">
+        <td>
+            <div><img class=" me-2 img-thumbnail" :src="cover" width="40" height="40" />
+                <button class="btn btn-link track-link" :id="track.id"
+                    @click="playTrack($event)">{{track.title}}</button>
             </div>
         </td>
         <td>
-            <div class="content"><a :href="/artist/ + artist.id">{{artist.title}}</a></div>
+            <div class="content">
+                <router-link :to="/artist/+artist.id" @click="$emit('route-click')">{{artist.title}}</router-link>
+            </div>
         </td>
         <td>
-            <div><a :href="/album/ + album.id">{{album.title}}</a></div>
+            <div>
+                <router-link :to="/album/+album.id" @click="$emit('route-click')">{{album.title}}</router-link>
+            </div>
         </td>
         <td>
             <div><span>{{Math.floor(duration/60)}}:{{padWithZero(duration % 60)}}</span></div>

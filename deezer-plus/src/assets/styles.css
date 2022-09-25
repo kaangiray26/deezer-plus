@@ -23,6 +23,17 @@ a:hover {
     color: var(--bs-red);
 }
 
+.track-link {
+    color: var(--bs-dark) !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.track-link:hover {
+    text-decoration: underline;
+    color: var(--bs-red) !important;
+}
+
 .card {
     --bs-card-border-width: 0px;
 }

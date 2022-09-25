@@ -15,7 +15,7 @@
         </li>
         <li>
             <button class="dropdown-item" type="button"
-                @click="$emit('context-menu-event','addAlbumToFavourites')"><span
+                @click="$emit('context-menu-event','addTrackToFavourites')"><span
                     class="bi bi-heart-fill me-1"></span>Add to my
                 favourites</button>
         </li>

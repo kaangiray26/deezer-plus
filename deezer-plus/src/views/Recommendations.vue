@@ -1,5 +1,5 @@
 <template>
-    <component ref="contextMenu" id="contextMenu" v-show="isContextMenuVisible" :is="contextMenus[currentSearchField]"
+    <component ref="contextMenu1" id="contextMenu1" v-show="isContextMenuVisible" :is="contextMenus[currentSearchField]"
         :style="{'bottom':posY+'px', 'right':posX+'px'}" @context-menu-event="contextMenuEvent">
     </component>
     <Toast ref="thisToast" :message="toastMessage"></Toast>
@@ -140,11 +140,12 @@ import ArtistRecommendation from './ArtistRecommendation.vue';
 import PlaylistRecommendation from "./PlaylistRecommendation.vue";
 import RadioRecommendation from "./RadioRecommendation.vue";
 
-import TrackContextMenu from "../components/TrackContextMenu.vue";
-import AlbumContextMenu from "../components/AlbumContextMenu.vue";
-import ArtistContextMenu from '../components/ArtistContextMenu.vue';
-import PlaylistContextMenu from '../components/PlaylistContextMenu.vue';
-import RadioContextMenu from '../components/RadioContextMenu.vue';
+import TrackContextMenu from "../components/context_menus/TrackContextMenu.vue";
+import AlbumContextMenu from "../components/context_menus/AlbumContextMenu.vue";
+import ArtistContextMenu from '../components/context_menus/ArtistContextMenu.vue';
+import PlaylistContextMenu from '../components/context_menus/PlaylistContextMenu.vue';
+import RadioContextMenu from '../components/context_menus/RadioContextMenu.vue';
+
 import router from "../router";
 
 const recommendations = ref({
@@ -160,7 +161,7 @@ const recsVisible = ref(false);
 const currentSearchField = ref("albums");
 const isContextMenuVisible = ref(false);
 
-const contextMenu = ref(null);
+const contextMenu1 = ref(null);
 
 const posX = ref(0);
 const posY = ref(0);
@@ -294,24 +295,13 @@ async function rightClick(event) {
     currentSearchField.value = event.currentTarget.attributes.type.value;
     isContextMenuVisible.value = true;
 
-    console.log("Event:", event);
-
     let mouse_x = event.x;
     let mouse_y = event.y;
 
     await nextTick()
 
-    let context_x = document.getElementById("contextMenu").offsetWidth;
-    let context_y = document.getElementById("contextMenu").offsetHeight;
-
-    console.log("After next tick:", {
-        "context x": context_x,
-        "context y": context_y,
-        "mouse x": mouse_x,
-        "mouse y": mouse_y,
-        "window x": window.innerWidth,
-        "window y": window.innerHeight,
-    });
+    let context_x = document.getElementById("contextMenu1").offsetWidth;
+    let context_y = document.getElementById("contextMenu1").offsetHeight;
 
     if (mouse_x <= context_x) {
         posX.value = window.innerWidth - mouse_x - context_x;
@@ -330,7 +320,7 @@ async function contextMenuEvent(event) {
     isContextMenuVisible.value = false;
     // Album Events
     if (event == 'playAlbum') {
-        DZ.player.playAlbum(parseInt(selectedItem.value.id));
+        DZ.player.playAlbum(parseInt(selectedItem.value.id), 0);
         return;
     }
 
@@ -374,7 +364,7 @@ async function contextMenuEvent(event) {
 
     // Playlist Events
     if (event == 'playPlaylist') {
-        DZ.player.playPlaylist(parseInt(selectedItem.value.id));
+        DZ.player.playPlaylist(parseInt(selectedItem.value.id), 0);
         return;
     }
 
@@ -402,17 +392,45 @@ async function contextMenuEvent(event) {
 
     // Track Events
     if (event == 'playTrack') {
-        DZ.player.playTracks([selectedTrack.value]);
+        DZ.player.playTracks([parseInt(selectedItem.value.id)], 0);
         return;
     }
 
     if (event == 'addTrackToQueue') {
-        DZ.player.addToQueue([selectedTrack.value]);
+        DZ.player.addToQueue([parseInt(selectedItem.value.id)]);
+        return;
+    }
+
+    if (event == 'addTrackToFavourites') {
+        DZ.api(`/user/me/tracks?access_token=${sessionStorage.getItem("token")}`, 'POST', {
+            track_id: parseInt(selectedItem.value.id)
+        }, function (response) {
+            toastMessage.value = "Added to your favourites."
+            thisToast.value.show();
+        });
         return;
     }
 
     if (event == 'launchTrackMix') {
         //
+        return;
+    }
+
+    // Radio Events
+    if (event == 'playRadio') {
+        DZ.player.playRadio(parseInt(selectedItem.value.id));
+        return;
+    }
+
+    if (event == 'addRadioToQueue') {
+        DZ.api('/radio/' + selectedItem.value.id + '/tracks', function (response) {
+            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+        });
+        return;
+    }
+
+    if (event == 'openRadioPage') {
+        router.push('/radio/' + selectedItem.value.id);
         return;
     }
 }

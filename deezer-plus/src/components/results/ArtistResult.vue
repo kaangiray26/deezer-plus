@@ -1,8 +1,8 @@
 <template>
-    <tr>
-        <td v-bind:id="artist.id">
-            <div><img class="me-2 img-thumbnail" v-bind:src="cover" width="40" height="40" /><a
-                    :href="/artist/ + artist.id" v-bind:id="artist.id">{{artist.title}}</a>
+    <tr :id="artist.id" type="artists">
+        <td>
+            <div><img class="me-2 img-thumbnail" :src="cover" width="40" height="40" />
+                <router-link :to="/artist/+artist.id" @click="$emit('route-click')">{{artist.title}}</router-link>
             </div>
         </td>
         <td>
