@@ -1,5 +1,5 @@
 <template>
-    <tr :id="album.id" type="albums">
+    <tr :album_id="album.id" :artist_id="artist.id" type="albums">
         <td>
             <div><img class="me-2 img-thumbnail" :src="cover" width="40" height="40" />
                 <router-link :to="/album/+album.id" @click="$emit('route-click')">{{album.title}}</router-link>

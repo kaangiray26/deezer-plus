@@ -1,5 +1,5 @@
 <template>
-    <tr :id="track.id" type="tracks">
+    <tr :track_id="track.id" :album_id="album.id" :artist_id="artist.id" type="tracks">
         <td>
             <div><img class=" me-2 img-thumbnail" :src="cover" width="40" height="40" />
                 <button class="btn btn-link track-link" :id="track.id"

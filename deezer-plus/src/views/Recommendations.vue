@@ -1,9 +1,5 @@
 <template>
-    <component ref="contextMenu1" id="contextMenu1" v-show="isContextMenuVisible" :is="contextMenus[currentSearchField]"
-        :style="{'bottom':posY+'px', 'right':posX+'px'}" @context-menu-event="contextMenuEvent">
-    </component>
-    <Toast ref="thisToast" :message="toastMessage"></Toast>
-    <div class=" row justify-content-center gx-0" @click="leftClick($event)">
+    <div class=" row justify-content-center gx-0">
         <div class="col">
             <div id="recommendationsAccordion" class="accordion" role="tablist">
                 <div class="accordion-item">
@@ -18,7 +14,8 @@
                                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
                                     v-for="item in recommendations.albums">
                                     <AlbumRecommendation :id="item.album_id" :artist="item.artist" :title="item.title"
-                                        :cover="item.cover" :album_id="item.album_id" @contextmenu="rightClick($event)">
+                                        :cover="item.cover" :album_id="item.album_id"
+                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                     </AlbumRecommendation>
                                 </div>
                             </div>
@@ -37,7 +34,8 @@
                                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
                                     v-for="item in recommendations.releases">
                                     <AlbumRecommendation :id="item.album_id" :artist="item.artist" :title="item.title"
-                                        :cover="item.cover" :album_id="item.album_id" @contextmenu="rightClick($event)">
+                                        :cover="item.cover" :album_id="item.album_id"
+                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                     </AlbumRecommendation>
                                 </div>
                             </div>
@@ -57,7 +55,7 @@
                                     v-for="item in recommendations.artists">
                                     <ArtistRecommendation :id="item.artist_id" :artist="item.artist"
                                         :artist_id="item.artist_id" :cover=" item.cover"
-                                        @contextmenu="rightClick($event)">
+                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                     </ArtistRecommendation>
                                 </div>
                             </div>
@@ -77,7 +75,8 @@
                                     v-for="item in recommendations.playlists">
                                     <PlaylistRecommendation :id="item.playlist_id" :user="item.user"
                                         :playlist_id="item.playlist_id" :title="item.title" :tracks="item.tracks"
-                                        :cover="item.cover" @contextmenu="rightClick($event)">
+                                        :cover="item.cover"
+                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                     </PlaylistRecommendation>
                                 </div>
                             </div>
@@ -97,7 +96,8 @@
                                     v-for="item in recommendations.tracks">
                                     <TrackRecommendation :id="item.track_id" :title="item.title"
                                         :track_id="item.track_id" :album="item.album" :artist="item.artist"
-                                        :cover="item.cover" @contextmenu="rightClick($event)">
+                                        :cover="item.cover"
+                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                     </TrackRecommendation>
                                 </div>
                             </div>
@@ -116,7 +116,8 @@
                                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
                                     v-for="item in recommendations.radios">
                                     <RadioRecommendation :id="item.radio_id" :radio_id="item.radio_id"
-                                        :title="item.title" :cover="item.cover" @contextmenu="rightClick($event)">
+                                        :title="item.title" :cover="item.cover"
+                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                     </RadioRecommendation>
                                 </div>
                             </div>
@@ -130,23 +131,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
-
-import Toast from "../components/liveToast.vue";
+import { ref, onMounted } from "vue";
 
 import TrackRecommendation from "./TrackRecommendation.vue";
 import AlbumRecommendation from './AlbumRecommendation.vue';
 import ArtistRecommendation from './ArtistRecommendation.vue';
 import PlaylistRecommendation from "./PlaylistRecommendation.vue";
 import RadioRecommendation from "./RadioRecommendation.vue";
-
-import TrackContextMenu from "../components/context_menus/TrackContextMenu.vue";
-import AlbumContextMenu from "../components/context_menus/AlbumContextMenu.vue";
-import ArtistContextMenu from '../components/context_menus/ArtistContextMenu.vue';
-import PlaylistContextMenu from '../components/context_menus/PlaylistContextMenu.vue';
-import RadioContextMenu from '../components/context_menus/RadioContextMenu.vue';
-
-import router from "../router";
 
 const recommendations = ref({
     albums: [],
@@ -158,26 +149,6 @@ const recommendations = ref({
 });
 
 const recsVisible = ref(false);
-const currentSearchField = ref("albums");
-const isContextMenuVisible = ref(false);
-
-const contextMenu1 = ref(null);
-
-const posX = ref(0);
-const posY = ref(0);
-
-let thisToast = ref(null);
-const toastMessage = ref("");
-
-const selectedItem = ref(null);
-
-const contextMenus = {
-    "tracks": TrackContextMenu,
-    "albums": AlbumContextMenu,
-    "artists": ArtistContextMenu,
-    "playlists": PlaylistContextMenu,
-    "radios": RadioContextMenu,
-};
 
 async function get_recommendations() {
     get_rec_albums();
@@ -283,156 +254,6 @@ function handleRecRadios(item) {
         cover: item.picture_medium,
     })
     return;
-}
-
-async function leftClick(event) {
-    isContextMenuVisible.value = false;
-}
-
-async function rightClick(event) {
-    event.preventDefault();
-    selectedItem.value = event.currentTarget;
-    currentSearchField.value = event.currentTarget.attributes.type.value;
-    isContextMenuVisible.value = true;
-
-    let mouse_x = event.x;
-    let mouse_y = event.y;
-
-    await nextTick()
-
-    let context_x = document.getElementById("contextMenu1").offsetWidth;
-    let context_y = document.getElementById("contextMenu1").offsetHeight;
-
-    if (mouse_x <= context_x) {
-        posX.value = window.innerWidth - mouse_x - context_x;
-    } else {
-        posX.value = window.innerWidth - mouse_x;
-    }
-
-    if (mouse_y + context_y >= window.innerHeight) {
-        posY.value = window.innerHeight - mouse_y;
-    } else {
-        posY.value = window.innerHeight - mouse_y - context_y;
-    }
-}
-
-async function contextMenuEvent(event) {
-    isContextMenuVisible.value = false;
-    // Album Events
-    if (event == 'playAlbum') {
-        DZ.player.playAlbum(parseInt(selectedItem.value.id), 0);
-        return;
-    }
-
-    if (event == 'addAlbumToQueue') {
-        DZ.api('/album/' + selectedItem.value.id + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
-        });
-        return;
-    }
-
-    if (event == 'addAlbumToFavourites') {
-        DZ.api(`/user/me/albums?access_token=${sessionStorage.getItem("token")}`, 'POST', {
-            album_id: parseInt(selectedItem.value.id)
-        }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
-        });
-        return;
-    }
-
-    if (event == 'openAlbumPage') {
-        router.push('/album/' + selectedItem.value.id);
-        return;
-    }
-
-    if (event == 'openArtistPage') {
-        router.push('/artist/' + selectedItem.value.attributes.artist_id.value);
-        return;
-    }
-
-    // Artist Events
-    if (event == 'addArtistToFavourites') {
-        DZ.api(`/user/me/artists?access_token=${sessionStorage.getItem("token")}`, 'POST', {
-            artist_id: parseInt(selectedItem.value.id)
-        }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
-        });
-        return;
-    }
-
-    // Playlist Events
-    if (event == 'playPlaylist') {
-        DZ.player.playPlaylist(parseInt(selectedItem.value.id), 0);
-        return;
-    }
-
-    if (event == 'addPlaylistToQueue') {
-        DZ.api('/playlist/' + selectedItem.value.id + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
-        });
-        return;
-    }
-
-    if (event == 'addPlaylistToFavourites') {
-        DZ.api(`/user/me/playlists?access_token=${sessionStorage.getItem("token")}`, 'POST', {
-            playlist_id: parseInt(selectedItem.value.id)
-        }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
-        });
-        return;
-    }
-
-    if (event == 'openPlaylistPage') {
-        router.push('/playlist/' + selectedItem.value.id);
-        return;
-    }
-
-    // Track Events
-    if (event == 'playTrack') {
-        DZ.player.playTracks([parseInt(selectedItem.value.id)], 0);
-        return;
-    }
-
-    if (event == 'addTrackToQueue') {
-        DZ.player.addToQueue([parseInt(selectedItem.value.id)]);
-        return;
-    }
-
-    if (event == 'addTrackToFavourites') {
-        DZ.api(`/user/me/tracks?access_token=${sessionStorage.getItem("token")}`, 'POST', {
-            track_id: parseInt(selectedItem.value.id)
-        }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
-        });
-        return;
-    }
-
-    if (event == 'launchTrackMix') {
-        //
-        return;
-    }
-
-    // Radio Events
-    if (event == 'playRadio') {
-        DZ.player.playRadio(parseInt(selectedItem.value.id));
-        return;
-    }
-
-    if (event == 'addRadioToQueue') {
-        DZ.api('/radio/' + selectedItem.value.id + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
-        });
-        return;
-    }
-
-    if (event == 'openRadioPage') {
-        router.push('/radio/' + selectedItem.value.id);
-        return;
-    }
 }
 
 onMounted(function () {
