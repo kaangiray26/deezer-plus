@@ -1,5 +1,6 @@
 <template>
-    <div class="card h-100 w-100 shadow-lg" :id="track_id" :album_id="album.id" :artist_id="artist.id" type="tracks">
+    <div class="card h-100 w-100 shadow-lg" :track_id="track_id" :album_id="album.id" :artist_id="artist.id"
+        type="tracks">
         <div class="card-body d-flex flex-column">
             <figure class="d-flex flex-column">
                 <div class="d-flex justify-content-center position-relative overflow-hidden ratio-1x1">

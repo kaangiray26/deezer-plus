@@ -1,5 +1,5 @@
 <template>
-    <div class="card h-100 w-100 shadow-lg" :id="playlist_id" type="playlists">
+    <div class="card h-100 w-100 shadow-lg" :playlist_id="playlist_id" type="playlists">
         <div class="card-body d-flex flex-column">
             <figure class="d-flex flex-column">
                 <div class="d-flex justify-content-center position-relative overflow-hidden ratio-1x1">

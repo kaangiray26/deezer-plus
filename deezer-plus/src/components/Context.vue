@@ -41,7 +41,7 @@ async function _left_click(obj) {
 }
 
 async function _right_click(obj) {
-    console.log("TargeT:", obj.target);
+    console.log("Target:", obj.target);
     selectedItem.value = obj.target;
     currentSearchField.value = selectedItem.value.attributes.type.value;
     isContextMenuVisible.value = true;
@@ -72,37 +72,51 @@ async function contextMenuEvent(event) {
 
     // Open Page Events
     if (event == 'openAlbumPage') {
-        searchVisible.value = false;
+        // searchVisible.value = false;
         router.push('/album/' + selectedItem.value.attributes.album_id.value);
         return;
     }
 
     if (event == 'openArtistPage') {
-        searchVisible.value = false;
+        // searchVisible.value = false;
         router.push('/artist/' + selectedItem.value.attributes.artist_id.value);
         return;
     }
 
     if (event == 'openPlaylistPage') {
-        searchVisible.value = false;
+        // searchVisible.value = false;
         router.push('/playlist/' + selectedItem.value.id);
         return;
     }
 
     if (event == 'openRadioPage') {
-        searchVisible.value = false;
+        // searchVisible.value = false;
         router.push('/radio/' + selectedItem.value.id);
         return;
     }
 
     // Play Events
-
-    // Track Events
     if (event == 'playTrack') {
         DZ.player.playTracks([parseInt(selectedItem.value.attributes.track_id.value)]);
         return;
     }
 
+    if (event == 'playAlbum') {
+        DZ.player.playAlbum(parseInt(selectedItem.value.attributes.album_id.value), 0);
+        return;
+    }
+
+    if (event == 'playPlaylist') {
+        DZ.player.playPlaylist(parseInt(selectedItem.value.id), 0);
+        return;
+    }
+
+    if (event == 'playRadio') {
+        DZ.player.playRadio(parseInt(selectedItem.value.id));
+        return;
+    }
+
+    // Track Events
     if (event == 'addTrackToQueue') {
         DZ.player.addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
         return;
@@ -124,11 +138,6 @@ async function contextMenuEvent(event) {
     }
 
     // Album Events
-    if (event == 'playAlbum') {
-        DZ.player.playAlbum(parseInt(selectedItem.value.attributes.album_id.value), 0);
-        return;
-    }
-
     if (event == 'addAlbumToQueue') {
         DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', function (response) {
             DZ.player.addToQueue([...response.data.map(item => item.id)]);
@@ -158,11 +167,6 @@ async function contextMenuEvent(event) {
     }
 
     // Playlist Events
-    if (event == 'playPlaylist') {
-        DZ.player.playPlaylist(parseInt(selectedItem.value.id), 0);
-        return;
-    }
-
     if (event == 'addPlaylistToQueue') {
         DZ.api('/playlist/' + selectedItem.value.id + '/tracks', function (response) {
             DZ.player.addToQueue([...response.data.map(item => item.id)]);
@@ -181,11 +185,6 @@ async function contextMenuEvent(event) {
     }
 
     // Radio Events
-    if (event == 'playRadio') {
-        DZ.player.playRadio(parseInt(selectedItem.value.id));
-        return;
-    }
-
     if (event == 'addRadioToQueue') {
         DZ.api('/radio/' + selectedItem.value.id + '/tracks', function (response) {
             DZ.player.addToQueue([...response.data.map(item => item.id)]);
