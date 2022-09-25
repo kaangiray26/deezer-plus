@@ -36,12 +36,16 @@ const contextMenus = {
     "radios": RadioContextMenu,
 };
 
+async function notify(message) {
+    toastMessage.value = message;
+    thisToast.value.show();
+}
+
 async function _left_click(obj) {
     isContextMenuVisible.value = false;
 }
 
 async function _right_click(obj) {
-    console.log("Target:", obj.target);
     selectedItem.value = obj.target;
     currentSearchField.value = selectedItem.value.attributes.type.value;
     isContextMenuVisible.value = true;
@@ -97,50 +101,61 @@ async function contextMenuEvent(event) {
 
     // Play Events
     if (event == 'playTrack') {
-        DZ.player.playTracks([parseInt(selectedItem.value.attributes.track_id.value)]);
+        DZ.player.playTracks([parseInt(selectedItem.value.attributes.track_id.value)], true, 0);
         return;
     }
 
     if (event == 'playAlbum') {
-        DZ.player.playAlbum(parseInt(selectedItem.value.attributes.album_id.value), 0);
+        DZ.player.playAlbum(parseInt(selectedItem.value.attributes.album_id.value), true, 0);
         return;
     }
 
     if (event == 'playPlaylist') {
-        DZ.player.playPlaylist(parseInt(selectedItem.value.id), 0);
+        DZ.player.playPlaylist(parseInt(selectedItem.value.id), true, 0);
         return;
     }
 
     if (event == 'playRadio') {
-        DZ.player.playRadio(parseInt(selectedItem.value.id));
+        DZ.player.playRadio(parseInt(selectedItem.value.id), true, 0);
         return;
     }
 
-    // Track Events
+    // Add to Queue Events
     if (event == 'addTrackToQueue') {
         DZ.player.addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
+        notify("Added to the queue.");
+        return;
+    }
+    if (event == 'addAlbumToQueue') {
+        DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', function (response) {
+            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+        });
+        notify("Added to the queue.");
+        return;
+    }
+    if (event == 'addPlaylistToQueue') {
+        DZ.api('/playlist/' + selectedItem.value.id + '/tracks', function (response) {
+            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+        });
+        notify("Added to the queue.");
+        return;
+    }
+    if (event == 'addRadioToQueue') {
+        DZ.api('/radio/' + selectedItem.value.id + '/tracks', function (response) {
+            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+        });
+        notify("Added to the queue.");
         return;
     }
 
+    // Add to Favorites Events
     if (event == 'addTrackToFavourites') {
         DZ.api(`/user/me/tracks?access_token=${sessionStorage.getItem("token")}`, 'POST', {
             track_id: parseInt(selectedItem.value.attributes.track_id.value)
         }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
-        });
-        return;
-    }
-
-    if (event == 'launchTrackMix') {
-        //
-        return;
-    }
-
-    // Album Events
-    if (event == 'addAlbumToQueue') {
-        DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            if (response) {
+                notify("Added to your favourites.");
+            }
         });
         return;
     }
@@ -149,27 +164,20 @@ async function contextMenuEvent(event) {
         DZ.api(`/user/me/albums?access_token=${sessionStorage.getItem("token")}`, 'POST', {
             album_id: parseInt(selectedItem.value.attributes.album_id.value)
         }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
+            if (response) {
+                notify("Added to your favourites.");
+            }
         });
         return;
     }
 
-    // Artist Events
     if (event == 'addArtistToFavourites') {
         DZ.api(`/user/me/artists?access_token=${sessionStorage.getItem("token")}`, 'POST', {
             artist_id: parseInt(selectedItem.value.attributes.artist_id.value)
         }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
-        });
-        return;
-    }
-
-    // Playlist Events
-    if (event == 'addPlaylistToQueue') {
-        DZ.api('/playlist/' + selectedItem.value.id + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            if (response) {
+                notify("Added to your favourites.");
+            }
         });
         return;
     }
@@ -178,17 +186,18 @@ async function contextMenuEvent(event) {
         DZ.api(`/user/me/playlists?access_token=${sessionStorage.getItem("token")}`, 'POST', {
             playlist_id: parseInt(selectedItem.value.id)
         }, function (response) {
-            toastMessage.value = "Added to your favourites."
-            thisToast.value.show();
+            if (response) {
+                notify("Added to your favourites.");
+            }
         });
         return;
     }
 
-    // Radio Events
-    if (event == 'addRadioToQueue') {
-        DZ.api('/radio/' + selectedItem.value.id + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
-        });
+    // Track Events
+
+
+    if (event == 'launchTrackMix') {
+        //
         return;
     }
 }

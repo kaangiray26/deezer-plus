@@ -12,14 +12,15 @@
                                     <a :href="/artist/ + artist.id">{{artist.title}}</a>
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
-                                    <div class="btn-group btn-group-sm me-4" role="group"><button
-                                            class="btn btn-dark bi-skip-start-fill hover-color" type="button"
-                                            v-on:click="buttonPrev"></button><button
-                                            :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
+                                    <div class="btn-group btn-group-sm me-4" role="group">
+                                        <button class="btn btn-dark bi-skip-start-fill hover-color" type="button"
+                                            @click="buttonPrev"></button>
+                                        <button :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
                                             class="btn btn-dark bi hover-color" type="button"
-                                            v-on:click="buttonPlay"></button><button
-                                            class="btn btn-dark bi-skip-end-fill hover-color" type="button"
-                                            v-on:click="buttonNext"></button></div>
+                                            @click="buttonPlay"></button>
+                                        <button class="btn btn-dark bi-skip-end-fill hover-color" type="button"
+                                            @click="buttonNext"></button>
+                                    </div>
                                     <span class="font-monospace mx-2">{{now}}</span>
                                     <div class="progress flex-fill">
                                         <div class="progress-bar bg-dark progress-bar progress-bar-animated"
@@ -65,32 +66,6 @@ const repeat_classes = {
 const now = ref('00:00');
 const duration = ref('00:00');
 
-DZ.Event.subscribe('player_play', function () {
-    isPlaying.value = true;
-});
-
-DZ.Event.subscribe('player_paused', function () {
-    isPlaying.value = false;
-});
-
-DZ.Event.subscribe('track_end', function () {
-    isPlaying.value = false;
-});
-
-DZ.Event.subscribe('current_track', function (obj) {
-    track.value.title = obj.track.title;
-    track.value.id = obj.track.id;
-    artist.value.title = obj.track.artist.name;
-    artist.value.id = obj.track.artist.id;
-    duration.value = formatTime(parseInt(obj.track.duration));
-    isLoaded.value = true;
-});
-
-DZ.Event.subscribe('player_position', function (arr) {
-    now.value = formatTime(arr[0]);
-    position.value = arr[0] / arr[1] * 100;
-});
-
 async function buttonPlay() {
     if (isPlaying.value) {
         DZ.player.pause();
@@ -100,11 +75,15 @@ async function buttonPlay() {
 }
 
 async function buttonNext() {
-    DZ.player.next();
+    let tracklist = [...DZ.player.getTrackList().map(item => parseInt(item.id))];
+    let index = (DZ.player.getCurrentIndex() + 1) % tracklist.length;
+    DZ.player.playTracks(tracklist, index);
 }
 
 async function buttonPrev() {
-    DZ.player.prev();
+    let tracklist = [...DZ.player.getTrackList().map(item => parseInt(item.id))];
+    let index = (DZ.player.getCurrentIndex() - 1) % tracklist.length;
+    DZ.player.playTracks(tracklist, index);
 }
 
 async function buttonRepeat() {
@@ -121,4 +100,34 @@ function formatTime(time) {
     let seconds = Math.floor(time - minutes * 60);
     return padWithZero(minutes) + ":" + padWithZero(seconds);
 }
+
+DZ.Event.subscribe('player_play', function () {
+    isPlaying.value = true;
+});
+
+DZ.Event.subscribe('player_paused', function () {
+    isPlaying.value = false;
+});
+
+DZ.Event.subscribe('current_track', function (obj) {
+    track.value.title = obj.track.title;
+    track.value.id = obj.track.id;
+    artist.value.title = obj.track.artist.name;
+    artist.value.id = obj.track.artist.id;
+    duration.value = formatTime(parseInt(obj.track.duration));
+
+    if (!isLoaded.value) {
+        DZ.player.playTracks([...DZ.player.getTrackList().map(item => parseInt(item.id))]);
+        isLoaded.value = true;
+    }
+});
+
+DZ.Event.subscribe('player_position', function (arr) {
+    now.value = formatTime(arr[0]);
+    position.value = arr[0] / arr[1] * 100;
+});
+
+DZ.Event.subscribe('tracklist_changed', function (response) {
+    console.log("Tracklist changed.");
+});
 </script>
