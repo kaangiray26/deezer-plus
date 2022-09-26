@@ -5,11 +5,16 @@ import Album from '../views/Album.vue';
 import Artist from '../views/Artist.vue';
 import Playlist from '../views/Playlist.vue';
 import Radio from '../views/Radio.vue';
+import Search from '../views/Search.vue';
 
 const routes = [
     {
         path: '/',
         component: Recommendations
+    },
+    {
+        path: '/search/:query',
+        component: Search
     },
     {
         path: '/track/:id',

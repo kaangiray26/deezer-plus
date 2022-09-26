@@ -1,8 +1,9 @@
 <template>
     <tr :artist_id="artist.id" type="artists">
         <td>
-            <div><img class="me-2 img-thumbnail" :src="cover" width="40" height="40" />
-                <router-link :to="/artist/+artist.id" @click="$emit('route-click')">{{artist.title}}</router-link>
+            <div><img class="img-fluid" :src="cover" width="40" height="40" />
+                <router-link :to="/artist/+artist.id" class="btn btn-link track-link" @click="$emit('route-click')">
+                    {{artist.title}}</router-link>
             </div>
         </td>
         <td>
@@ -26,7 +27,7 @@ defineProps({
         type: Number,
     },
     nb_fan: {
-        type: Number,
+        type: String,
     },
 });
 </script>

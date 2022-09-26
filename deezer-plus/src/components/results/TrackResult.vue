@@ -1,9 +1,8 @@
 <template>
     <tr :track_id="track.id" :album_id="album.id" :artist_id="artist.id" type="tracks">
         <td>
-            <div><img class=" me-2 img-thumbnail" :src="cover" width="40" height="40" />
-                <button class="btn btn-link track-link" :id="track.id"
-                    @click="playTrack($event)">{{track.title}}</button>
+            <div><img class="img-fluid" :src="cover" width="40" height="40" />
+                <button class="btn btn-link track-link" @click="play(track.id)">{{track.title}}</button>
             </div>
         </td>
         <td>
@@ -45,7 +44,7 @@ function padWithZero(num) {
     return String(num).padStart(2, '0');
 }
 
-async function playTrack(event) {
-    DZ.player.playTracks([event.target.id]);
+async function play(id) {
+    DZ.player.playTracks([parseInt(id)]);
 }
 </script>

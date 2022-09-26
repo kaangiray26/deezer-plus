@@ -3,18 +3,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import Modal from "./LoginModal.vue";
 
 let thisModal = ref(null);
-
-DZ.init({
-    appId: '559022',
-    channelUrl: 'http://localhost:8000/channel.html',
-    player: {
-        onload: getLoginStatus
-    }
-});
 
 function showModal() {
     thisModal.value.show();
@@ -35,13 +27,24 @@ function getLoginStatus(response) {
 
 function login() {
     DZ.login(function (response) {
-        hideModal();
         if (response.authResponse) {
             sessionStorage.setItem('id', response.authResponse.userID);
             sessionStorage.setItem('token', response.authResponse.accessToken);
+            hideModal();
+            location.reload();
         } else {
             console.log('User cancelled login or did not fully authorize.');
         }
     }, { perms: 'basic_access,email,offline_access,manage_library,manage_community,delete_library,listening_history' });
 }
+
+onBeforeMount(() => {
+    DZ.init({
+        appId: '559022',
+        channelUrl: 'http://localhost:8000/channel.html',
+        player: {
+            onload: getLoginStatus
+        }
+    });
+})
 </script>

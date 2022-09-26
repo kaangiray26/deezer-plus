@@ -1,4 +1,5 @@
 <template>
+    <div style=" height: 100px;"></div>
     <nav class="navbar navbar-light navbar-expand fixed-bottom" id="playerBar" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
@@ -7,9 +8,9 @@
                         <div class="d-flex flex-fill align-items-center">
                             <div class="d-flex flex-column flex-fill">
                                 <div v-if="isLoaded" class="mx-2 mb-2">
-                                    <a :href="/track/ + track.id">{{track.title}}</a>
+                                    <router-link :to="/track/ + track.id">{{track.title}}</router-link>
                                     <span> - </span>
-                                    <a :href="/artist/ + artist.id">{{artist.title}}</a>
+                                    <router-link :to="/artist/ + artist.id">{{artist.title}}</router-link>
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
                                     <div class="btn-group btn-group-sm me-4" role="group">

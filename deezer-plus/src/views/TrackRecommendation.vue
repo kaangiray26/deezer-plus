@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </figure>
-            <router-link :to="/track/+track_id">
+            <router-link :to="/album/+album.id">
                 <div class="d-flex flex-column mt-2">
                     <span class="text-truncate"><mark>{{artist.name}}</mark></span>
                     <span class="text-truncate">{{title}}</span>
