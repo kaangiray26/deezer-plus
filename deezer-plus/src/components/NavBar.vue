@@ -6,7 +6,7 @@
                     <router-link to="/" class="page-heading-link hover-color me-2 disabled"
                         style="padding: 0.25em;font-family: 'Secular One', sans-serif; cursor: pointer;"
                         @click="searchVisible=false">
-                        <div class="d-inline-flex position-relative ratio-1x1" style="padding: 0.5em;">
+                        <div class="d-inline-flex position-relative ratio-1x1">
                             <img src="assets/Deezer_Logo_RVB_Black.svg" style="height:24px">
                         </div>
                     </router-link>
@@ -15,6 +15,11 @@
                             type="text" id="searchField" placeholder="Search"
                             style="background: transparent;border-left-style: none;" autocomplete="off"
                             @keyup.enter="search($event)">
+                    </div>
+                    <div class="ms-2">
+                        <button type="button" class="btn btn-dark">
+                            Profile
+                        </button>
                     </div>
                 </div>
             </div>
