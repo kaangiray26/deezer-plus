@@ -26,7 +26,7 @@
                                 <span class="mx-2">{{album.artist_name}}</span>
                             </router-link>
                         </div>
-                        <p>
+                        <p class="mb-0">
                             <small class="text-muted">{{album.release_date}} - {{album.nb_tracks}} tracks -
                                 {{Math.floor(album.duration /
                                 60)}} mins - {{album.fans}} fans
@@ -50,12 +50,11 @@
                                 <td class="col-1 text-nowrap text-truncate">{{index+1}}</td>
                                 <td class="col-10 text-nowrap text-truncate"><button :id="track.id"
                                         class="btn btn-link track-link px-0"
-                                        @click="playTrack($event)">{{track.title}}</button></td>
+                                        @click="playTrack(track.id)">{{track.title}}</button></td>
                                 <td class="col-1 text-nowrap text-truncate">
                                     {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}</td>
                             </tr>
                         </tbody>
-
                     </table>
                 </div>
             </div>
@@ -104,8 +103,8 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-async function playTrack(event) {
-    DZ.player.playTracks([parseInt(event.target.id)]);
+async function playTrack(id) {
+    DZ.player.playTracks([parseInt(id)]);
 }
 
 async function play(id) {

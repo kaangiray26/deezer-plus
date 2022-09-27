@@ -30,7 +30,7 @@
                                 {{playlist.description}}
                             </span>
                         </div>
-                        <p>
+                        <p class="mb-0">
                             <small class="text-muted">{{playlist.nb_tracks}} tracks - {{playlist.duration}} -
                                 {{playlist.fans}} fans
                             </small>
@@ -47,13 +47,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="track in playlist.tracks" :album_id="track.album.id" :artist_id="track.artist.id"
-                                class="row gx-0 d-flex flex-row"
+                            <tr v-for="track in playlist.tracks" :track_id="track.id" :album_id="track.album.id"
+                                :artist_id="track.artist.id" class="row gx-0 d-flex flex-row"
                                 @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
-                                <td class="col-6 text-nowrap text-truncate"><button :id="track.id"
-                                        class="btn btn-link track-link px-0"
-                                        @click="playTrack($event)">{{track.title}}</button></td>
+                                <td class="col-6 text-nowrap text-truncate">
+                                    <div><img class="img-fluid" :src="track.album.cover_small" width="40" height="40" />
+                                        <button class="btn btn-link track-link"
+                                            @click="playTrack(track.id)">{{track.title}}</button>
+                                    </div>
+                                </td>
                                 <td class="col-2 text-nowrap text-truncate">
                                     <div>
                                         <router-link :to="/artist/+track.artist.id" @click="$emit('route-click')">
@@ -118,8 +121,8 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-async function playTrack(event) {
-    DZ.player.playTracks([parseInt(event.target.id)]);
+async function playTrack(id) {
+    DZ.player.playTracks([parseInt(id)]);
 }
 
 async function play(id) {
@@ -127,7 +130,6 @@ async function play(id) {
 }
 
 onMounted(() => {
-    console.log("Mounted!");
     get_playlist(router.currentRoute.value.params.id);
 })
 </script>

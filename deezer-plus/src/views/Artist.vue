@@ -14,7 +14,7 @@
                 <div class="col">
                     <div class="d-inline-flex flex-column">
                         <h1 class="text-bold mb-4" style="font-size: 32px; font-weight: 700;">{{artist.name}}</h1>
-                        <p>
+                        <p class="mb-0">
                             <small class="text-muted">{{artist.fans}} fans - {{artist.nb_albums}} albums</small>
                         </p>
                     </div>

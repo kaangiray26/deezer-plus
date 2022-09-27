@@ -1,6 +1,6 @@
 <template>
-    <div style=" height: 100px;"></div>
-    <nav class="navbar navbar-light navbar-expand fixed-bottom" id="playerBar" style="width: 100%;">
+    <div v-if="navBarVisible" :style="{'height': navBar.clientHeight + 'px'}"></div>
+    <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
                 <div class="card-body border-dark d-flex flex-column">
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
@@ -56,6 +56,9 @@ const position = ref(0);
 
 const track = ref({ title: '', id: '' });
 const artist = ref({ title: '', id: '' });
+
+const navBar = ref(null);
+const navBarVisible = ref(false);
 
 const repeat = ref(0);
 const repeat_classes = {
@@ -158,5 +161,6 @@ onMounted(() => {
     progress_x.value = box.x;
     progress_width.value = box.width;
     progress_max.value = box.x + box.width;
+    navBarVisible.value = true;
 });
 </script>
