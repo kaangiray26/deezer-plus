@@ -36,20 +36,23 @@
                     <hr />
                     <table class="table table-borderless table-hover">
                         <thead>
-                            <tr class="table-active">
-                                <th scope="col">#</th>
-                                <th scope="col">Track</th>
-                                <th scope="col" class="bi bi-clock-fill"></th>
+                            <tr class="row gx-0 table-active" style="width: 100% !important;">
+                                <th class="col-1">#</th>
+                                <th class="col-10">Track</th>
+                                <th class="col-1 bi bi-clock-fill"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(track, index) in album.tracks" :album_id="album.id" :artist_id="album.artist_id"
+                                class="row gx-0 d-flex flex-row"
                                 @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
-                                type="albums">
-                                <th scope="row">{{index+1}}</th>
-                                <td><button :id="track.id" class="btn btn-link track-link"
+                                type="albums" style="flex-wrap: nowrap; width: 100% !important;">
+                                <td class="col-1 text-nowrap text-truncate">{{index+1}}</td>
+                                <td class="col-10 text-nowrap text-truncate"><button :id="track.id"
+                                        class="btn btn-link track-link px-0"
                                         @click="playTrack($event)">{{track.title}}</button></td>
-                                <td>{{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}</td>
+                                <td class="col-1 text-nowrap text-truncate">
+                                    {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}</td>
                             </tr>
                         </tbody>
 

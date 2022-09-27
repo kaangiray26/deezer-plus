@@ -21,27 +21,28 @@
                     <hr />
                     <table class="table table-borderless table-hover">
                         <thead>
-                            <tr class="table-active">
-                                <th scope="col">Album</th>
-                                <th scope="col">Release Date</th>
-                                <th class="bi bi-explicit-fill"></th>
+                            <tr class="row gx-0 table-active" style="width: 100% !important;">
+                                <th class="col-9">Album</th>
+                                <th class="col-2">Release Date</th>
+                                <th class="col-1 bi bi-explicit-fill"></th>
                             </tr>
                         </thead>
                         <tbody v-show="albumsLoaded">
                             <tr v-for="album in artist.albums" :album_id="album.id" :artist_id="artist.id"
+                                class="row gx-0 d-flex flex-row"
                                 @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
-                                type="albums">
-                                <td>
+                                type="albums" style="flex-wrap: nowrap; width: 100% !important;">
+                                <td class="col-9 text-nowrap text-truncate">
                                     <div><img class="me-2 img-thumbnail" :src="album.cover" width="56" height="56" />
                                         <router-link :to="/album/+album.id" @click="$emit('route-click')">
                                             {{album.title}}
                                         </router-link>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="col-2 text-nowrap text-truncate">
                                     <div><span>{{formatDate(album.release_date)}}</span></div>
                                 </td>
-                                <td>
+                                <td class="col-1 text-nowrap text-truncate">
                                     <div><span>{{album.explicit_lyrics?'Yes' : 'No'}}</span></div>
                                 </td>
                             </tr>
