@@ -12,8 +12,9 @@ cd src/dist
 # if you are deploying to a custom domain
 echo 'deezer.buzl.uk' > CNAME
 
+git init
 git add -A
 git commit -m 'deploy'
 git push -f git@github.com:kaangiray26/deezer-plus.git main:gh-pages
 
-cd ../..
+cd -
