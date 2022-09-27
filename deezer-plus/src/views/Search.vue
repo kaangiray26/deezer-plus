@@ -46,10 +46,9 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-borderless"
-                                        style="table-layout: fixed; width: 100%;">
+                                    <table class="table table-hover table-borderless">
                                         <thead>
-                                            <tr class="table-active text-end">
+                                            <tr class="table-active">
                                                 <th>Album</th>
                                                 <th>Artist</th>
                                                 <th>Tracks</th>
