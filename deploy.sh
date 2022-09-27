@@ -14,7 +14,6 @@ echo 'deezer.buzl.uk' > CNAME
 
 git add -A
 git commit -m 'deploy'
-git checkout gh-pages
-git push origin gh-pages
+git push -f git@github.com:kaangiray26/deezer-plus.git main:gh-pages
 
 cd -
