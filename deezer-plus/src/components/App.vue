@@ -1,5 +1,5 @@
 <template>
-    <div @click="left_click">
+    <div @click="hide" @keyup.esc="hide" tabindex="0">
         <DeezerProvider></DeezerProvider>
         <Context ref="thisContext"></Context>
         <NavBar @right-click="right_click"></NavBar>
@@ -21,7 +21,7 @@ async function right_click(event) {
     thisContext.value.right_click(event);
 }
 
-async function left_click(event) {
-    thisContext.value.left_click(event);
+async function hide() {
+    thisContext.value.hide();
 }
 </script>

@@ -41,7 +41,7 @@ async function notify(message) {
     thisToast.value.show();
 }
 
-async function _left_click(obj) {
+async function _hide() {
     isContextMenuVisible.value = false;
 }
 
@@ -203,7 +203,7 @@ async function contextMenuEvent(event) {
 }
 
 defineExpose({
-    left_click: _left_click,
+    hide: _hide,
     right_click: _right_click,
 });
 </script>
