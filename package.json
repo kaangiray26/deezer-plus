@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 8000"
+    "preview": "vite preview --port 8000",
+    "deploy": "sh deploy.sh"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
