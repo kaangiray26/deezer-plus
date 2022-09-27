@@ -14,4 +14,4 @@ echo 'deezer.buzl.uk' > dist/CNAME
 
 cp -r dist ~/
 git checkout gh-pages
-cp -a ~/dist/. ./
+cp -r ~/dist/. ./
