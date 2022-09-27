@@ -12,8 +12,6 @@ cd src
 # if you are deploying to a custom domain
 echo 'deezer.buzl.uk' > dist/CNAME
 
-git add dist
-git commit -m 'deploy'
-git subtree push --prefix dist origin gh-pages
-
-cd -
+cp -r dist ~/
+git checkout gh-pages
+cp -a ~/dist/. ./
