@@ -6,7 +6,7 @@
                     <router-link to="/" class="page-heading-link hover-color me-2 disabled"
                         style="padding: 0.25em;font-family: 'Secular One', sans-serif; cursor: pointer;">
                         <div class="d-inline-flex position-relative ratio-1x1">
-                            <img src="assets/Deezer_Logo_RVB_Black.svg" style="height:24px">
+                            <img src="/assets/Deezer_Logo_RVB_Black.svg" style="height:24px">
                         </div>
                     </router-link>
                     <div class="input-group"><span class="input-group-text bi bi-search"

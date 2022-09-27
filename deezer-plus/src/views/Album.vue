@@ -46,7 +46,7 @@
                             <tr v-for="(track, index) in album.tracks" :album_id="album.id" :artist_id="album.artist_id"
                                 class="row gx-0 d-flex flex-row"
                                 @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
-                                type="albums" style="flex-wrap: nowrap; width: 100% !important;">
+                                type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
                                 <td class="col-1 text-nowrap text-truncate">{{index+1}}</td>
                                 <td class="col-10 text-nowrap text-truncate"><button :id="track.id"
                                         class="btn btn-link track-link px-0"
