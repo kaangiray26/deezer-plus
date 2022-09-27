@@ -10,7 +10,7 @@ npm run build
 cd src
 
 # if you are deploying to a custom domain
-echo 'deezer.buzl.uk' > CNAME
+echo 'deezer.buzl.uk' > dist/CNAME
 
 git add dist
 git commit -m 'deploy'
