@@ -7,7 +7,7 @@ set -e
 npm run build
 
 # navigate into the build output directory
-cd dist
+cd src/dist
 
 # if you are deploying to a custom domain
 echo 'deezer.buzl.uk' > CNAME
@@ -19,4 +19,4 @@ git commit -m 'deploy'
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
 git push -f git@github.com:kaangiray26/deezer-plus.git main:gh-pages
 
-cd ..
+cd -
