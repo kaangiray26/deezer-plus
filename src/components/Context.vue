@@ -76,26 +76,27 @@ async function contextMenuEvent(event) {
 
     // Open Page Events
     if (event == 'openAlbumPage') {
-        // searchVisible.value = false;
         router.push('/album/' + selectedItem.value.attributes.album_id.value);
         return;
     }
 
     if (event == 'openArtistPage') {
-        // searchVisible.value = false;
         router.push('/artist/' + selectedItem.value.attributes.artist_id.value);
         return;
     }
 
     if (event == 'openPlaylistPage') {
-        // searchVisible.value = false;
         router.push('/playlist/' + selectedItem.value.id);
         return;
     }
 
     if (event == 'openRadioPage') {
-        // searchVisible.value = false;
         router.push('/radio/' + selectedItem.value.id);
+        return;
+    }
+
+    if (event == 'openUserPage') {
+        router.push('/user/' + selectedItem.value.id);
         return;
     }
 
@@ -150,7 +151,7 @@ async function contextMenuEvent(event) {
 
     // Add to Favorites Events
     if (event == 'addTrackToFavourites') {
-        DZ.api(`/user/me/tracks?access_token=${sessionStorage.getItem("token")}`, 'POST', {
+        DZ.api(`/user/me/tracks?access_token=${localStorage.getItem("token")}`, 'POST', {
             track_id: parseInt(selectedItem.value.attributes.track_id.value)
         }, function (response) {
             if (response) {
@@ -161,7 +162,7 @@ async function contextMenuEvent(event) {
     }
 
     if (event == 'addAlbumToFavourites') {
-        DZ.api(`/user/me/albums?access_token=${sessionStorage.getItem("token")}`, 'POST', {
+        DZ.api(`/user/me/albums?access_token=${localStorage.getItem("token")}`, 'POST', {
             album_id: parseInt(selectedItem.value.attributes.album_id.value)
         }, function (response) {
             if (response) {
@@ -172,7 +173,7 @@ async function contextMenuEvent(event) {
     }
 
     if (event == 'addArtistToFavourites') {
-        DZ.api(`/user/me/artists?access_token=${sessionStorage.getItem("token")}`, 'POST', {
+        DZ.api(`/user/me/artists?access_token=${localStorage.getItem("token")}`, 'POST', {
             artist_id: parseInt(selectedItem.value.attributes.artist_id.value)
         }, function (response) {
             if (response) {
@@ -183,7 +184,7 @@ async function contextMenuEvent(event) {
     }
 
     if (event == 'addPlaylistToFavourites') {
-        DZ.api(`/user/me/playlists?access_token=${sessionStorage.getItem("token")}`, 'POST', {
+        DZ.api(`/user/me/playlists?access_token=${localStorage.getItem("token")}`, 'POST', {
             playlist_id: parseInt(selectedItem.value.id)
         }, function (response) {
             if (response) {

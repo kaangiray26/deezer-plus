@@ -8,12 +8,12 @@
                     {{album.title}}</router-link>
             </div>
         </td>
-        <td class="col-2 text-nowrap text-truncate">
+        <td class="col-4 text-nowrap text-truncate">
             <div>
                 <router-link :to="/artist/+artist.id" @click="$emit('route-click')">{{artist.title}}</router-link>
             </div>
         </td>
-        <td class="col-3 text-nowrap text-truncate">
+        <td class="col-1 text-nowrap text-truncate">
             <div><span>{{nb_tracks}}</span></div>
         </td>
         <td class="col-1 text-nowrap text-truncate">

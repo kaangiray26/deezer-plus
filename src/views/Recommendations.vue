@@ -160,37 +160,37 @@ async function get_recommendations() {
 }
 
 async function get_rec_albums() {
-    DZ.api(`/user/me/recommendations/albums?access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/user/me/recommendations/albums?access_token=${localStorage.getItem("token")}`, function (response) {
         response.data.map(handleRecAlbums);
     });
 }
 
 async function get_rec_releases() {
-    DZ.api(`/user/me/recommendations/releases?access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/user/me/recommendations/releases?access_token=${localStorage.getItem("token")}`, function (response) {
         response.data.map(handleRecReleases);
     });
 }
 
 async function get_rec_artists() {
-    DZ.api(`/user/me/recommendations/artists?access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/user/me/recommendations/artists?access_token=${localStorage.getItem("token")}`, function (response) {
         response.data.map(handleRecArtists);
     });
 }
 
 async function get_rec_playlists() {
-    DZ.api(`/user/me/recommendations/playlists?access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/user/me/recommendations/playlists?access_token=${localStorage.getItem("token")}`, function (response) {
         response.data.map(handleRecPlaylists);
     });
 }
 
 async function get_rec_tracks() {
-    DZ.api(`/user/me/recommendations/tracks?access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/user/me/recommendations/tracks?access_token=${localStorage.getItem("token")}`, function (response) {
         response.data.map(handleRecTracks);
     });
 }
 
 async function get_rec_radios() {
-    DZ.api(`/user/me/recommendations/radios?access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/user/me/recommendations/radios?access_token=${localStorage.getItem("token")}`, function (response) {
         response.data.map(handleRecRadios);
     });
 }

@@ -18,5 +18,9 @@
             <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openPlaylistPage')"><span
                     class="bi bi-collection-fill me-1"></span>Playlist page</button>
         </li>
+        <li>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openUserPage')"><span
+                    class="bi bi-person-fill me-1"></span>User page</button>
+        </li>
     </ul>
 </template>

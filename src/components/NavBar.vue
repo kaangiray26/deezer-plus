@@ -16,7 +16,7 @@
                             @keyup.enter="search($event)">
                     </div>
                     <div class="ms-2">
-                        <button type="button" class="btn btn-dark">
+                        <button type="button" class="btn btn-dark" @click="openProfile">
                             Profile
                         </button>
                     </div>
@@ -28,7 +28,11 @@
 </template>
 
 <script setup>
-import router from "../router";
+import router from "/router";
+
+async function openProfile() {
+    router.push("/profile");
+}
 
 async function search(event) {
     if (!event.target.value.length) {

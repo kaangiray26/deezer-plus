@@ -1,16 +1,16 @@
 <template>
     <tr class="row gx-0 d-flex flex-row" :artist_id="artist.id" type="artists"
         style="flex-wrap: nowrap; width: 100% !important;">
-        <td class="col-6 text-nowrap text-truncate">
+        <td class="col-10 text-nowrap text-truncate">
             <div><img class="img-fluid" :src="cover" width="40" height="40" />
                 <router-link :to="/artist/+artist.id" class="btn btn-link track-link" @click="$emit('route-click')">
                     {{artist.title}}</router-link>
             </div>
         </td>
-        <td class="col-2 text-nowrap text-truncate">
+        <td class="col-1 text-nowrap text-truncate">
             <div><span>{{nb_album}}</span></div>
         </td>
-        <td class="col-4 text-nowrap text-truncate">
+        <td class="col-1 text-nowrap text-truncate">
             <div><span>{{nb_fan}}</span></div>
         </td>
     </tr>

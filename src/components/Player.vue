@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);

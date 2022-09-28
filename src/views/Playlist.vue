@@ -18,7 +18,7 @@
                     <div class="d-inline-flex flex-column">
                         <h1 class="text-bold mb-4" style="font-size: 32px; font-weight: 700;">{{playlist.title}}</h1>
                         <div class="d-inline-flex">
-                            <router-link :to="/profile/+playlist.creator_id" class="d-inline-flex"
+                            <router-link :to="/user/+playlist.creator_id" class="d-inline-flex"
                                 style="display: revert !important;">
                                 <mark>
                                     {{playlist.creator_name}}

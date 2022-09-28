@@ -43,8 +43,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(track, index) in album.tracks" :album_id="album.id" :artist_id="album.artist_id"
-                                class="row gx-0 d-flex flex-row"
+                            <tr v-for="(track, index) in album.tracks" :track_id="track.id" :album_id="album.id"
+                                :artist_id="album.artist_id" class="row gx-0 d-flex flex-row"
                                 @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
                                 <td class="col-1 text-nowrap text-truncate">{{index+1}}</td>

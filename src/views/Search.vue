@@ -3,13 +3,25 @@
         <div class="col-11">
             <div>
                 <ul class="nav nav-pills my-2" role="tablist">
-                    <li class="nav-item" role="presentation"><a id="tracks-tab" class="nav-link active" role="tab"
-                            data-bs-toggle="tab" href="#tab-tracks" @click="currentSearchField='tracks'">Tracks</a>
+                    <li class="nav-item" role="presentation">
+                        <a id="tracks-tab" class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-tracks"
+                            @click="currentSearchField='tracks'">Tracks
+                        </a>
                     </li>
-                    <li class="nav-item" role="presentation"><a id="albums-tab" class="nav-link" role="tab"
-                            data-bs-toggle="tab" href="#tab-albums" @click="currentSearchField='albums'">Albums</a></li>
-                    <li class="nav-item" role="presentation"><a id="artists-tab" class="nav-link" role="tab"
-                            data-bs-toggle="tab" href="#tab-artists" @click="currentSearchField='artists'">Artists</a>
+                    <li class="nav-item" role="presentation">
+                        <a id="playlists-tab" class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-playlists"
+                            @click="currentSearchField='playlists'">Playlist
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a id="albums-tab" class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-albums"
+                            @click="currentSearchField='albums'">Albums
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a id="artists-tab" class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-artists"
+                            @click="currentSearchField='artists'">Artists
+                        </a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -35,9 +47,37 @@
                                             <TrackResult v-for="item in results.tracks" :id="item.track.id"
                                                 :cover="item.cover" :artist="item.artist" :album="item.album"
                                                 :track="item.track" :duration="item.duration"
-                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
-                                                @route-click="searchVisible=false">
+                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                             </TrackResult>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="tab-playlists" class="tab-pane" role="tabpanel">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-borderless caption-top">
+                                        <caption>
+                                            <span class="badge bg-primary">
+                                                {{playlist_total}} results
+                                            </span>
+                                        </caption>
+                                        <thead>
+                                            <tr class="row gx-0 table-active" style="width: 100% !important;">
+                                                <th class="col-6">Playlist</th>
+                                                <th class="col-5">User</th>
+                                                <th class="col-1">Tracks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody @scroll.passive="onScroll($event)">
+                                            <PlaylistResult v-for="item in results.playlists" :id="item.playlist.id"
+                                                :cover="item.cover" :playlist="item.playlist" :user="item.user"
+                                                :nb_tracks="item.nb_tracks"
+                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                            </PlaylistResult>
                                         </tbody>
                                     </table>
                                 </div>
@@ -57,8 +97,8 @@
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
                                                 <th class="col-6">Album</th>
-                                                <th class="col-2">Artist</th>
-                                                <th class="col-3">Tracks</th>
+                                                <th class="col-4">Artist</th>
+                                                <th class="col-1">Tracks</th>
                                                 <th class="col-1 bi bi-explicit-fill"></th>
                                             </tr>
                                         </thead>
@@ -66,8 +106,7 @@
                                             <AlbumResult v-for="item in results.albums" :id="item.album.id"
                                                 :cover="item.cover" :artist="item.artist" :album="item.album"
                                                 :nb_tracks="item.nb_tracks" :explicit_lyrics="item.explicit_lyrics"
-                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
-                                                @route-click="searchVisible=false">
+                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                             </AlbumResult>
                                         </tbody>
                                     </table>
@@ -87,16 +126,16 @@
                                         </caption>
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
-                                                <th class="col-6">Artist</th>
-                                                <th class="col-2">Albums</th>
-                                                <th class="col-4">Fans</th>
+                                                <th class="col-10">Artist</th>
+                                                <th class="col-1">Albums</th>
+                                                <th class="col-1">Fans</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-for="item in results.artists" @scroll.passive="onScroll($event)">
-                                            <ArtistResult :id="item.artist.id" :cover="item.cover" :artist="item.artist"
-                                                :nb_album="item.nb_album" :nb_fan="item.nb_fan"
-                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
-                                                @route-click="searchVisible=false">
+                                        <tbody @scroll.passive="onScroll($event)">
+                                            <ArtistResult v-for="item in results.artists" :id="item.artist.id"
+                                                :cover="item.cover" :artist="item.artist" :nb_album="item.nb_album"
+                                                :nb_fan="item.nb_fan"
+                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                             </ArtistResult>
                                         </tbody>
                                     </table>
@@ -112,26 +151,32 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import router from "../router";
+import { ref, watch, computed, onMounted } from "vue";
+import router from "/router";
 
 import TrackResult from "../components/results/TrackResult.vue";
+import PlaylistResult from "../components/results/PlaylistResult.vue";
 import ArtistResult from "../components/results/ArtistResult.vue";
 import AlbumResult from "../components/results/AlbumResult.vue";
 
 const query = ref(null);
 
+const query_param = computed(() => {
+    return router.currentRoute.value.params.query;
+})
+
 const next = ref({
     tracks: "",
     albums: "",
     artists: "",
+    playlists: ""
 });
 
 const track_total = ref(0);
 const album_total = ref(0);
 const artist_total = ref(0);
+const playlist_total = ref(0);
 
-const searchVisible = ref(false);
 const searchFinished = ref(true);
 const currentSearchField = ref("tracks");
 
@@ -146,7 +191,7 @@ const results = ref({
 
 async function track_search() {
     results.value.tracks = [];
-    DZ.api(`/search/track?q=${query.value}&access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/search/track?q=${query.value}&access_token=${localStorage.getItem("token")}`, function (response) {
         track_total.value = response.total;
         next.value.tracks = response.next;
         response.data.map(handleTrackSearchResponse);
@@ -155,7 +200,7 @@ async function track_search() {
 
 async function album_search() {
     results.value.albums = [];
-    DZ.api(`/search/album?q=${query.value}&access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/search/album?q=${query.value}&access_token=${localStorage.getItem("token")}`, function (response) {
         album_total.value = response.total;
         next.value.albums = response.next;
         response.data.map(handleAlbumSearchResponse);
@@ -164,10 +209,19 @@ async function album_search() {
 
 async function artist_search() {
     results.value.artists = [];
-    DZ.api(`/search/artist?q=${query.value}&access_token=${sessionStorage.getItem("token")}`, function (response) {
+    DZ.api(`/search/artist?q=${query.value}&access_token=${localStorage.getItem("token")}`, function (response) {
         artist_total.value = response.total;
         next.value.artists = response.next;
         response.data.map(handleArtistSearchResponse);
+    });
+}
+
+async function playlist_search() {
+    results.value.playlists = [];
+    DZ.api(`/search/playlist?q=${query.value}&access_token=${localStorage.getItem("token")}`, function (response) {
+        playlist_total.value = response.total;
+        next.value.playlists = response.next;
+        response.data.map(handlePlaylistSearchResponse);
     });
 }
 
@@ -209,12 +263,25 @@ async function next_search() {
             return;
         });
     }
+    if (currentSearchField.value === "playlists" && next.value.playlists) {
+        DZ.api(next.value.playlists.split("https://api.deezer.com")[1], function (response) {
+            response.data.map(handlePlaylistSearchResponse);
+            if (response.next) {
+                next.value.playlists = response.next;
+                searchFinished.value = true;
+            } else {
+                next.value.playlists = null;
+            }
+            return;
+        });
+    }
     searchFinished.value = true;
 }
 
 function handleTrackSearchResponse(item) {
     results.value.tracks.push({
-        cover: item.album.cover_small,
+        cover: item.album.cover_medium,
+        duration: item.duration,
         artist: {
             "id": (item.artist.id),
             "title": item.artist.name,
@@ -227,13 +294,15 @@ function handleTrackSearchResponse(item) {
             "id": parseInt(item.id),
             "title": item.title,
         },
-        duration: item.duration
     })
     return;
 }
 
 function handleAlbumSearchResponse(item) {
     results.value.albums.push({
+        cover: item.cover_medium,
+        nb_tracks: item.nb_tracks,
+        explicit_lyrics: item.explicit_lyrics,
         artist: {
             "id": parseInt(item.artist.id),
             "title": item.artist.name,
@@ -242,22 +311,35 @@ function handleAlbumSearchResponse(item) {
             "id": parseInt(item.id),
             "title": item.title,
         },
-        cover: item.cover_xl,
-        nb_tracks: item.nb_tracks,
-        explicit_lyrics: item.explicit_lyrics,
     })
     return;
 }
 
 function handleArtistSearchResponse(item) {
     results.value.artists.push({
+        cover: item.picture_medium,
+        nb_album: item.nb_album,
+        nb_fan: numberWithCommas(item.nb_fan),
         artist: {
             "id": parseInt(item.id),
             "title": item.name,
         },
-        cover: item.picture_xl,
-        nb_album: item.nb_album,
-        nb_fan: numberWithCommas(item.nb_fan),
+    })
+    return;
+}
+
+function handlePlaylistSearchResponse(item) {
+    results.value.playlists.push({
+        cover: item.picture_medium,
+        nb_tracks: item.nb_tracks,
+        playlist: {
+            "id": parseInt(item.id),
+            "title": item.title,
+        },
+        user: {
+            "id": parseInt(item.user.id),
+            "name": item.user.name,
+        },
     })
     return;
 }
@@ -266,16 +348,25 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+async function search() {
+    query.value = router.currentRoute.value.params.query;
+    track_search();
+    playlist_search();
+    album_search();
+    artist_search();
+}
+
 window.onscroll = () => {
     if (((window.innerHeight + window.scrollY) >= document.body.scrollHeight) && searchFinished.value) {
         next_search();
     }
 };
 
+watch(query_param, () => {
+    search();
+});
+
 onMounted(() => {
-    query.value = router.currentRoute.value.params.query;
-    track_search();
-    album_search();
-    artist_search();
-})
+    search();
+});
 </script>
