@@ -14,6 +14,7 @@ import ListeningHistory from '../views/profile_sections/ListeningHistory.vue';
 import FavouriteTracks from '../views/profile_sections/FavouriteTracks.vue';
 import FavouriteAlbums from '../views/profile_sections/FavouriteAlbums.vue';
 import FavouriteArtists from '../views/profile_sections/FavouriteArtists.vue';
+import FavouritePlaylists from '../views/profile_sections/FavouritePlaylists.vue';
 
 const routes = [
     {
@@ -59,6 +60,10 @@ const routes = [
             {
                 path: 'tracks',
                 component: FavouriteTracks
+            },
+            {
+                path: 'playlists',
+                component: FavouritePlaylists
             },
             {
                 path: 'albums',

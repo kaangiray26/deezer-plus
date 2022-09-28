@@ -1,4 +1,12 @@
 <template>
+    <div class="row justify-content-center gx-0">
+        <div class="card col-11">
+            <button v-show="!playlistLoaded" class="btn btn-dark" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
+        </div>
+    </div>
     <div v-show="playlistLoaded" class="row justify-content-center gx-0">
         <div class="card col-11">
             <div class="card-body rounded d-flex row shadow-lg">
