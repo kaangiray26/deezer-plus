@@ -283,7 +283,7 @@ function handleTrackSearchResponse(item) {
         cover: item.album.cover_medium,
         duration: item.duration,
         artist: {
-            "id": (item.artist.id),
+            "id": parseInt(item.artist.id),
             "title": item.artist.name,
         },
         album: {

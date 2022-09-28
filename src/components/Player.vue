@@ -3,6 +3,7 @@
     <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
+                <Queue v-show="queueVisible"></Queue>
                 <div class="card-body border-dark d-flex flex-column">
                     <div class="d-flex" id="player">
                         <div class="d-flex flex-fill align-items-center">
@@ -33,7 +34,9 @@
                                     <div class="d-flex ms-4">
                                         <div class="btn-group">
                                             <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
-                                                type="button" v-on:click="buttonRepeat"></button>
+                                                type="button" @click="buttonRepeat"></button>
+                                            <button class="btn btn-dark bi bi-collection hover-color" type="button"
+                                                @click="buttonQueue"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -48,9 +51,11 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import Queue from '/views/Queue.vue';
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
+
 
 const position = ref(0);
 
@@ -59,6 +64,7 @@ const artist = ref({ title: '', id: '' });
 
 const navBar = ref(null);
 const navBarVisible = ref(false);
+const queueVisible = ref(false);
 
 const repeat = ref(0);
 const repeat_classes = {
@@ -97,6 +103,10 @@ async function buttonPrev() {
 async function buttonRepeat() {
     repeat.value = (DZ.player.getRepeat() + 1) % 3;
     DZ.player.setRepeat(repeat.value);
+}
+
+async function buttonQueue() {
+    queueVisible.value = !queueVisible.value;
 }
 
 async function seekProgress(event) {
@@ -150,10 +160,6 @@ DZ.Event.subscribe('current_track', function (obj) {
 DZ.Event.subscribe('player_position', function (arr) {
     now.value = formatTime(arr[0]);
     position.value = arr[0] / arr[1] * 100;
-});
-
-DZ.Event.subscribe('tracklist_changed', function (response) {
-    console.log("Tracklist changed.");
 });
 
 onMounted(() => {

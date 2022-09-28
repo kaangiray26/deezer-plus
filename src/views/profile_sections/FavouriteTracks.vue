@@ -99,7 +99,7 @@ function handleTrackSearchResponse(item) {
         cover: item.album.cover_small,
         duration: item.duration,
         artist: {
-            "id": (item.artist.id),
+            "id": parseInt(item.artist.id),
             "title": item.artist.name,
         },
         album: {
