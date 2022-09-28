@@ -1,12 +1,4 @@
 <template>
-    <div class="row justify-content-center gx-0">
-        <div class="card col-11">
-            <button v-show="!artistLoaded" class="btn btn-dark" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Loading...
-            </button>
-        </div>
-    </div>
     <div v-show="artistLoaded" class="row justify-content-center gx-0">
         <div class="card col-11">
             <div class="card-body rounded d-flex row shadow-lg">
@@ -35,6 +27,15 @@
                                 <th class="col-1 bi bi-explicit-fill"></th>
                             </tr>
                         </thead>
+                        <div class="row justify-content-center gx-0">
+                            <div class="card col-12">
+                                <button v-show="!albumsLoaded" class="btn btn-dark" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                    Loading...
+                                </button>
+                            </div>
+                        </div>
                         <tbody v-show="albumsLoaded">
                             <tr v-for="album in artist.albums" :album_id="album.id" :artist_id="artist.id"
                                 class="row gx-0 d-flex flex-row"
