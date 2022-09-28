@@ -40,8 +40,10 @@ function login() {
 
 onBeforeMount(() => {
     DZ.init({
-        appId: '559022',
-        channelUrl: 'http://localhost:8000/channel.html',
+        // appId: '559022',
+        // channelUrl: 'http://localhost:8000/channel.html',
+        appId: '560962',
+        channelUrl: 'https://deezer.buzl.uk/channel.html',
         player: {
             onload: getLoginStatus
         }
