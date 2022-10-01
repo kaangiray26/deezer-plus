@@ -3,7 +3,7 @@
     <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
-                <Queue v-show="queueVisible"></Queue>
+                <Queue v-if="navBarVisible" ref="thisCollapse" :navBarHeight="navBar.clientHeight"></Queue>
                 <div class="card-body border-dark d-flex flex-column">
                     <div class="d-flex" id="player">
                         <div class="d-flex flex-fill align-items-center">
@@ -51,11 +51,12 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import Queue from '/views/Queue.vue';
+import Queue from "/views/Queue.vue";
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
 
+let thisCollapse = ref(null);
 
 const position = ref(0);
 
@@ -64,7 +65,6 @@ const artist = ref({ title: '', id: '' });
 
 const navBar = ref(null);
 const navBarVisible = ref(false);
-const queueVisible = ref(false);
 
 const repeat = ref(0);
 const repeat_classes = {
@@ -106,7 +106,8 @@ async function buttonRepeat() {
 }
 
 async function buttonQueue() {
-    queueVisible.value = !queueVisible.value;
+    thisCollapse.value.refresh();
+    thisCollapse.value.toggle();
 }
 
 async function seekProgress(event) {

@@ -4,7 +4,8 @@
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import Modal from "./LoginModal.vue";
+import router from "/router";
+import Modal from "/components/LoginModal.vue";
 
 let thisModal = ref(null);
 
@@ -41,11 +42,17 @@ function login() {
 }
 
 onBeforeMount(() => {
+    let appId = '560962';
+    let channelUrl = 'https://deezer.buzl.uk/channel.html';
+
+    if (window.location.hostname == 'localhost') {
+        appId = '559022';
+        channelUrl = 'http://localhost:8000/channel.html';
+    }
+
     DZ.init({
-        appId: '559022',
-        channelUrl: 'http://localhost:8000/channel.html',
-        // appId: '560962',
-        // channelUrl: 'https://deezer.buzl.uk/channel.html',
+        appId: appId,
+        channelUrl: channelUrl,
         player: {
             onload: getLoginStatus
         }

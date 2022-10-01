@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { Toast } from 'bootstrap'
+import { onMounted, ref } from 'vue';
+import { Toast } from 'bootstrap';
 
 let toastEle = ref(null);
 let thisToastObj = null;
