@@ -134,25 +134,20 @@ async function seekProgress(event) {
 
 async function changeVolume(obj) {
     let volume = DZ.player.getVolume();
-
     if (obj.event.wheelDelta > 0) {
         volume += 5;
         if (volume >= 100) {
             DZ.player.setVolume(100);
-            volumeLevel.value = 100;
             return;
         }
         DZ.player.setVolume(volume);
-        volumeLevel.value = volume;
     } else {
         volume -= 5;
         if (volume <= 0) {
             DZ.player.setVolume(0);
-            volumeLevel.value = 0;
             return;
         }
         DZ.player.setVolume(volume);
-        volumeLevel.value = volume;
     }
 }
 
@@ -202,8 +197,11 @@ DZ.Event.subscribe('player_position', function (arr) {
 });
 
 DZ.Event.subscribe('mute_changed', function (val) {
-    console.log("Mute changed:", val);
     mute.value = val;
+});
+
+DZ.Event.subscribe('volume_changed', function (val) {
+    volumeLevel.value = val;
 });
 
 onMounted(() => {
