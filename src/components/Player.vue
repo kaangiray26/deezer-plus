@@ -1,6 +1,7 @@
 <template>
-    <div v-if="navBarVisible" :style="{'height': navBar.clientHeight + 'px'}">{{store.playerHeight =
-    navBar.clientHeight}}</div>
+    <div v-if="navBarVisible" :style="{'height': navBar.clientHeight + 'px', 'color':'transparent'}">
+        {{store.playerHeight =
+        navBar.clientHeight}}</div>
     <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
