@@ -185,6 +185,8 @@ DZ.Event.subscribe('current_track', function (obj) {
     artist.value.id = obj.track.artist.id;
     duration.value = formatTime(parseInt(obj.track.duration));
 
+    document.title = track.value.title + ' - ' + artist.value.title;
+
     if (!isLoaded.value) {
         DZ.player.playTracks([...DZ.player.getTrackList().map(item => parseInt(item.id))]);
         isLoaded.value = true;
