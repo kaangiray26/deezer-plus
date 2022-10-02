@@ -1,5 +1,6 @@
 <template>
-    <div v-if="navBarVisible" :style="{'height': navBar.clientHeight + 'px'}"></div>
+    <div v-if="navBarVisible" :style="{'height': navBar.clientHeight + 'px'}">{{store.playerHeight =
+    navBar.clientHeight}}</div>
     <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
@@ -50,6 +51,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { store } from '/js/store.js';
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
@@ -99,11 +101,6 @@ async function buttonPrev() {
 async function buttonRepeat() {
     repeat.value = (DZ.player.getRepeat() + 1) % 3;
     DZ.player.setRepeat(repeat.value);
-}
-
-async function buttonQueue() {
-    thisCollapse.value.refresh();
-    thisCollapse.value.toggle();
 }
 
 async function seekProgress(event) {

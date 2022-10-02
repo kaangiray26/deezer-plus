@@ -18,12 +18,13 @@
                                         <QueueTrack v-for="(item, index) in queue.tracks" :index="index"
                                             :id="item.track.id" :artist="item.artist" :album="item.album"
                                             :track="item.track" :duration="item.duration" :cover="item.cover"
-                                            @remove-track="removeTrack">
+                                            @remove-track="removeTrack" @route-click="_hide">
                                         </QueueTrack>
                                     </tbody>
                                 </table>
                             </div>
                         </li>
+                        <div :style="{'height': store.playerHeight + 'px'}"></div>
                     </ul>
                 </div>
             </div>
@@ -33,6 +34,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
 import QueueTrack from "/components/results/QueueTrack.vue";
 
@@ -73,6 +75,7 @@ async function buttonClear() {
     }
 
     if (DZ.player.isPlaying) {
+        queue.value.tracks.splice(1);
         DZ.player.playTracks([parseInt(current_track.id)]);
         return;
     }
@@ -106,7 +109,6 @@ async function _toggle() {
     refresh();
     thisOffCanvasObj.toggle();
 }
-
 
 defineExpose({
     show: _show,

@@ -6,7 +6,7 @@
                 <button class="btn btn-link track-link">{{track.title}}</button>
             </div>
         </td>
-        <td class=" col-2 text-nowrap text-truncate">
+        <td class="col-2 text-nowrap text-truncate">
             <div>
                 <router-link :to="/artist/+artist.id" @click="$emit('route-click')">{{artist.title}}
                 </router-link>
