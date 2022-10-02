@@ -4,7 +4,6 @@
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import router from "/router";
 import Modal from "/components/LoginModal.vue";
 
 let thisModal = ref(null);

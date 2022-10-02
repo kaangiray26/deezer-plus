@@ -53,7 +53,22 @@ const heightLimit = computed(() => {
 
 async function buttonClear() {
     queue.value.tracks = [];
+    let current_track = DZ.player.getCurrentTrack();
     DZ.player.playTracks([]);
+
+    console.log(current_track);
+    console.log(DZ.player.isPlaying());
+
+    if (!current_track) {
+        return;
+    }
+
+    if (!DZ.player.isPlaying) {
+        DZ.player.addToQueue([parseInt(current_track.id)]);
+        return;
+    }
+
+    DZ.player.playTracks([parseInt(current_track.id)]);
 }
 
 function handleTrackSearchResponse(item) {
@@ -90,8 +105,7 @@ async function _toggle() {
 
 async function _refresh() {
     queue.value.tracks = [];
-    console.log(DZ.player.getTrackList());
-    DZ.player.getTrackList().map(handleTrackSearchResponse)
+    DZ.player.getTrackList().map(handleTrackSearchResponse);
 }
 
 defineExpose({

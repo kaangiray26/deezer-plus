@@ -3,7 +3,6 @@
     <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
-                <Queue v-if="navBarVisible" ref="thisCollapse" :navBarHeight="navBar.clientHeight"></Queue>
                 <div class="card-body border-dark d-flex flex-column">
                     <div class="d-flex" id="player">
                         <div class="d-flex flex-fill align-items-center">
@@ -36,7 +35,7 @@
                                             <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
                                                 type="button" @click="buttonRepeat"></button>
                                             <button class="btn btn-dark bi bi-collection hover-color" type="button"
-                                                @click="buttonQueue"></button>
+                                                @click="$emit('queueButton')"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -51,12 +50,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import Queue from "/views/Queue.vue";
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
-
-let thisCollapse = ref(null);
 
 const position = ref(0);
 

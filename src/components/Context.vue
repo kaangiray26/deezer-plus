@@ -8,8 +8,8 @@
 <script setup>
 import { ref, nextTick } from "vue";
 
-import router from "../router";
-import Toast from "./liveToast.vue";
+import router from "/router";
+import Toast from "/components/liveToast.vue";
 
 import TrackContextMenu from "./context_menus/TrackContextMenu.vue";
 import AlbumContextMenu from "./context_menus/AlbumContextMenu.vue";
