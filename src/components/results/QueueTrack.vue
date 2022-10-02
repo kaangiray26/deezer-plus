@@ -3,7 +3,7 @@
         style="flex-wrap: nowrap; width: 100% !important;">
         <td class="col-6 text-nowrap text-truncate">
             <div><img class="img-fluid" :src="cover" width="40" height="40" />
-                <button class="btn btn-link track-link">{{track.title}}</button>
+                <button class="btn btn-link track-link" @click="play(index)">{{track.title}}</button>
             </div>
         </td>
         <td class="col-2 text-nowrap text-truncate">
@@ -54,7 +54,7 @@ function padWithZero(num) {
     return String(num).padStart(2, '0');
 }
 
-async function play(id) {
-    DZ.player.playTracks([parseInt(id)]);
+async function play(index) {
+    DZ.player.playTracks(DZ.player.getTrackList().map(item => parseInt(item.id)), index);
 }
 </script>
