@@ -35,9 +35,14 @@
                                     <div class="d-flex ms-4">
                                         <div class="btn-group">
                                             <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
-                                                type="button" @click="buttonRepeat"></button>
+                                                type="button" @click="buttonRepeat">
+                                            </button>
+                                            <VolumeButton ref="thisTooltip" @change-volume="changeVolume($event)"
+                                                @trigger-volume="triggerVolume" :mute="mute" :volumeLevel="volumeLevel">
+                                            </VolumeButton>
                                             <button class="btn btn-dark bi bi-collection hover-color" type="button"
-                                                @click="$emit('queueButton')"></button>
+                                                @click="$emit('queueButton')">
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -53,6 +58,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
+import VolumeButton from "/components/VolumeButton.vue";
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
@@ -65,12 +71,17 @@ const artist = ref({ title: '', id: '' });
 const navBar = ref(null);
 const navBarVisible = ref(false);
 
+let thisTooltip = ref(null);
+
 const repeat = ref(0);
 const repeat_classes = {
     0: 'bi-repeat text-muted',
     1: 'bi-repeat',
     2: 'bi bi-repeat-1'
 }
+
+const mute = ref(false);
+const volumeLevel = ref(100);
 
 const progress_x = ref(0);
 const progress_width = ref(0);
@@ -121,6 +132,38 @@ async function seekProgress(event) {
     return;
 }
 
+async function changeVolume(obj) {
+    let volume = DZ.player.getVolume();
+
+    if (obj.event.wheelDelta > 0) {
+        volume += 5;
+        if (volume >= 100) {
+            DZ.player.setVolume(100);
+            volumeLevel.value = 100;
+            return;
+        }
+        DZ.player.setVolume(volume);
+        volumeLevel.value = volume;
+    } else {
+        volume -= 5;
+        if (volume <= 0) {
+            DZ.player.setVolume(0);
+            volumeLevel.value = 0;
+            return;
+        }
+        DZ.player.setVolume(volume);
+        volumeLevel.value = volume;
+    }
+}
+
+async function triggerVolume() {
+    if (DZ.player.getMute()) {
+        DZ.player.setMute(false);
+        return;
+    }
+    DZ.player.setMute(true);
+}
+
 function padWithZero(num) {
     return String(num).padStart(2, '0');
 }
@@ -130,6 +173,7 @@ function formatTime(time) {
     let seconds = Math.floor(time - minutes * 60);
     return padWithZero(minutes) + ":" + padWithZero(seconds);
 }
+
 
 DZ.Event.subscribe('player_play', function () {
     isPlaying.value = true;
@@ -155,6 +199,11 @@ DZ.Event.subscribe('current_track', function (obj) {
 DZ.Event.subscribe('player_position', function (arr) {
     now.value = formatTime(arr[0]);
     position.value = arr[0] / arr[1] * 100;
+});
+
+DZ.Event.subscribe('mute_changed', function (val) {
+    console.log("Mute changed:", val);
+    mute.value = val;
 });
 
 onMounted(() => {
