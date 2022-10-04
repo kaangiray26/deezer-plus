@@ -37,19 +37,19 @@ async function keyPress(event) {
     // console.log("Event:", event);
     // console.log(event.target.tagName);
 
-    if (event.altKey && event.key == 's') {
+    if (event.target.tagName != 'INPUT' && event.key == 's') {
         event.preventDefault();
         thisNavBar.value.focus_search();
         return;
     }
 
-    if (event.altKey && event.key == 'h') {
+    if (event.target.tagName != 'INPUT' && event.key == 'h') {
         event.preventDefault();
         thisHelpModal.value.show();
         return;
     }
 
-    if (event.altKey && event.key == 'q') {
+    if (event.target.tagName != 'INPUT' && event.key == 'q') {
         event.preventDefault();
         thisOffCanvas.value.show();
         return;
@@ -67,19 +67,38 @@ async function keyPress(event) {
         return;
     }
 
-    if (event.target.tagName != 'INPUT' && event.key == 'ArrowLeft') {
+    if (event.target.tagName != 'INPUT' && event.key == 'r') {
+        event.preventDefault();
+        thisPlayer.value.buttonRepeat();
+        return;
+    }
+
+    if (event.target.tagName != 'INPUT' && event.key == 'ArrowUp') {
+        event.preventDefault();
+        thisPlayer.value.raiseVolume();
+        thisPlayer.value.showVolume();
+        return;
+    }
+
+    if (event.target.tagName != 'INPUT' && event.key == 'ArrowDown') {
         event.preventDefault();
         thisPlayer.value.lowerVolume();
         thisPlayer.value.showVolume();
         return;
     }
 
-    if (event.target.tagName != 'INPUT' && event.key == 'ArrowRight') {
+    if (event.target.tagName != 'INPUT' && event.key == 'ArrowLeft') {
         event.preventDefault();
-        thisPlayer.value.raiseVolume();
-        thisPlayer.value.showVolume();
+        thisPlayer.value.buttonPrev();
         return;
     }
+
+    if (event.target.tagName != 'INPUT' && event.key == 'ArrowRight') {
+        event.preventDefault();
+        thisPlayer.value.buttonNext();
+        return;
+    }
+
 }
 
 onMounted(() => {

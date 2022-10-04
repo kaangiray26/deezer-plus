@@ -240,6 +240,9 @@ DZ.Event.subscribe('volume_changed', async function (val) {
 
 defineExpose({
     buttonPlay,
+    buttonRepeat,
+    buttonNext,
+    buttonPrev,
     triggerVolume,
     raiseVolume,
     lowerVolume,

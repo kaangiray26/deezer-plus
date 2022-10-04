@@ -9,37 +9,53 @@
                         <h2 class="modal-title fw-bolder">Keyboard Shortcuts</h2>
                     </div>
                     <div>
-                        <span>Press<span class="keypress-dark">Alt</span><span class="keypress-dark">H</span>to toggle
-                            this
-                            modal.</span>
+                        <span>Press<span class="keypress-dark">H</span>to toggle this modal.</span>
                     </div>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-dark table-hover">
+                    <h4>Player controls</h4>
+                    <table class="table table-dark table-hover mb-2">
                         <tbody>
-                            <tr>
-                                <td>Search</td>
-                                <td><span class="keypress">Alt</span><span class="keypress">S</span></td>
-                            </tr>
-                            <tr>
-                                <td>Queue</td>
-                                <td><span class="keypress">Alt</span><span class="keypress">Q</span></td>
-                            </tr>
                             <tr>
                                 <td>Play / Pause</td>
                                 <td><span class="keypress">Space</span></td>
                             </tr>
                             <tr>
-                                <td>Raise Volume</td>
+                                <td>Next Track</td>
                                 <td><span class="keypress">→</span></td>
                             </tr>
                             <tr>
-                                <td>Lower Volume</td>
+                                <td>Previous Track</td>
                                 <td><span class="keypress">←</span></td>
+                            </tr>
+                            <tr>
+                                <td>Raise Volume</td>
+                                <td><span class="keypress">↑</span></td>
+                            </tr>
+                            <tr>
+                                <td>Lower Volume</td>
+                                <td><span class="keypress">↓</span></td>
                             </tr>
                             <tr>
                                 <td>Mute</td>
                                 <td><span class="keypress">M</span></td>
+                            </tr>
+                            <tr>
+                                <td>Repeat</td>
+                                <td><span class="keypress">R</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4>Navigation</h4>
+                    <table class="table table-dark table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Search</td>
+                                <td><span class="keypress">S</span></td>
+                            </tr>
+                            <tr>
+                                <td>Queue</td>
+                                <td><span class="keypress">Q</span></td>
                             </tr>
                         </tbody>
                     </table>
