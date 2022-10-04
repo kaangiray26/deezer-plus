@@ -66,7 +66,7 @@ async function lastfm_disconnect() {
 onMounted(() => {
     if (localStorage.getItem('lastfm')) {
         settings.value.connected = true;
-        get_session();
+        // get_session();
     }
     settingsLoaded.value = true;
 });
