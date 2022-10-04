@@ -24,6 +24,7 @@
                         <router-link to="/profile">
                             <h1 class="text-bold mb-2" style="font-size: 32px; font-weight: 700;">{{user.name}}</h1>
                         </router-link>
+                        <router-link to="/settings" class="btn btn-outline-dark fw-bolder">Settings</router-link>
                     </div>
                     <hr />
                     <router-view @right-click="$emit('right-click', $event)"></router-view>
@@ -39,7 +40,7 @@ import { ref, onMounted } from "vue";
 const user = ref({});
 const userLoaded = ref(false);
 
-async function get_user(id) {
+async function get_user() {
     DZ.api(`/user/me?access_token=${localStorage.getItem("token")}`, function (response) {
         user.value = {
             id: response.id,

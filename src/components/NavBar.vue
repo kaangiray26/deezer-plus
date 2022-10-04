@@ -9,9 +9,11 @@
                             <img src="/assets/Deezer_Logo_RVB_Black.svg" style="height:24px">
                         </div>
                     </router-link>
-                    <div class="input-group"><span class="input-group-text bi bi-search"
-                            style="background: transparent;border-right-style: none;"></span><input class="form-control"
-                            type="text" id="searchField" placeholder="Search"
+                    <div class="input-group">
+                        <span class="input-group-text bi bi-search"
+                            style="background: transparent;border-right-style: none;">
+                        </span>
+                        <input ref="search_input" class="form-control" type="text" id="searchField" placeholder="Search"
                             style="background: transparent;border-left-style: none;" autocomplete="off"
                             @keyup.enter="search($event)">
                     </div>
@@ -28,7 +30,10 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import router from "/router";
+
+let search_input = ref(null);
 
 async function openProfile() {
     router.push("/profile");
@@ -40,4 +45,13 @@ async function search(event) {
     }
     router.push("/search/" + event.target.value);
 }
+
+async function _focus_search() {
+    search_input.value.value = "";
+    search_input.value.focus();
+}
+
+defineExpose({
+    focus_search: _focus_search,
+});
 </script>

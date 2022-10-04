@@ -133,21 +133,10 @@ async function seekProgress(event) {
 }
 
 async function changeVolume(obj) {
-    let volume = DZ.player.getVolume();
     if (obj.event.wheelDelta > 0) {
-        volume += 5;
-        if (volume >= 100) {
-            DZ.player.setVolume(100);
-            return;
-        }
-        DZ.player.setVolume(volume);
+        raiseVolume();
     } else {
-        volume -= 5;
-        if (volume <= 0) {
-            DZ.player.setVolume(0);
-            return;
-        }
-        DZ.player.setVolume(volume);
+        lowerVolume();
     }
 }
 
@@ -157,6 +146,30 @@ async function triggerVolume() {
         return;
     }
     DZ.player.setMute(true);
+}
+
+async function raiseVolume() {
+    let volume = DZ.player.getVolume();
+    volume += 5;
+    if (volume >= 100) {
+        DZ.player.setVolume(100);
+        return;
+    }
+    DZ.player.setVolume(volume);
+}
+
+async function lowerVolume() {
+    let volume = DZ.player.getVolume();
+    volume -= 5;
+    if (volume <= 0) {
+        DZ.player.setVolume(0);
+        return;
+    }
+    DZ.player.setVolume(volume);
+}
+
+async function showVolume() {
+    thisTooltip.value.show();
 }
 
 function padWithZero(num) {
@@ -204,6 +217,14 @@ DZ.Event.subscribe('mute_changed', function (val) {
 
 DZ.Event.subscribe('volume_changed', function (val) {
     volumeLevel.value = val;
+});
+
+defineExpose({
+    buttonPlay,
+    triggerVolume,
+    raiseVolume,
+    lowerVolume,
+    showVolume,
 });
 
 onMounted(() => {

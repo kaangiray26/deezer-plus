@@ -1,20 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Recommendations from '../views/Recommendations.vue';
 
-import Track from '../views/Track.vue';
-import Album from '../views/Album.vue';
-import Artist from '../views/Artist.vue';
-import Playlist from '../views/Playlist.vue';
-import Radio from '../views/Radio.vue';
-import Search from '../views/Search.vue';
+import Track from '/views/Track.vue';
+import Album from '/views/Album.vue';
+import Artist from '/views/Artist.vue';
+import Playlist from '/views/Playlist.vue';
+import Radio from '/views/Radio.vue';
+import Search from '/views/Search.vue';
 
-import Profile from '../views/Profile.vue';
-import ProfilePage from '../views/profile_sections/ProfilePage.vue';
-import ListeningHistory from '../views/profile_sections/ListeningHistory.vue';
-import FavouriteTracks from '../views/profile_sections/FavouriteTracks.vue';
-import FavouriteAlbums from '../views/profile_sections/FavouriteAlbums.vue';
-import FavouriteArtists from '../views/profile_sections/FavouriteArtists.vue';
-import FavouritePlaylists from '../views/profile_sections/FavouritePlaylists.vue';
+import Profile from '/views/Profile.vue';
+import ProfilePage from '/views/profile_sections/ProfilePage.vue';
+import ListeningHistory from '/views/profile_sections/ListeningHistory.vue';
+import FavouriteTracks from '/views/profile_sections/FavouriteTracks.vue';
+import FavouriteAlbums from '/views/profile_sections/FavouriteAlbums.vue';
+import FavouriteArtists from '/views/profile_sections/FavouriteArtists.vue';
+import FavouritePlaylists from '/views/profile_sections/FavouritePlaylists.vue';
+
+import Settings from '/views/Settings.vue';
+import Lastfm from '/views/Lastfm.vue';
 
 const routes = [
     {
@@ -74,6 +77,14 @@ const routes = [
                 component: FavouriteArtists
             }
         ]
+    },
+    {
+        path: '/settings',
+        component: Settings
+    },
+    {
+        path: '/lastfm',
+        component: Lastfm
     }
 ]
 

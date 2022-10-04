@@ -4,6 +4,27 @@
             <div id="recommendationsAccordion" class="accordion" role="tablist">
                 <div class="accordion-item">
                     <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-5"
+                            aria-expanded="false"
+                            aria-controls="recommendationsAccordion .item-5"><strong>Tracks</strong></button>
+                    </h2>
+                    <div class="accordion-collapse collapse show item-5" role="tabpanel">
+                        <div class="accordion-body">
+                            <div class="row gx-1 gy-1" style="margin: 0px;padding: 0px;">
+                                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
+                                    v-for="item in recommendations.tracks">
+                                    <TrackRecommendation :id="item.track_id" :title="item.title"
+                                        :track_id="item.track_id" :album="item.album" :artist="item.artist"
+                                        :cover="item.cover"
+                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                    </TrackRecommendation>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
                             type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-1"
                             aria-expanded="true"
                             aria-controls="recommendationsAccordion .item-1"><strong>Albums</strong></button>
@@ -78,27 +99,6 @@
                                         :cover="item.cover"
                                         @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                     </PlaylistRecommendation>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button bg-dark text-light"
-                            type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsAccordion .item-5"
-                            aria-expanded="false"
-                            aria-controls="recommendationsAccordion .item-5"><strong>Tracks</strong></button>
-                    </h2>
-                    <div class="accordion-collapse collapse show item-5" role="tabpanel">
-                        <div class="accordion-body">
-                            <div class="row gx-1 gy-1" style="margin: 0px;padding: 0px;">
-                                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
-                                    v-for="item in recommendations.tracks">
-                                    <TrackRecommendation :id="item.track_id" :title="item.title"
-                                        :track_id="item.track_id" :album="item.album" :artist="item.artist"
-                                        :cover="item.cover"
-                                        @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
-                                    </TrackRecommendation>
                                 </div>
                             </div>
                         </div>
