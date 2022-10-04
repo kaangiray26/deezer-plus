@@ -27,5 +27,9 @@
             <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openArtistPage')"><span
                     class="bi bi-person-fill me-1"></span>Artist page</button>
         </li>
+        <li>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','shareTrack')"><span
+                    class="bi bi-share-fill me-1"></span>Share</button>
+        </li>
     </ul>
 </template>

@@ -3,6 +3,7 @@
         :style="{'bottom':posY+'px', 'right':posX+'px'}" @context-menu-event="contextMenuEvent">
     </component>
     <Toast ref="thisToast" :message="toastMessage"></Toast>
+    <ShareModal @text-copy="notify('URL Copied.')" ref="thisShareModal"></ShareModal>
 </template>
 
 <script setup>
@@ -10,6 +11,7 @@ import { ref, nextTick } from "vue";
 
 import router from "/router";
 import Toast from "/components/liveToast.vue";
+import ShareModal from '/components/ShareModal.vue';
 
 import TrackContextMenu from "./context_menus/TrackContextMenu.vue";
 import AlbumContextMenu from "./context_menus/AlbumContextMenu.vue";
@@ -24,6 +26,8 @@ const selectedItem = ref(null);
 
 let thisToast = ref(null);
 const toastMessage = ref("");
+
+let thisShareModal = ref(null);
 
 const currentSearchField = ref("");
 const isContextMenuVisible = ref(false);
@@ -195,10 +199,49 @@ async function contextMenuEvent(event) {
     }
 
     // Track Events
-
-
     if (event == 'launchTrackMix') {
         //
+        return;
+    }
+
+    // Sharing Events
+    if (event == 'shareTrack') {
+        thisShareModal.value.show({
+            type: "track",
+            id: selectedItem.value.attributes.track_id.value,
+        });
+        return;
+    }
+
+    if (event == 'shareAlbum') {
+        thisShareModal.value.show({
+            type: "album",
+            id: selectedItem.value.attributes.album_id.value,
+        });
+        return;
+    }
+
+    if (event == 'shareArtist') {
+        thisShareModal.value.show({
+            type: "artist",
+            id: selectedItem.value.attributes.artist_id.value,
+        });
+        return;
+    }
+
+    if (event == 'sharePlaylist') {
+        thisShareModal.value.show({
+            type: "playlist",
+            id: selectedItem.value.attributes.playlist_id.value,
+        });
+        return;
+    }
+
+    if (event == 'shareRadio') {
+        thisShareModal.value.show({
+            type: "radio",
+            id: selectedItem.value.attributes.radio_id.value,
+        });
         return;
     }
 }

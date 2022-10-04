@@ -12,5 +12,9 @@
             <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openRadioPage')"><span
                     class="bi bi-broadcast me-1"></span>Radio page</button>
         </li>
+        <li>
+            <button class="dropdown-item" type="button" @click="$emit('context-menu-event','shareRadio')"><span
+                    class="bi bi-share-fill me-1"></span>Share</button>
+        </li>
     </ul>
 </template>
