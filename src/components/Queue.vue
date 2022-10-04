@@ -75,11 +75,27 @@ async function buttonClear() {
     }
 
     if (DZ.player.isPlaying) {
-        queue.value.tracks.splice(1);
         DZ.player.playTracks([parseInt(current_track.id)]);
+        queue.value.tracks = [{
+            cover: `https://api.deezer.com/album/${current_track.album.id}/image`,
+            duration: parseInt(current_track.duration),
+            artist: {
+                "id": parseInt(current_track.artist.id),
+                "title": current_track.artist.name,
+            },
+            album: {
+                "id": parseInt(current_track.album.id),
+                "title": current_track.album.title,
+            },
+            track: {
+                "id": parseInt(current_track.id),
+                "title": current_track.title,
+            },
+        }];
         return;
     }
 
+    DZ.player.playTracks([]);
     DZ.player.addToQueue([parseInt(current_track.id)]);
 }
 
