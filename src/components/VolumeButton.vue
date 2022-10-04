@@ -31,6 +31,9 @@ const setVolume = computed(() => {
 })
 
 const volumeClass = computed(() => {
+    if (props.mute) {
+        return 'bi-volume-mute';
+    }
     if (props.volumeLevel > 75) {
         return 'bi-volume-up';
     }
@@ -40,7 +43,6 @@ const volumeClass = computed(() => {
     if (props.volumeLevel > 0) {
         return 'bi-volume-off';
     }
-    return 'bi-volume-mute';
 })
 
 async function show() {

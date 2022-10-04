@@ -37,6 +37,10 @@
                                 <td>Lower Volume</td>
                                 <td><span class="keypress">←</span></td>
                             </tr>
+                            <tr>
+                                <td>Mute</td>
+                                <td><span class="keypress">M</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
