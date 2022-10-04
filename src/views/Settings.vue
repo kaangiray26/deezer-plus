@@ -30,12 +30,32 @@
                             <img class="img-fluid figure-img rounded" src="/assets/Lastfm_logo.svg"
                                 style="height: 32px;">
                         </div>
-                        <div v-show="!settings.connected" class="input-group">
+                        <div v-show="!settings.lastfm.connected" class="input-group">
                             <button class="btn btn-outline-dark" @click="lastfm_auth">Connect to Last.fm</button>
                         </div>
-                        <div v-show="settings.connected" class="input-group">
-                            <button class="btn btn-outline-dark" @click="lastfm_disconnect">Disconnect</button>
-                        </div>
+                        <table v-show="settings.lastfm.connected" class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>Username:</td>
+                                    <td class="fw-bolder">{{settings.lastfm.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>updateNowPlaying:</td>
+                                    <td>
+                                        <button class="btn"
+                                            :class="{ 'btn-outline-danger': !store.scrobbling, 'btn-outline-success': store.scrobbling }"
+                                            @click="toggleScrobbling">{{store.scrobbling
+                                            ? 'Enabled' : 'Disabled'}}</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-outline-danger"
+                                            @click="lastfm_disconnect">Disconnect</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <hr />
                 </div>
@@ -46,13 +66,15 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-// import md5 from "md5";
-
-const settings = ref({
-    connected: false,
-});
+import { store } from '/js/store.js';
 
 const settingsLoaded = ref(false);
+
+const settings = ref({
+    lastfm: {
+        connected: false,
+    }
+});
 
 async function lastfm_auth() {
     window.location = 'http://www.last.fm/api/auth/?api_key=f69c106b53203ed9fd98fd12dccfff43';
@@ -63,10 +85,21 @@ async function lastfm_disconnect() {
     location.reload();
 }
 
+async function toggleScrobbling() {
+    store.scrobbling = !store.scrobbling;
+    localStorage.setItem('scrobbling', store.scrobbling);
+}
+
+async function displayLastfm() {
+    store.scrobbling = JSON.parse(localStorage.getItem('scrobbling'));
+    let data = JSON.parse(localStorage.getItem('lastfm'));
+    data['connected'] = true;
+    settings.value.lastfm = data;
+}
+
 onMounted(() => {
     if (localStorage.getItem('lastfm')) {
-        settings.value.connected = true;
-        // get_session();
+        displayLastfm();
     }
     settingsLoaded.value = true;
 });

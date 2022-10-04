@@ -32,6 +32,7 @@ function login() {
         if (response.authResponse) {
             localStorage.setItem('id', response.userID);
             localStorage.setItem('token', response.authResponse.accessToken);
+            localStorage.setItem('scrobbling', false);
             hideModal();
             location.reload();
         } else {

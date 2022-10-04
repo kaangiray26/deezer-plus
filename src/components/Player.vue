@@ -53,25 +53,30 @@
             </div>
         </div>
     </nav>
+    <Scrobbler ref="thisScrobbler" :isPlaying="isPlaying"></Scrobbler>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
+
 import VolumeButton from "/components/VolumeButton.vue";
+import Scrobbler from "/components/Scrobbler.vue";
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
 
 const position = ref(0);
 
-const track = ref({ title: '', id: '' });
+const track = ref({ title: '', id: '', duration: 0 });
+const album = ref({ title: '', id: '' });
 const artist = ref({ title: '', id: '' });
 
 const navBar = ref(null);
 const navBarVisible = ref(false);
 
 let thisTooltip = ref(null);
+let thisScrobbler = ref(null);
 
 const repeat = ref(0);
 const repeat_classes = {
@@ -183,19 +188,33 @@ function formatTime(time) {
 }
 
 
-DZ.Event.subscribe('player_play', function () {
+DZ.Event.subscribe('player_play', async function () {
     isPlaying.value = true;
+    if (store.scrobbling) {
+        thisScrobbler.value.updateNowPlaying({
+            artist: artist.value.title,
+            track: track.value.title,
+            album: album.value.title,
+            duration: track.value.duration,
+        });
+    }
 });
 
-DZ.Event.subscribe('player_paused', function () {
+DZ.Event.subscribe('player_paused', async function () {
     isPlaying.value = false;
 });
 
-DZ.Event.subscribe('current_track', function (obj) {
-    track.value.title = obj.track.title;
+DZ.Event.subscribe('current_track', async function (obj) {
     track.value.id = obj.track.id;
-    artist.value.title = obj.track.artist.name;
+    track.value.title = obj.track.title;
+    track.value.duration = obj.track.duration;
+
+    album.value.id = obj.track.album.id;
+    album.value.title = obj.track.album.title;
+
     artist.value.id = obj.track.artist.id;
+    artist.value.title = obj.track.artist.name;
+
     duration.value = formatTime(parseInt(obj.track.duration));
 
     document.title = track.value.title + ' - ' + artist.value.title;
@@ -206,16 +225,16 @@ DZ.Event.subscribe('current_track', function (obj) {
     }
 });
 
-DZ.Event.subscribe('player_position', function (arr) {
+DZ.Event.subscribe('player_position', async function (arr) {
     now.value = formatTime(arr[0]);
     position.value = arr[0] / arr[1] * 100;
 });
 
-DZ.Event.subscribe('mute_changed', function (val) {
+DZ.Event.subscribe('mute_changed', async function (val) {
     mute.value = val;
 });
 
-DZ.Event.subscribe('volume_changed', function (val) {
+DZ.Event.subscribe('volume_changed', async function (val) {
     volumeLevel.value = val;
 });
 
