@@ -77,7 +77,7 @@ const settings = ref({
 });
 
 async function lastfm_auth() {
-    window.location = 'http://www.last.fm/api/auth/?api_key=f69c106b53203ed9fd98fd12dccfff43';
+    window.location = `http://www.last.fm/api/auth/?api_key=${store.api_key}`;
 }
 
 async function lastfm_disconnect() {
