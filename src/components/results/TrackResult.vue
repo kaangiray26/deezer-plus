@@ -1,29 +1,61 @@
 <template>
-    <tr class="row gx-0 d-flex flex-row" :track_id="track.id" :album_id="album.id" :artist_id="artist.id" type="tracks"
-        style="flex-wrap: nowrap; width: 100% !important;">
+    <tr class="row gx-0 d-flex flex-row" :track_id="props.track.id" :album_id="props.album.id"
+        :artist_id="props.artist.id" type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
         <td class="col-6 text-nowrap text-truncate">
-            <div><img class="img-fluid" :src="cover" width="40" height="40" />
-                <button class="btn btn-link track-link" @click="play(track.id)">{{track.title}}</button>
+            <div><img class="img-fluid" :src="props.cover" width="40" height="40" />
+                <button class="btn btn-link track-link" @click="play(props.track.id)">{{props.track.title}}</button>
             </div>
         </td>
         <td class="col-2 text-nowrap text-truncate">
             <div>
-                <router-link :to="/artist/+artist.id" @click="$emit('route-click')">{{artist.title}}</router-link>
+                <router-link :to="/artist/+props.artist.id" @click="$emit('route-click')">{{props.artist.title}}
+                </router-link>
             </div>
         </td>
-        <td class="col-3 text-nowrap text-truncate">
+        <td class="col-2 text-nowrap text-truncate">
             <div>
-                <router-link :to="/album/+album.id" @click="$emit('route-click')">{{album.title}}</router-link>
+                <router-link :to="/album/+props.album.id" @click="$emit('route-click')">{{props.album.title}}
+                </router-link>
             </div>
         </td>
         <td class="col-1 text-nowrap text-truncate">
-            <div><span>{{Math.floor(duration/60)}}:{{padWithZero(duration % 60)}}</span></div>
+            <div><span>{{Math.floor(props.duration/60)}}:{{padWithZero(props.duration % 60)}}</span></div>
+        </td>
+        <td class="col-1 text-nowrap text-truncate">
+            <button class="btn btn-light bi" :class="isFav" type="button" style="opacity: 0.90;"
+                @click="fav(props.track.id)">
+            </button>
         </td>
     </tr>
 </template>
 
 <script setup>
-defineProps({
+import { ref, computed, onMounted } from "vue";
+const fav_tracks = ref([]);
+
+function padWithZero(num) {
+    return String(num).padStart(2, '0');
+}
+
+async function play(id) {
+    DZ.player.playTracks([parseInt(id)]);
+}
+
+async function fav(id) {
+    if (fav_tracks.value.includes(id)) {
+        fav_tracks.value = fav_tracks.value.filter((item) => item !== id);
+        localStorage.setItem('fav_tracks', JSON.stringify(fav_tracks.value));
+    } else {
+        fav_tracks.value.push(id);
+        localStorage.setItem('fav_tracks', JSON.stringify(fav_tracks.value));
+    }
+}
+
+const isFav = computed(() => {
+    return fav_tracks.value.includes(props.track.id) ? 'bi-heart-fill text-danger' : 'bi-heart';
+});
+
+const props = defineProps({
     cover: {
         type: String,
     },
@@ -39,13 +71,12 @@ defineProps({
     duration: {
         type: Number,
     },
+    fav: {
+        type: Boolean,
+    }
 });
 
-function padWithZero(num) {
-    return String(num).padStart(2, '0');
-}
-
-async function play(id) {
-    DZ.player.playTracks([parseInt(id)]);
-}
+onMounted(() => {
+    fav_tracks.value = JSON.parse(localStorage.getItem('fav_tracks'));
+});
 </script>

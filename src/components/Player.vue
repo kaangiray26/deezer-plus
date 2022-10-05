@@ -238,6 +238,10 @@ DZ.Event.subscribe('volume_changed', async function (val) {
     volumeLevel.value = val;
 });
 
+DZ.Event.subscribe('track_end', async function (val) {
+    console.log("Track ending:", val);
+})
+
 defineExpose({
     buttonPlay,
     buttonRepeat,

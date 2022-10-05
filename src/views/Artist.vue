@@ -7,6 +7,9 @@
                         <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
                             <img class="img-fluid figure-img rounded" :src="artist.cover" />
                             <div class="position-absolute bottom-0">
+                                <button class="btn btn-light bi shadow m-2" :class="isFav" type="button"
+                                    style="opacity: 0.90;" @click="fav(artist.id)">
+                                </button>
                             </div>
                         </div>
                     </figure>
@@ -64,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import router from "../router";
 
 const artist = ref({
@@ -73,6 +76,16 @@ const artist = ref({
 
 const artistLoaded = ref(false);
 const albumsLoaded = ref(false);
+
+const fav_artists = ref([]);
+
+const isFav = computed(() => {
+    if (fav_artists.value.includes(artist.value.id)) {
+        return "bi-heart-fill text-danger";
+    } else {
+        return "bi-heart";
+    }
+});
 
 function compareAlbums(a, b) {
     if (a.release_date < b.release_date) {
@@ -125,7 +138,18 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+async function fav(id) {
+    if (fav_artists.value.includes(id)) {
+        fav_artists.value = fav_artists.value.filter((item) => item !== id);
+        localStorage.setItem('fav_artists', JSON.stringify(fav_artists.value));
+    } else {
+        fav_artists.value.push(id);
+        localStorage.setItem('fav_artists', JSON.stringify(fav_artists.value));
+    }
+}
+
 onMounted(() => {
+    fav_artists.value = localStorage.getItem('fav_artists') ? JSON.parse(localStorage.getItem('fav_artists')) : [];
     get_artist(router.currentRoute.value.params.id);
     get_albums('/artist/' + router.currentRoute.value.params.id + '/albums');
 })

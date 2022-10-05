@@ -39,8 +39,13 @@
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
                                                 <th class="col-6">Track</th>
                                                 <th class="col-2">Artist</th>
-                                                <th class="col-3">Album</th>
+                                                <th class="col-2">Album</th>
                                                 <th class="col-1 bi bi-clock-fill"></th>
+                                                <th class="col-1">
+                                                    <button class="btn btn-light bi bi-heart-fill disabled"
+                                                        type="button" style="opacity: 0.90;">
+                                                    </button>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody @scroll.passive="onScroll($event)">
@@ -68,8 +73,13 @@
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
                                                 <th class="col-6">Playlist</th>
-                                                <th class="col-5">User</th>
+                                                <th class="col-4">User</th>
                                                 <th class="col-1">Tracks</th>
+                                                <th class="col-1">
+                                                    <button class="btn btn-light bi bi-heart-fill disabled"
+                                                        type="button" style="opacity: 0.90;">
+                                                    </button>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody @scroll.passive="onScroll($event)">
@@ -97,9 +107,14 @@
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
                                                 <th class="col-6">Album</th>
-                                                <th class="col-4">Artist</th>
+                                                <th class="col-3">Artist</th>
                                                 <th class="col-1">Tracks</th>
                                                 <th class="col-1 bi bi-explicit-fill"></th>
+                                                <th class="col-1">
+                                                    <button class="btn btn-light bi bi-heart-fill disabled"
+                                                        type="button" style="opacity: 0.90;">
+                                                    </button>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody @scroll.passive="onScroll($event)">
@@ -126,9 +141,14 @@
                                         </caption>
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
-                                                <th class="col-10">Artist</th>
+                                                <th class="col-9">Artist</th>
                                                 <th class="col-1">Albums</th>
                                                 <th class="col-1">Fans</th>
+                                                <th class="col-1">
+                                                    <button class="btn btn-light bi bi-heart-fill disabled"
+                                                        type="button" style="opacity: 0.90;">
+                                                    </button>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody @scroll.passive="onScroll($event)">

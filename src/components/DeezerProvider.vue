@@ -8,6 +8,112 @@ import Modal from "/components/LoginModal.vue";
 
 let thisModal = ref(null);
 
+const favs = ref({
+    tracks: [],
+    albums: [],
+    artists: [],
+    playlists: [],
+    radios: []
+});
+
+async function save_favourites() {
+    get_fav_tracks();
+    get_fav_albums();
+    get_fav_artists();
+    get_fav_playlists();
+    get_fav_radios();
+}
+
+async function get_fav_tracks(url = null) {
+    if (!url) {
+        url = `/user/me/tracks?access_token=${localStorage.getItem("token")}`;
+    }
+
+    DZ.api(url, function (response) {
+        response.data.map(item => {
+            favs.value.tracks.push(item.id)
+        });
+
+        if (response.next) {
+            get_fav_tracks(response.next.split("https://api.deezer.com")[1]);
+        } else {
+            localStorage.setItem('fav_tracks', JSON.stringify(favs.value.tracks));
+        }
+    });
+}
+
+async function get_fav_albums(url = null) {
+    if (!url) {
+        url = `/user/me/albums?access_token=${localStorage.getItem("token")}`;
+    }
+
+    DZ.api(url, function (response) {
+        response.data.map(item => {
+            favs.value.albums.push(item.id)
+        });
+
+        if (response.next) {
+            get_fav_albums(response.next.split("https://api.deezer.com")[1]);
+        } else {
+            localStorage.setItem('fav_albums', JSON.stringify(favs.value.albums));
+        }
+    });
+}
+
+async function get_fav_artists(url = null) {
+    if (!url) {
+        url = `/user/me/artists?access_token=${localStorage.getItem("token")}`;
+    }
+
+    DZ.api(url, function (response) {
+        response.data.map(item => {
+            favs.value.artists.push(item.id)
+        });
+
+        if (response.next) {
+            get_fav_artists(response.next.split("https://api.deezer.com")[1]);
+        } else {
+            localStorage.setItem('fav_artists', JSON.stringify(favs.value.artists));
+        }
+    });
+}
+
+async function get_fav_playlists(url = null) {
+    if (!url) {
+        url = `/user/me/playlists?access_token=${localStorage.getItem("token")}`;
+    }
+
+    DZ.api(url, function (response) {
+        response.data.map(item => {
+            favs.value.playlists.push(item.id)
+        });
+
+        if (response.next) {
+            get_fav_playlists(response.next.split("https://api.deezer.com")[1]);
+        } else {
+            localStorage.setItem('fav_playlists', JSON.stringify(favs.value.playlists));
+        }
+    });
+}
+
+async function get_fav_radios(url = null) {
+    if (!url) {
+        url = `/user/me/radios?access_token=${localStorage.getItem("token")}`;
+    }
+
+    DZ.api(url, function (response) {
+        response.data.map(item => {
+            favs.value.radios.push(item.id)
+        });
+
+        if (response.next) {
+            get_fav_radios(response.next.split("https://api.deezer.com")[1]);
+        } else {
+            localStorage.setItem('fav_radios', JSON.stringify(favs.value.radios));
+        }
+    });
+}
+
 function showModal() {
     thisModal.value.show();
 }
@@ -16,7 +122,7 @@ function hideModal() {
     thisModal.value.hide();
 }
 
-function getLoginStatus(response) {
+async function getLoginStatus(response) {
     let token = localStorage.getItem("token");
     if (token == null) {
         showModal();
@@ -25,6 +131,9 @@ function getLoginStatus(response) {
     hideModal();
     DZ.player.setVolume(100);
     DZ.player.setShuffle(false);
+    await save_favourites().then(() => {
+        console.log("Favourites saved");
+    });
 }
 
 function login() {
@@ -33,6 +142,11 @@ function login() {
             localStorage.setItem('id', response.userID);
             localStorage.setItem('token', response.authResponse.accessToken);
             localStorage.setItem('scrobbling', false);
+            localStorage.setItem('fav_tracks', JSON.stringify([]));
+            localStorage.setItem('fav_albums', JSON.stringify([]));
+            localStorage.setItem('fav_artists', JSON.stringify([]));
+            localStorage.setItem('fav_playlists', JSON.stringify([]));
+            localStorage.setItem('fav_radios', JSON.stringify([]));
             hideModal();
             location.reload();
         } else {

@@ -15,6 +15,9 @@
                         <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
                             <img class="img-fluid figure-img rounded" :src="album.cover" />
                             <div class="position-absolute bottom-0">
+                                <button class="btn btn-light bi shadow" :class="isFav" type="button"
+                                    style="opacity: 0.90;" @click="fav(album.id)">
+                                </button>
                                 <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                                     @click="play(album.id)">
                                 </button>
@@ -71,11 +74,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import router from "../router";
 
 const album = ref({});
 const albumLoaded = ref(false);
+
+const fav_albums = ref([]);
+
+const isFav = computed(() => {
+    if (fav_albums.value.includes(album.value.id)) {
+        return "bi-heart-fill text-danger";
+    } else {
+        return "bi-heart";
+    }
+});
 
 async function get_album(id) {
     DZ.api('/album/' + id, function (response) {
@@ -119,7 +132,18 @@ async function play(id) {
     DZ.player.playAlbum(id);
 }
 
+async function fav(id) {
+    if (fav_albums.value.includes(id)) {
+        fav_albums.value = fav_albums.value.filter((item) => item !== id);
+        localStorage.setItem('fav_albums', JSON.stringify(fav_albums.value));
+    } else {
+        fav_albums.value.push(id);
+        localStorage.setItem('fav_albums', JSON.stringify(fav_albums.value));
+    }
+}
+
 onMounted(() => {
+    fav_albums.value = localStorage.getItem('fav_albums') ? JSON.parse(localStorage.getItem('fav_albums')) : [];
     get_album(router.currentRoute.value.params.id);
 })
 </script>
