@@ -5,7 +5,7 @@
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" to="/profile/tracks">Favourite Tracks
+            <router-link class="nav-link fw-bolder text-dark" to="/profile/tracks">Favorite Tracks
             </router-link>
         </li>
         <li class="nav-item">

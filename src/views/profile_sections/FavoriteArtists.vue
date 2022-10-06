@@ -5,11 +5,11 @@
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" to="/profile/tracks">Favourite Tracks
+            <router-link class="nav-link fw-bolder text-dark" to="/profile/tracks">Favorite Tracks
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link active fw-bolder" to="/profile/playlists">Playlists
+            <router-link class="nav-link fw-bolder text-dark" to="/profile/playlists">Playlists
             </router-link>
         </li>
         <li class="nav-item">
@@ -17,7 +17,7 @@
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" to="/profile/artists">Artists
+            <router-link class="nav-link active fw-bolder" to="/profile/artists">Artists
             </router-link>
         </li>
     </ul>
@@ -28,21 +28,21 @@
                 <table class="table table-hover table-borderless caption-top">
                     <caption>
                         <span class="badge bg-primary">
-                            {{playlist_total}} results
+                            {{artist_total}} results
                         </span>
                     </caption>
                     <thead>
                         <tr class="row gx-0 table-active" style="width: 100% !important;">
-                            <th class="col-6">Playlist</th>
-                            <th class="col-5">User</th>
-                            <th class="col-1">Tracks</th>
+                            <th class="col-10">Artist</th>
+                            <th class="col-1">Albums</th>
+                            <th class="col-1">Fans</th>
                         </tr>
                     </thead>
                     <tbody @scroll.passive="onScroll($event)">
-                        <PlaylistResult v-for="item in loved.playlists" :id="item.playlist.id" :cover="item.cover"
-                            :playlist="item.playlist" :user="item.user" :nb_tracks="item.nb_tracks"
+                        <ArtistResult v-for="item in loved.artists" :id="item.artist.id" :cover="item.cover"
+                            :artist="item.artist" :nb_album="item.nb_album" :nb_fan="item.nb_fan"
                             @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
-                        </PlaylistResult>
+                        </ArtistResult>
                     </tbody>
                 </table>
             </div>
@@ -52,40 +52,40 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import PlaylistResult from "/components/results/PlaylistResult.vue";
+import ArtistResult from "/components/results/ArtistResult.vue";
 
 const lovedLoaded = ref(false);
 const searchFinished = ref(true);
 
-const playlist_total = ref(0);
+const artist_total = ref(0);
 
 const loved = ref({
-    playlists: []
+    artists: []
 });
 
 const next = ref({
-    playlists: "",
+    artists: "",
 });
 
 async function get_loved() {
-    DZ.api(`/user/me/playlists?access_token=${localStorage.getItem("token")}`, function (response) {
-        playlist_total.value = response.total;
-        next.value.playlists = response.next;
-        response.data.map(handlePlaylistSearchResponse);
+    DZ.api(`/user/me/artists?access_token=${localStorage.getItem("token")}`, function (response) {
+        artist_total.value = response.total;
+        next.value.artists = response.next;
+        response.data.map(handleArtistSearchResponse);
     });
     lovedLoaded.value = true;
 }
 
 async function next_search() {
     searchFinished.value = false;
-    if (next.value.playlists) {
-        DZ.api(next.value.playlists.split("https://api.deezer.com")[1], function (response) {
-            response.data.map(handlePlaylistSearchResponse);
+    if (next.value.artists) {
+        DZ.api(next.value.artists.split("https://api.deezer.com")[1], function (response) {
+            response.data.map(handleArtistSearchResponse);
             if (response.next) {
-                next.value.playlists = response.next;
+                next.value.artists = response.next;
                 searchFinished.value = true;
             } else {
-                next.value.playlists = null;
+                next.value.artists = null;
             }
             return;
         });
@@ -93,20 +93,21 @@ async function next_search() {
     searchFinished.value = true;
 }
 
-function handlePlaylistSearchResponse(item) {
-    loved.value.playlists.push({
-        cover: item.picture_medium,
-        nb_tracks: item.nb_tracks,
-        playlist: {
+function handleArtistSearchResponse(item) {
+    loved.value.artists.push({
+        cover: item.picture_xl,
+        nb_album: item.nb_album,
+        nb_fan: numberWithCommas(item.nb_fan),
+        artist: {
             "id": parseInt(item.id),
-            "title": item.title,
-        },
-        user: {
-            "id": parseInt(item.creator.id),
-            "name": item.creator.name,
+            "title": item.name,
         },
     })
     return;
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 window.onscroll = () => {

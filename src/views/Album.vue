@@ -15,8 +15,12 @@
                         <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
                             <img class="img-fluid figure-img rounded" :src="album.cover" />
                             <div class="position-absolute bottom-0">
-                                <button class="btn btn-light bi shadow" :class="isFav" type="button"
-                                    style="opacity: 0.90;" @click="fav(album.id)">
+                                <button v-show="isFav" class="btn btn-light shadow bi bi-heart-fill text-danger"
+                                    type="button" style="opacity: 0.90;"
+                                    @click="isFav = !isFav; removeFromFav('fav_albums', album.id)">
+                                </button>
+                                <button v-show="!isFav" class="btn btn-light shadow bi bi-heart" type="button"
+                                    style="opacity: 0.90;" @click="isFav = !isFav; addToFav('fav_albums', album.id)">
                                 </button>
                                 <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                                     @click="play(album.id)">
@@ -74,29 +78,22 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import router from "../router";
+import { addToFav, removeFromFav } from "/js/favs.js";
 
 const album = ref({});
 const albumLoaded = ref(false);
 
-const fav_albums = ref([]);
-
-const isFav = computed(() => {
-    if (fav_albums.value.includes(album.value.id)) {
-        return "bi-heart-fill text-danger";
-    } else {
-        return "bi-heart";
-    }
-});
+const isFav = ref(false);
 
 async function get_album(id) {
     DZ.api('/album/' + id, function (response) {
         album.value = {
-            id: response.id,
+            id: parseInt(response.id),
             title: response.title,
             artist_name: response.artist.name,
-            artist_id: response.artist.id,
+            artist_id: parseInt(response.artist.id),
             artist_cover: response.artist.picture_medium,
             cover: response.cover_medium,
             duration: response.duration,
@@ -106,8 +103,9 @@ async function get_album(id) {
             release_date: formatDate(response.release_date),
             tracks: response.tracks.data
         }
-        albumLoaded.value = true;
     });
+    isFav.value = JSON.parse(localStorage.getItem('fav_albums')).includes(parseInt(id));
+    albumLoaded.value = true;
 }
 
 function padWithZero(num) {
@@ -132,18 +130,7 @@ async function play(id) {
     DZ.player.playAlbum(id);
 }
 
-async function fav(id) {
-    if (fav_albums.value.includes(id)) {
-        fav_albums.value = fav_albums.value.filter((item) => item !== id);
-        localStorage.setItem('fav_albums', JSON.stringify(fav_albums.value));
-    } else {
-        fav_albums.value.push(id);
-        localStorage.setItem('fav_albums', JSON.stringify(fav_albums.value));
-    }
-}
-
 onMounted(() => {
-    fav_albums.value = localStorage.getItem('fav_albums') ? JSON.parse(localStorage.getItem('fav_albums')) : [];
     get_album(router.currentRoute.value.params.id);
-})
+});
 </script>

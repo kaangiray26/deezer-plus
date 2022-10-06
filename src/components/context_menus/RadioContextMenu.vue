@@ -18,3 +18,17 @@
         </li>
     </ul>
 </template>
+
+<script setup>
+import { computed } from "vue";
+
+const isFav = computed(() => {
+    return JSON.parse(localStorage.getItem('fav_radios')).includes(props.item_id);
+});
+
+const props = defineProps({
+    item_id: {
+        type: Number,
+    },
+});
+</script>

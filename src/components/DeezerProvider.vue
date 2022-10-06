@@ -16,7 +16,7 @@ const favs = ref({
     radios: []
 });
 
-async function save_favourites() {
+async function save_favorites() {
     get_fav_tracks();
     get_fav_albums();
     get_fav_artists();
@@ -131,9 +131,7 @@ async function getLoginStatus(response) {
     hideModal();
     DZ.player.setVolume(100);
     DZ.player.setShuffle(false);
-    await save_favourites().then(() => {
-        console.log("Favourites saved");
-    });
+    await save_favorites();
 }
 
 function login() {

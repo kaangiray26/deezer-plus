@@ -9,10 +9,12 @@
                     class="bi bi-music-note-list me-1"></span>Add to queue</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button"
-                @click="$emit('context-menu-event','addAlbumToFavourites')"><span
-                    class="bi bi-heart-fill me-1"></span>Add to my
-                favourites</button>
+            <button v-if="!isFav()" class="dropdown-item" type="button"
+                @click="$emit('context-menu-event','addAlbumToFavorites')"><span
+                    class="bi bi-heart-fill me-1"></span>Add to favorites</button>
+            <button v-if="isFav()" class="dropdown-item" type="button"
+                @click="$emit('context-menu-event','removeAlbumFromFavorites')"><span
+                    class="bi bi-heart-fill text-danger me-1"></span>Remove from favorites</button>
         </li>
         <li>
             <button class="dropdown-item" type="button" @click="$emit('context-menu-event','openAlbumPage')"><span
@@ -28,3 +30,15 @@
         </li>
     </ul>
 </template>
+
+<script setup>
+function isFav() {
+    return JSON.parse(localStorage.getItem('fav_albums')).includes(props.item_id);
+};
+
+const props = defineProps({
+    item_id: {
+        type: Number,
+    },
+});
+</script>

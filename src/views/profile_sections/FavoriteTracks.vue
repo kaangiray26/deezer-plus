@@ -5,7 +5,7 @@
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" to="/profile/tracks">Favourite Tracks
+            <router-link class="nav-link active fw-bolder" to="/profile/tracks">Favorite Tracks
             </router-link>
         </li>
         <li class="nav-item">
@@ -17,7 +17,7 @@
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link active fw-bolder" to="/profile/artists">Artists
+            <router-link class="nav-link fw-bolder text-dark" to="/profile/artists">Artists
             </router-link>
         </li>
     </ul>
@@ -28,21 +28,22 @@
                 <table class="table table-hover table-borderless caption-top">
                     <caption>
                         <span class="badge bg-primary">
-                            {{artist_total}} results
+                            {{track_total}} results
                         </span>
                     </caption>
                     <thead>
                         <tr class="row gx-0 table-active" style="width: 100% !important;">
-                            <th class="col-10">Artist</th>
-                            <th class="col-1">Albums</th>
-                            <th class="col-1">Fans</th>
+                            <th class="col-6">Track</th>
+                            <th class="col-2">Artist</th>
+                            <th class="col-3">Album</th>
+                            <th class="col-1 bi bi-clock-fill"></th>
                         </tr>
                     </thead>
                     <tbody @scroll.passive="onScroll($event)">
-                        <ArtistResult v-for="item in loved.artists" :id="item.artist.id" :cover="item.cover"
-                            :artist="item.artist" :nb_album="item.nb_album" :nb_fan="item.nb_fan"
+                        <TrackResult v-for="item in loved.tracks" :id="item.track.id" :cover="item.cover"
+                            :artist="item.artist" :album="item.album" :track="item.track" :duration="item.duration"
                             @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
-                        </ArtistResult>
+                        </TrackResult>
                     </tbody>
                 </table>
             </div>
@@ -52,40 +53,40 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import ArtistResult from "/components/results/ArtistResult.vue";
+import TrackResult from "/components/results/TrackResult.vue";
 
 const lovedLoaded = ref(false);
 const searchFinished = ref(true);
 
-const artist_total = ref(0);
+const track_total = ref(0);
 
 const loved = ref({
-    artists: []
+    tracks: []
 });
 
 const next = ref({
-    artists: "",
+    tracks: "",
 });
 
 async function get_loved() {
-    DZ.api(`/user/me/artists?access_token=${localStorage.getItem("token")}`, function (response) {
-        artist_total.value = response.total;
-        next.value.artists = response.next;
-        response.data.map(handleArtistSearchResponse);
+    DZ.api(`/user/me/tracks?access_token=${localStorage.getItem("token")}`, function (response) {
+        track_total.value = response.total;
+        next.value.tracks = response.next;
+        response.data.map(handleTrackSearchResponse);
     });
     lovedLoaded.value = true;
 }
 
 async function next_search() {
     searchFinished.value = false;
-    if (next.value.artists) {
-        DZ.api(next.value.artists.split("https://api.deezer.com")[1], function (response) {
-            response.data.map(handleArtistSearchResponse);
+    if (next.value.tracks) {
+        DZ.api(next.value.tracks.split("https://api.deezer.com")[1], function (response) {
+            response.data.map(handleTrackSearchResponse);
             if (response.next) {
-                next.value.artists = response.next;
+                next.value.tracks = response.next;
                 searchFinished.value = true;
             } else {
-                next.value.artists = null;
+                next.value.tracks = null;
             }
             return;
         });
@@ -93,21 +94,24 @@ async function next_search() {
     searchFinished.value = true;
 }
 
-function handleArtistSearchResponse(item) {
-    loved.value.artists.push({
-        cover: item.picture_xl,
-        nb_album: item.nb_album,
-        nb_fan: numberWithCommas(item.nb_fan),
+function handleTrackSearchResponse(item) {
+    loved.value.tracks.push({
+        cover: item.album.cover_small,
+        duration: item.duration,
         artist: {
+            "id": parseInt(item.artist.id),
+            "title": item.artist.name,
+        },
+        album: {
+            "id": parseInt(item.album.id),
+            "title": item.album.title,
+        },
+        track: {
             "id": parseInt(item.id),
-            "title": item.name,
+            "title": item.title,
         },
     })
     return;
-}
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 window.onscroll = () => {

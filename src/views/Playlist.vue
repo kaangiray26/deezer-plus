@@ -15,8 +15,13 @@
                         <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
                             <img class="img-fluid figure-img rounded" :src="playlist.cover" />
                             <div class="position-absolute bottom-0">
-                                <button class="btn btn-light bi shadow" :class="isFav" type="button"
-                                    style="opacity: 0.90;" @click="fav(playlist.id)">
+                                <button v-show="isFav" class="btn btn-light shadow bi bi-heart-fill text-danger"
+                                    type="button" style="opacity: 0.90;"
+                                    @click="isFav = !isFav; removeFromFav('fav_playlists', playlist.id)">
+                                </button>
+                                <button v-show="!isFav" class="btn btn-light shadow bi bi-heart" type="button"
+                                    style="opacity: 0.90;"
+                                    @click="isFav = !isFav; addToFav('fav_playlists', playlist.id)">
                                 </button>
                                 <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                                     @click="play(playlist.id)">
@@ -93,36 +98,30 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
+import { addToFav } from "../js/favs";
 import router from "../router";
 
 const playlist = ref({});
 const playlistLoaded = ref(false);
 
-const fav_playlists = ref([]);
-
-const isFav = computed(() => {
-    if (fav_playlists.value.includes(playlist.value.id)) {
-        return "bi-heart-fill text-danger";
-    } else {
-        return "bi-heart";
-    }
-});
+const isFav = ref(false);
 
 async function get_playlist(id) {
     DZ.api('/playlist/' + id, function (response) {
         playlist.value = {
-            id: response.id,
+            id: parseInt(response.id),
             title: response.title,
             description: response.description,
             duration: formatDuration(response.duration),
             nb_tracks: response.nb_tracks,
             fans: numberWithCommas(response.fans),
             cover: response.picture_medium,
-            creator_id: response.creator.id,
+            creator_id: parseInt(response.creator.id),
             creator_name: response.creator.name,
             tracks: response.tracks.data
         }
+        isFav.value = JSON.parse(localStorage.getItem('fav_playlists')).includes(parseInt(id));
         playlistLoaded.value = true;
     });
 }
@@ -150,18 +149,7 @@ async function play(id) {
     DZ.player.playPlaylist(id);
 }
 
-async function fav(id) {
-    if (fav_playlists.value.includes(id)) {
-        fav_playlists.value = fav_playlists.value.filter((item) => item !== id);
-        localStorage.setItem('fav_playlists', JSON.stringify(fav_playlists.value));
-    } else {
-        fav_playlists.value.push(id);
-        localStorage.setItem('fav_playlists', JSON.stringify(fav_playlists.value));
-    }
-}
-
 onMounted(() => {
-    fav_playlists.value = localStorage.getItem('fav_playlists') ? JSON.parse(localStorage.getItem('fav_playlists')) : [];
     get_playlist(router.currentRoute.value.params.id);
 })
 </script>

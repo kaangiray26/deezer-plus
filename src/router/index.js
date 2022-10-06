@@ -11,10 +11,10 @@ import Search from '/views/Search.vue';
 import Profile from '/views/Profile.vue';
 import ProfilePage from '/views/profile_sections/ProfilePage.vue';
 import ListeningHistory from '/views/profile_sections/ListeningHistory.vue';
-import FavouriteTracks from '/views/profile_sections/FavouriteTracks.vue';
-import FavouriteAlbums from '/views/profile_sections/FavouriteAlbums.vue';
-import FavouriteArtists from '/views/profile_sections/FavouriteArtists.vue';
-import FavouritePlaylists from '/views/profile_sections/FavouritePlaylists.vue';
+import FavoriteTracks from '/views/profile_sections/FavoriteTracks.vue';
+import FavoriteAlbums from '/views/profile_sections/FavoriteAlbums.vue';
+import FavoriteArtists from '/views/profile_sections/FavoriteArtists.vue';
+import FavoritePlaylists from '/views/profile_sections/FavoritePlaylists.vue';
 
 import Settings from '/views/Settings.vue';
 import Lastfm from '/views/Lastfm.vue';
@@ -62,19 +62,19 @@ const routes = [
             },
             {
                 path: 'tracks',
-                component: FavouriteTracks
+                component: FavoriteTracks
             },
             {
                 path: 'playlists',
-                component: FavouritePlaylists
+                component: FavoritePlaylists
             },
             {
                 path: 'albums',
-                component: FavouriteAlbums
+                component: FavoriteAlbums
             },
             {
                 path: 'artists',
-                component: FavouriteArtists
+                component: FavoriteArtists
             }
         ]
     },

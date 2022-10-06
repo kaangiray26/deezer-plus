@@ -9,9 +9,11 @@ if (window.location.hostname == 'localhost') {
     shared_secret = 'fbe7d3161c399a80cd77dd3e6a660a5e';
 }
 
-export const store = reactive({
+const store = reactive({
     playerHeight: 0,
     scrobbling: false,
     api_key: api_key,
     shared_secret: shared_secret,
 });
+
+export { store }
