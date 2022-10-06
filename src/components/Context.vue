@@ -53,8 +53,23 @@ async function _hide() {
 
 async function _right_click(obj) {
     selectedItem.value = obj.target;
-    item_id.value = parseInt(selectedItem.value.id);
     currentSearchField.value = selectedItem.value.attributes.type.value;
+
+    switch (currentSearchField.value) {
+        case 'tracks':
+            item_id.value = parseInt(selectedItem.value.attributes.track_id.value);
+            break;
+        case 'albums':
+            item_id.value = parseInt(selectedItem.value.attributes.album_id.value);
+            break;
+        case 'artists':
+            item_id.value = parseInt(selectedItem.value.attributes.artist_id.value);
+            break;
+        case 'playlists':
+            item_id.value = parseInt(selectedItem.value.attributes.playlist_id.value);
+            break;
+    }
+
     isContextMenuVisible.value = true;
 
     let mouse_x = obj.event.x;
