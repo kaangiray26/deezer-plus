@@ -9,10 +9,11 @@
                             <div class="position-absolute bottom-0">
                                 <button v-show="isFav" class="btn btn-light shadow bi bi-heart-fill text-danger m-2"
                                     type="button" style="opacity: 0.90;"
-                                    @click="isFav = !isFav; removeFromFav('fav_artists', artist.id)">
+                                    @click="isFav = !isFav; removeFromFav('fav_artists', artist.id); notify('Removed from favorites.')">
                                 </button>
                                 <button v-show="!isFav" class="btn btn-light shadow bi bi-heart m-2" type="button"
-                                    style="opacity: 0.90;" @click="isFav = !isFav; addToFav('fav_artists', artist.id)">
+                                    style="opacity: 0.90;"
+                                    @click="isFav = !isFav; addToFav('fav_artists', artist.id); notify('Added to favorites.')">
                                 </button>
                             </div>
                         </div>
@@ -68,12 +69,15 @@
             </div>
         </div>
     </div>
+    <Toast ref="thisToast" :message="toastMessage"></Toast>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import router from "../router";
+
 import { addToFav, removeFromFav } from "/js/favs.js";
+import Toast from "/components/liveToast.vue";
 
 const artist = ref({
     albums: [],
@@ -83,6 +87,14 @@ const artistLoaded = ref(false);
 const albumsLoaded = ref(false);
 
 const isFav = ref(false);
+
+let thisToast = ref(null);
+const toastMessage = ref("");
+
+async function notify(message) {
+    toastMessage.value = message;
+    thisToast.value.show();
+}
 
 function compareAlbums(a, b) {
     if (a.release_date < b.release_date) {

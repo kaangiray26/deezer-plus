@@ -17,11 +17,11 @@
                             <div class="position-absolute bottom-0">
                                 <button v-show="isFav" class="btn btn-light shadow bi bi-heart-fill text-danger"
                                     type="button" style="opacity: 0.90;"
-                                    @click="isFav = !isFav; removeFromFav('fav_playlists', playlist.id)">
+                                    @click="isFav = !isFav; removeFromFav('fav_playlists', playlist.id); notify('Removed from favorites.')">
                                 </button>
                                 <button v-show="!isFav" class="btn btn-light shadow bi bi-heart" type="button"
                                     style="opacity: 0.90;"
-                                    @click="isFav = !isFav; addToFav('fav_playlists', playlist.id)">
+                                    @click="isFav = !isFav; addToFav('fav_playlists', playlist.id); notify('Added to favorites.')">
                                 </button>
                                 <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                                     @click="play(playlist.id)">
@@ -95,17 +95,28 @@
             </div>
         </div>
     </div>
+    <Toast ref="thisToast" :message="toastMessage"></Toast>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { addToFav } from "../js/favs";
 import router from "../router";
+
+import { addToFav, removeFromFav } from "/js/favs.js";
+import Toast from "/components/liveToast.vue";
 
 const playlist = ref({});
 const playlistLoaded = ref(false);
 
 const isFav = ref(false);
+
+let thisToast = ref(null);
+const toastMessage = ref("");
+
+async function notify(message) {
+    toastMessage.value = message;
+    thisToast.value.show();
+}
 
 async function get_playlist(id) {
     DZ.api('/playlist/' + id, function (response) {

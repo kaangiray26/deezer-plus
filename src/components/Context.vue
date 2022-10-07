@@ -9,6 +9,7 @@
 <script setup>
 import { ref, nextTick } from "vue";
 import { addToFav, removeFromFav } from "/js/favs.js";
+import { addToQueue, removeFromQueue } from "/js/queue.js";
 
 import router from "/router";
 import Toast from "/components/liveToast.vue";
@@ -145,27 +146,31 @@ async function contextMenuEvent(event) {
 
     // Add to Queue Events
     if (event == 'addTrackToQueue') {
-        DZ.player.addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
+        // DZ.player.addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
+        addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
         notify("Added to the queue.");
         return;
     }
     if (event == 'addAlbumToQueue') {
         DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            // DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            addToQueue([...response.data.map(item => parseInt(item.id))]);
         });
         notify("Added to the queue.");
         return;
     }
     if (event == 'addPlaylistToQueue') {
         DZ.api('/playlist/' + selectedItem.value.id + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            // DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            addToQueue([...response.data.map(item => parseInt(item.id))]);
         });
         notify("Added to the queue.");
         return;
     }
     if (event == 'addRadioToQueue') {
         DZ.api('/radio/' + selectedItem.value.id + '/tracks', function (response) {
-            DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            // DZ.player.addToQueue([...response.data.map(item => item.id)]);
+            addToQueue([...response.data.map(item => parseInt(item.id))]);
         });
         notify("Added to the queue.");
         return;

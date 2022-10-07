@@ -36,7 +36,9 @@
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
+
 import QueueTrack from "/components/results/QueueTrack.vue";
+import { addToQueue, removeFromQueue, getQueue, clearQueue } from "/js/queue.js";
 
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
@@ -44,6 +46,28 @@ let thisOffCanvasObj = null;
 const queue = ref({
     tracks: []
 });
+
+function handleTrack(id) {
+    DZ.api(`/track/${id}`, function (response) {
+        queue.value.tracks.push({
+            cover: `https://api.deezer.com/album/${response.album.id}/image`,
+            duration: parseInt(response.duration),
+            artist: {
+                "id": parseInt(response.artist.id),
+                "title": response.artist.name,
+            },
+            album: {
+                "id": parseInt(response.album.id),
+                "title": response.album.title,
+            },
+            track: {
+                "id": parseInt(response.id),
+                "title": response.title,
+            },
+        })
+        return;
+    });
+}
 
 function handleTrackSearchResponse(item) {
     queue.value.tracks.push({
@@ -70,33 +94,36 @@ async function buttonClear() {
 
     if (!current_track) {
         queue.value.tracks = [];
-        DZ.player.playTracks([]);
+        clearQueue();
         return;
     }
 
     if (DZ.player.isPlaying) {
-        DZ.player.playTracks([parseInt(current_track.id)]);
-        queue.value.tracks = [{
-            cover: `https://api.deezer.com/album/${current_track.album.id}/image`,
-            duration: parseInt(current_track.duration),
-            artist: {
-                "id": parseInt(current_track.artist.id),
-                "title": current_track.artist.name,
-            },
-            album: {
-                "id": parseInt(current_track.album.id),
-                "title": current_track.album.title,
-            },
-            track: {
-                "id": parseInt(current_track.id),
-                "title": current_track.title,
-            },
-        }];
-        return;
+        queue.value.tracks = queue.value.tracks.filter((item) => item.track.id !== current_track.id);
+        clearQueue([parseInt(current_track.id)]);
+
+        // DZ.player.playTracks([parseInt(current_track.id)]);
+        // queue.value.tracks = [{
+        //     cover: `https://api.deezer.com/album/${current_track.album.id}/image`,
+        //     duration: parseInt(current_track.duration),
+        //     artist: {
+        //         "id": parseInt(current_track.artist.id),
+        //         "title": current_track.artist.name,
+        //     },
+        //     album: {
+        //         "id": parseInt(current_track.album.id),
+        //         "title": current_track.album.title,
+        //     },
+        //     track: {
+        //         "id": parseInt(current_track.id),
+        //         "title": current_track.title,
+        //     },
+        // }];
+        // return;
     }
 
-    DZ.player.playTracks([]);
-    DZ.player.addToQueue([parseInt(current_track.id)]);
+    queue.value.tracks = [parseInt(current_track.id)];
+    clearQueue([parseInt(current_track.id)]);
 }
 
 async function removeTrack(index) {
@@ -109,8 +136,10 @@ async function removeTrack(index) {
 }
 
 async function refresh() {
-    queue.value.tracks = [];
-    DZ.player.getTrackList().map(handleTrackSearchResponse);
+    getQueue().then((tracks) => {
+        console.log("Tracks:", tracks);
+        queue.value.tracks = tracks;
+    });
 }
 
 function _show() {
@@ -122,7 +151,6 @@ function _hide() {
 }
 
 async function _toggle() {
-    refresh();
     thisOffCanvasObj.toggle();
 }
 
@@ -136,5 +164,7 @@ onMounted(() => {
     thisOffCanvasObj = new Offcanvas(offCanvasEle.value, {
         toggle: false
     });
+
+    document.getElementById('OffCanvas').addEventListener('show.bs.offcanvas', refresh);
 })
 </script>
