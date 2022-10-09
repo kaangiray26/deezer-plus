@@ -45,9 +45,7 @@ defineProps({
 
 async function play(id) {
     await addToQueueStart([id]);
-
     getQueueTracks().then(tracks => {
-        console.log("Tracks:", tracks);
         DZ.player.playTracks(tracks);
     });
 }

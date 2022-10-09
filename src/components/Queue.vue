@@ -38,7 +38,7 @@ import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
 
 import QueueTrack from "/components/results/QueueTrack.vue";
-import { addToQueue, removeFromQueue, getQueue, clearQueue } from "/js/queue.js";
+import { getQueue, clearQueue } from "/js/queue.js";
 
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
@@ -98,15 +98,15 @@ async function removeTrack(index) {
     // DZ.player.addToQueue(queue.value.tracks.map(item => parseInt(item.track.id)));
 }
 
-function refresh() {
+async function refresh() {
     queue.value.tracks = getQueue();
 }
 
-function _show() {
+async function _show() {
     thisOffCanvasObj.show();
 }
 
-function _hide() {
+async function _hide() {
     thisOffCanvasObj.hide();
 }
 

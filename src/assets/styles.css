@@ -64,6 +64,7 @@ caption {
 
 .progress {
     cursor: pointer;
+    --bs-progress-height: 0.75rem;
 }
 
 .track-link {

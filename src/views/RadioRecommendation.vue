@@ -21,6 +21,8 @@
 </template>
 
 <script setup>
+import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+
 defineProps({
     radio_id: {
         type: Number,

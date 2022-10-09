@@ -26,8 +26,9 @@
                                     </div>
                                     <span class="font-monospace mx-2">{{now}}</span>
                                     <div id="seekProgress" class="progress flex-fill" @click="seekProgress($event)">
-                                        <div class="progress-bar bg-dark progress-bar-animated" aria-valuenow="0"
-                                            aria-valuemin="0" aria-valuemax="100" :style="{'width': position + '%'}">
+                                        <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                            :style="{'width': position + '%'}">
                                             <span class="visually-hidden"></span>
                                         </div>
                                     </div>
@@ -59,7 +60,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
-import { addToQueue, removeFromQueue, getQueue, clearQueue, getQueueTracks } from '/js/queue.js';
+import { getQueueTracks } from '/js/queue.js';
 
 import VolumeButton from "/components/VolumeButton.vue";
 import Scrobbler from "/components/Scrobbler.vue";
@@ -230,8 +231,10 @@ DZ.Event.subscribe('current_track', async function (obj) {
     document.title = track.value.title + ' - ' + artist.value.title;
 
     if (!isLoaded.value) {
-        DZ.player.playTracks([...DZ.player.getTrackList().map(item => parseInt(item.id))]);
-        isLoaded.value = true;
+        getQueueTracks().then(tracks => {
+            DZ.player.playTracks(tracks);
+            isLoaded.value = true;
+        });
     }
 });
 

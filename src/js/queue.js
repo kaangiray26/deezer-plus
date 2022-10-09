@@ -1,4 +1,42 @@
 // queue.js
+
+function removeFromQueue(id) {
+    localStorage.setItem(
+        "queue",
+        JSON.stringify(JSON.parse(localStorage.getItem("queue")).filter((item) => item !== id))
+    );
+}
+
+function getQueue() {
+    return JSON.parse(localStorage.getItem("queue"));
+}
+
+
+function clearQueue(arr = []) {
+    localStorage.setItem(
+        "queue",
+        JSON.stringify(arr)
+    );
+}
+
+async function addToQueue(tracks) {
+    for (let id of tracks) {
+        await getTrack(id);
+    }
+}
+
+async function addToQueueStart(tracks) {
+    tracks.reverse();
+    for (let id of tracks) {
+        await getTrackStart(id);
+    }
+}
+
+async function getQueueTracks() {
+    let tracks = getQueue();
+    return tracks.map(item => parseInt(item.track.id));
+}
+
 async function getTrack(id) {
     return new Promise((resolve, reject) => {
         DZ.api(`/track/${id}`, item => {
@@ -55,42 +93,6 @@ async function getTrackStart(id) {
             resolve(true);
         });
     });
-}
-
-async function addToQueue(tracks) {
-    for (let id of tracks) {
-        await getTrack(id);
-    }
-}
-
-async function addToQueueStart(tracks) {
-    tracks.reverse();
-    for (let id of tracks) {
-        await getTrackStart(id);
-    }
-}
-
-function removeFromQueue(id) {
-    localStorage.setItem(
-        "queue",
-        JSON.stringify(JSON.parse(localStorage.getItem("queue")).filter((item) => item !== id))
-    );
-}
-
-function getQueue() {
-    return JSON.parse(localStorage.getItem("queue"));
-}
-
-async function getQueueTracks() {
-    let tracks = getQueue();
-    return tracks.map(item => parseInt(item.track.id));
-}
-
-function clearQueue(arr = []) {
-    localStorage.setItem(
-        "queue",
-        JSON.stringify(arr)
-    );
 }
 
 export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks }

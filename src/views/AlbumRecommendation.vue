@@ -22,6 +22,8 @@
 </template>
 
 <script setup>
+import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+
 defineProps({
     album_id: {
         type: Number,
@@ -38,6 +40,11 @@ defineProps({
 });
 
 async function play(id) {
-    DZ.player.playAlbum(id);
+    DZ.api('/album/' + id, async function (response) {
+        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+        getQueueTracks().then(tracks => {
+            DZ.player.playTracks(tracks);
+        });
+    });
 }
 </script>

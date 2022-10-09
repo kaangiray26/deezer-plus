@@ -82,6 +82,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import router from "../router";
+import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 import { addToFav, removeFromFav } from "/js/favs.js";
 import Toast from "/components/liveToast.vue";
@@ -139,7 +140,13 @@ async function playTrack(id) {
 }
 
 async function play(id) {
-    DZ.player.playAlbum(id);
+    notify("Loading album...");
+    DZ.api('/album/' + id, async function (response) {
+        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+        getQueueTracks().then(tracks => {
+            DZ.player.playTracks(tracks);
+        });
+    });
 }
 
 onMounted(() => {

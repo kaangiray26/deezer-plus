@@ -31,7 +31,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { addToQueueStart, getQueue } from '/js/queue.js';
+import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 const fav_tracks = ref([]);
 
@@ -40,8 +40,8 @@ function padWithZero(num) {
 }
 
 async function play(id) {
-    addToQueueStart([id]);
-    getQueue().then(tracks => {
+    await addToQueueStart([id]);
+    getQueueTracks().then(tracks => {
         DZ.player.playTracks(tracks);
     });
 }
