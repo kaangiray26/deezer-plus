@@ -47,50 +47,9 @@ const queue = ref({
     tracks: []
 });
 
-function handleTrack(id) {
-    DZ.api(`/track/${id}`, function (response) {
-        queue.value.tracks.push({
-            cover: `https://api.deezer.com/album/${response.album.id}/image`,
-            duration: parseInt(response.duration),
-            artist: {
-                "id": parseInt(response.artist.id),
-                "title": response.artist.name,
-            },
-            album: {
-                "id": parseInt(response.album.id),
-                "title": response.album.title,
-            },
-            track: {
-                "id": parseInt(response.id),
-                "title": response.title,
-            },
-        })
-        return;
-    });
-}
-
-function handleTrackSearchResponse(item) {
-    queue.value.tracks.push({
-        cover: `https://api.deezer.com/album/${item.album.id}/image`,
-        duration: parseInt(item.duration),
-        artist: {
-            "id": parseInt(item.artist.id),
-            "title": item.artist.name,
-        },
-        album: {
-            "id": parseInt(item.album.id),
-            "title": item.album.title,
-        },
-        track: {
-            "id": parseInt(item.id),
-            "title": item.title,
-        },
-    })
-    return;
-}
-
-async function buttonClear() {
+function buttonClear() {
     let current_track = DZ.player.getCurrentTrack();
+    console.log("Current:", current_track);
 
     if (!current_track) {
         queue.value.tracks = [];
@@ -98,48 +57,49 @@ async function buttonClear() {
         return;
     }
 
-    if (DZ.player.isPlaying) {
-        queue.value.tracks = queue.value.tracks.filter((item) => item.track.id !== current_track.id);
-        clearQueue([parseInt(current_track.id)]);
+    let current_track_id = parseInt(current_track.id);
+    queue.value.tracks = queue.value.tracks.filter(item => item.track.id === current_track_id);
+    clearQueue(queue.value.tracks);
+    return;
 
-        // DZ.player.playTracks([parseInt(current_track.id)]);
-        // queue.value.tracks = [{
-        //     cover: `https://api.deezer.com/album/${current_track.album.id}/image`,
-        //     duration: parseInt(current_track.duration),
-        //     artist: {
-        //         "id": parseInt(current_track.artist.id),
-        //         "title": current_track.artist.name,
-        //     },
-        //     album: {
-        //         "id": parseInt(current_track.album.id),
-        //         "title": current_track.album.title,
-        //     },
-        //     track: {
-        //         "id": parseInt(current_track.id),
-        //         "title": current_track.title,
-        //     },
-        // }];
-        // return;
-    }
+    // if (DZ.player.isPlaying) {
+    //     queue.value.tracks = queue.value.tracks.filter((item) => item.track.id !== current_track.id);
+    //     clearQueue([parseInt(current_track.id)]);
 
-    queue.value.tracks = [parseInt(current_track.id)];
-    clearQueue([parseInt(current_track.id)]);
+    //     DZ.player.playTracks([parseInt(current_track.id)]);
+    //     queue.value.tracks = [{
+    //         cover: `https://api.deezer.com/album/${current_track.album.id}/image`,
+    //         duration: parseInt(current_track.duration),
+    //         artist: {
+    //             "id": parseInt(current_track.artist.id),
+    //             "title": current_track.artist.name,
+    //         },
+    //         album: {
+    //             "id": parseInt(current_track.album.id),
+    //             "title": current_track.album.title,
+    //         },
+    //         track: {
+    //             "id": parseInt(current_track.id),
+    //             "title": current_track.title,
+    //         },
+    //     }];
+    //     return;
+    // }
 }
 
 async function removeTrack(index) {
     queue.value.tracks.splice(index, 1);
-    if (DZ.player.isPlaying) {
-        DZ.player.playTracks(queue.value.tracks.map(item => parseInt(item.track.id)));
-        return;
-    }
-    DZ.player.addToQueue(queue.value.tracks.map(item => parseInt(item.track.id)));
+    clearQueue(queue.value.tracks);
+
+    // if (DZ.player.isPlaying()) {
+    //     DZ.player.playTracks(queue.value.tracks.map(item => parseInt(item.track.id)));
+    //     return;
+    // }
+    // DZ.player.addToQueue(queue.value.tracks.map(item => parseInt(item.track.id)));
 }
 
-async function refresh() {
-    getQueue().then((tracks) => {
-        console.log("Tracks:", tracks);
-        queue.value.tracks = tracks;
-    });
+function refresh() {
+    queue.value.tracks = getQueue();
 }
 
 function _show() {
@@ -164,7 +124,6 @@ onMounted(() => {
     thisOffCanvasObj = new Offcanvas(offCanvasEle.value, {
         toggle: false
     });
-
     document.getElementById('OffCanvas').addEventListener('show.bs.offcanvas', refresh);
 })
 </script>

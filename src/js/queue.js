@@ -1,10 +1,9 @@
 // queue.js
-
-function getTrack(id) {
-    DZ.api(`/track/${id}`, function (item) {
-        let queue = JSON.parse(localStorage.getItem("queue"));
-        queue.push(
-            {
+async function getTrack(id) {
+    return new Promise((resolve, reject) => {
+        DZ.api(`/track/${id}`, item => {
+            let arr = JSON.parse(localStorage.getItem("queue"));
+            arr.push({
                 cover: `https://api.deezer.com/album/${item.album.id}/image`,
                 duration: parseInt(item.duration),
                 artist: {
@@ -19,39 +18,79 @@ function getTrack(id) {
                     "id": parseInt(item.id),
                     "title": item.title,
                 },
-            }
-        );
+            });
+            localStorage.setItem(
+                "queue",
+                JSON.stringify(arr)
+            );
+            resolve(true);
+        });
+    });
+}
 
-        localStorage.setItem(
-            "queue",
-            JSON.stringify(queue)
-        );
+async function getTrackStart(id) {
+    return new Promise((resolve, reject) => {
+        DZ.api(`/track/${id}`, item => {
+            let arr = JSON.parse(localStorage.getItem("queue"));
+            arr.unshift({
+                cover: `https://api.deezer.com/album/${item.album.id}/image`,
+                duration: parseInt(item.duration),
+                artist: {
+                    "id": parseInt(item.artist.id),
+                    "title": item.artist.name,
+                },
+                album: {
+                    "id": parseInt(item.album.id),
+                    "title": item.album.title,
+                },
+                track: {
+                    "id": parseInt(item.id),
+                    "title": item.title,
+                },
+            });
+            localStorage.setItem(
+                "queue",
+                JSON.stringify(arr)
+            );
+            resolve(true);
+        });
     });
 }
 
 async function addToQueue(tracks) {
-    console.log("Queue before:", JSON.parse(localStorage.getItem("queue")));
-    tracks.map(id => getTrack(id));
-    console.log("Queue after:", JSON.parse(localStorage.getItem("queue")));
-    return;
+    for (let id of tracks) {
+        await getTrack(id);
+    }
 }
 
-async function removeFromQueue(id) {
+async function addToQueueStart(tracks) {
+    tracks.reverse();
+    for (let id of tracks) {
+        await getTrackStart(id);
+    }
+}
+
+function removeFromQueue(id) {
     localStorage.setItem(
         "queue",
         JSON.stringify(JSON.parse(localStorage.getItem("queue")).filter((item) => item !== id))
     );
 }
 
-async function getQueue() {
+function getQueue() {
     return JSON.parse(localStorage.getItem("queue"));
 }
 
-async function clearQueue(arr = []) {
+async function getQueueTracks() {
+    let tracks = getQueue();
+    return tracks.map(item => parseInt(item.track.id));
+}
+
+function clearQueue(arr = []) {
     localStorage.setItem(
         "queue",
         JSON.stringify(arr)
     );
 }
 
-export { addToQueue, removeFromQueue, getQueue, clearQueue }
+export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks }

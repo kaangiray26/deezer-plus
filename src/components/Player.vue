@@ -59,6 +59,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
+import { addToQueue, removeFromQueue, getQueue, clearQueue, getQueueTracks } from '/js/queue.js';
 
 import VolumeButton from "/components/VolumeButton.vue";
 import Scrobbler from "/components/Scrobbler.vue";
@@ -96,23 +97,32 @@ const now = ref('00:00');
 const duration = ref('00:00');
 
 async function buttonPlay() {
-    if (isPlaying.value) {
-        DZ.player.pause();
-    } else {
-        DZ.player.play();
+    if (DZ.player.getCurrentTrack()) {
+        if (isPlaying.value) {
+            DZ.player.pause();
+        } else {
+            DZ.player.play();
+        }
+        return;
     }
+
+    getQueueTracks().then(tracks => {
+        DZ.player.playTracks(tracks);
+    });
 }
 
 async function buttonNext() {
-    let tracklist = [...DZ.player.getTrackList().map(item => parseInt(item.id))];
-    let index = (DZ.player.getCurrentIndex() + 1) % tracklist.length;
-    DZ.player.playTracks(tracklist, index);
+    getQueueTracks().then(tracks => {
+        let index = (DZ.player.getCurrentIndex() + 1) % tracks.length;
+        DZ.player.playTracks(tracks, index);
+    });
 }
 
 async function buttonPrev() {
-    let tracklist = [...DZ.player.getTrackList().map(item => parseInt(item.id))];
-    let index = (DZ.player.getCurrentIndex() - 1) % tracklist.length;
-    DZ.player.playTracks(tracklist, index);
+    getQueueTracks().then(tracks => {
+        let index = (DZ.player.getCurrentIndex() - 1) % tracks.length;
+        DZ.player.playTracks(tracks, index);
+    });
 }
 
 async function buttonRepeat() {
