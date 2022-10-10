@@ -44,6 +44,7 @@ import { Offcanvas } from 'bootstrap';
 
 import QueueTrack from "/components/results/QueueTrack.vue";
 import { getQueue, clearQueue, getQueueTracks } from "/js/queue.js";
+import { addToQueue } from "../js/queue";
 
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
@@ -55,6 +56,8 @@ const queue = ref({
 const increment = ref({
     index: -1,
 });
+
+const flow = ref(false);
 
 function buttonClear() {
     let current_track = DZ.player.getCurrentTrack();
@@ -97,11 +100,17 @@ function buttonClear() {
 }
 
 async function buttonFlow(event) {
-    if (event.target.checked) {
-        DZ.api(`/user/me/flow?access_token=${localStorage.getItem("token")}`, response => {
-            console.log(response);
+    flow.value = event.target.checked;
+}
+
+async function getFlow() {
+    console.log("Getting flow...");
+    DZ.api(`/user/me/flow?access_token=${localStorage.getItem("token")}`, async function (response) {
+        await addToQueue(response.data.map(item => parseInt(item.id)));
+        getQueueTracks().then(tracks => {
+            DZ.player.playTracks(tracks, store.queue_index);
         });
-    }
+    });
 }
 
 async function removeTrack(index) {
@@ -137,15 +146,17 @@ async function _toggle() {
 
 DZ.Event.subscribe('track_end', async function (val) {
     console.log("Track ending:");
-    console.log(increment.value.index, store.queue_index)
 
     if (increment.value.index != store.queue_index) {
         increment.value.index = store.queue_index;
         store.queue_index++;
     }
 
-    if (store.queue_index == queue.value.tracks.length - 1) {
+    if (store.queue_index == queue.value.tracks.length) {
         console.log("Reached queue end.");
+        if (flow.value) {
+            getFlow();
+        }
     }
 });
 
