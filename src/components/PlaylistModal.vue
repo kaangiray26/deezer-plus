@@ -1,6 +1,5 @@
 <template>
-    <div id="playlistModal" class="modal fade" role="dialog" tabindex="-1" data-bs-backdrop="static" aria-hidden="true"
-        ref="modalEle">
+    <div id="playlistModal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true" ref="modalEle">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header d-flex flex-column">
