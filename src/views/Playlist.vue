@@ -158,7 +158,7 @@ function formatDuration(num) {
     if (num > 3600) {
         return Math.floor(num / 3600) + " hrs " + Math.floor((num % 3600) / 60) + " mins";
     }
-    return parseInt((num % 3600) / 60) + " mins";
+    return Math.floor((num % 3600) / 60) + " mins";
 }
 
 function numberWithCommas(x) {
