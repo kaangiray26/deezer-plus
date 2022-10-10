@@ -3,7 +3,8 @@
         :album_id="props.album.id" :artist_id="props.artist.id" type="tracks"
         style="flex-wrap: nowrap; width: 100% !important;">
         <td class="col-6 d-flex align-items-center text-nowrap text-truncate">
-            <div><img class="img-fluid" :src="props.cover" width="40" height="40" />
+            <div>
+                <img class="img-fluid" :src="props.cover" width="40" height="40" />
                 <button class="btn btn-link track-link" @click="play(props.index)">{{props.track.title}}</button>
             </div>
         </td>

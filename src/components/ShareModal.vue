@@ -121,7 +121,7 @@ const googleSearch = computed(() => {
     }
 })
 
-async function copyText(event) {
+function copyText(event) {
     navigator.clipboard.writeText(event.target.parentElement.children[1].value).then(function () {
         console.log('Async: Copying to clipboard was successful!');
     }, function (err) {

@@ -4,6 +4,7 @@
     </component>
     <Toast ref="thisToast" :message="toastMessage"></Toast>
     <ShareModal @text-copy="notify('URL Copied.')" ref="thisShareModal"></ShareModal>
+    <PlaylistModal @playlist-add="notify('Added to playlist.')" ref="thisPlaylistModal"></PlaylistModal>
 </template>
 
 <script setup>
@@ -14,6 +15,7 @@ import { addToQueue, removeFromQueue } from "/js/queue.js";
 import router from "/router";
 import Toast from "/components/liveToast.vue";
 import ShareModal from '/components/ShareModal.vue';
+import PlaylistModal from '/components/PlaylistModal.vue';
 
 import TrackContextMenu from "./context_menus/TrackContextMenu.vue";
 import AlbumContextMenu from "./context_menus/AlbumContextMenu.vue";
@@ -31,6 +33,8 @@ let thisToast = ref(null);
 const toastMessage = ref("");
 
 let thisShareModal = ref(null);
+
+let thisPlaylistModal = ref(null);
 
 const currentSearchField = ref("");
 const isContextMenuVisible = ref(false);
@@ -218,6 +222,9 @@ async function contextMenuEvent(event) {
     if (event == 'launchTrackMix') {
         //
         return;
+    }
+    if (event == 'addTrackToPlaylist') {
+        thisPlaylistModal.value.show(selectedItem.value.attributes.track_id.value);
     }
 
     // Sharing Events
