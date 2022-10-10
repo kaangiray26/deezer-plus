@@ -16,12 +16,12 @@
                             <span class="input-group-text">via Deezer</span>
                             <input type="text" class="form-control"
                                 :value="'https://www.deezer.com/en/track/'+content.id" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text">via Google</span>
                             <input type="text" class="form-control" :value="googleSearch" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'album'">
@@ -30,12 +30,12 @@
                             <span class="input-group-text">via Deezer</span>
                             <input type="text" class="form-control"
                                 :value="'https://www.deezer.com/en/album/'+content.id" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text">via Google</span>
                             <input type="text" class="form-control" :value="googleSearch" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'artist'">
@@ -44,12 +44,12 @@
                             <span class="input-group-text">via Deezer</span>
                             <input type="text" class="form-control"
                                 :value="'https://www.deezer.com/en/artist/'+content.id" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text">via Google</span>
                             <input type="text" class="form-control" :value="googleSearch" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'playlist'">
@@ -58,7 +58,7 @@
                             <span class="input-group-text">via Deezer</span>
                             <input type="text" class="form-control"
                                 :value="'https://www.deezer.com/en/playlist/'+content.id" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'radio'">
@@ -67,7 +67,7 @@
                             <span class="input-group-text">via Deezer</span>
                             <input type="text" class="form-control"
                                 :value="'https://www.deezer.com/en/mixes/genre/'+content.id" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);$emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
                         </div>
                     </div>
                 </div>
@@ -79,6 +79,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { Modal } from 'bootstrap'
+
+const emit = defineEmits(['text-copy'])
 
 let modalEle = ref(null);
 let thisModalObj = null;

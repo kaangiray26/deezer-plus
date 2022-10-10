@@ -54,7 +54,7 @@
                                             <TrackResult v-for="item in results.tracks" :id="item.track.id"
                                                 :cover="item.cover" :artist="item.artist" :album="item.album"
                                                 :track="item.track" :duration="item.duration"
-                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                             </TrackResult>
                                         </tbody>
                                     </table>
@@ -88,7 +88,7 @@
                                             <PlaylistResult v-for="item in results.playlists" :id="item.playlist.id"
                                                 :cover="item.cover" :playlist="item.playlist" :user="item.user"
                                                 :nb_tracks="item.nb_tracks"
-                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                             </PlaylistResult>
                                         </tbody>
                                     </table>
@@ -124,7 +124,7 @@
                                             <AlbumResult v-for="item in results.albums" :id="item.album.id"
                                                 :cover="item.cover" :artist="item.artist" :album="item.album"
                                                 :nb_tracks="item.nb_tracks" :explicit_lyrics="item.explicit_lyrics"
-                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                             </AlbumResult>
                                         </tbody>
                                     </table>
@@ -158,7 +158,7 @@
                                             <ArtistResult v-for="item in results.artists" :id="item.artist.id"
                                                 :cover="item.cover" :artist="item.artist" :nb_album="item.nb_album"
                                                 :nb_fan="item.nb_fan"
-                                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                                             </ArtistResult>
                                         </tbody>
                                     </table>
@@ -181,6 +181,8 @@ import TrackResult from "/components/results/TrackResultFav.vue";
 import PlaylistResult from "/components/results/PlaylistResultFav.vue";
 import ArtistResult from "/components/results/ArtistResultFav.vue";
 import AlbumResult from "/components/results/AlbumResultFav.vue";
+
+const emit = defineEmits(["right-click"]);
 
 const query = ref(null);
 

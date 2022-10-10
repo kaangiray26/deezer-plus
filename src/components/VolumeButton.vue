@@ -1,6 +1,6 @@
 <template>
     <button id="volumeButton" ref="thisTooltipObj" class="volumeButton btn btn-dark hover-color bi" type="button"
-        @wheel.prevent="$emit('change-volume', {'event':$event})" @click="$emit('trigger-volume')" :class="volumeClass"
+        @wheel.prevent="emit('change-volume', {'event':$event})" @click="emit('trigger-volume')" :class="volumeClass"
         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="100" :volume="setVolume">
     </button>
 </template>
@@ -8,6 +8,8 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { Tooltip } from 'bootstrap';
+
+const emit = defineEmits(['change-volume', 'trigger-volume']);
 
 const tooltip = ref(null);
 

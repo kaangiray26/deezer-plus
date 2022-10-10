@@ -41,7 +41,7 @@
                     <tbody @scroll.passive="onScroll($event)">
                         <PlaylistResult v-for="item in loved.playlists" :id="item.playlist.id" :cover="item.cover"
                             :playlist="item.playlist" :user="item.user" :nb_tracks="item.nb_tracks"
-                            @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                         </PlaylistResult>
                     </tbody>
                 </table>
@@ -53,6 +53,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import PlaylistResult from "/components/results/PlaylistResult.vue";
+
+const emit = defineEmits(["right-click"]);
 
 const lovedLoaded = ref(false);
 const searchFinished = ref(true);

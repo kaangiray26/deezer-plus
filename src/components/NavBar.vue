@@ -25,13 +25,15 @@
                 </div>
             </div>
         </div>
-        <router-view @right-click="$emit('right-click', $event)" />
+        <router-view @right-click="emit('right-click', $event)" />
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import router from "/router";
+
+const emit = defineEmits(["right-click"]);
 
 let search_input = ref(null);
 

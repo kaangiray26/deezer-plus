@@ -10,7 +10,7 @@
                 <div class="modal-body">
                     <p>If you want to use this application with your own account, you need to log in.</p>
                     <div class="input-group"><button class="btn btn-primary flex-fill" type="button"
-                            @click="$emit('requestLogin')">Log in</button></div>
+                            @click="emit('requestLogin')">Log in</button></div>
                 </div>
             </div>
         </div>
@@ -23,6 +23,8 @@ import { Modal } from 'bootstrap'
 
 let modalEle = ref(null);
 let thisModalObj = null;
+
+const emit = defineEmits(['requestLogin']);
 
 onMounted(() => {
     thisModalObj = new Modal(modalEle.value);

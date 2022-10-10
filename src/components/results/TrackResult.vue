@@ -1,24 +1,24 @@
 <template>
     <tr class="row gx-0 d-flex flex-row" :track_id="props.track.id" :album_id="props.album.id"
         :artist_id="props.artist.id" type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
-        <td class="col-6 text-nowrap text-truncate">
+        <td class="col-6 d-flex align-items-center text-nowrap text-truncate">
             <div><img class="img-fluid" :src="props.cover" width="40" height="40" />
                 <button class="btn btn-link track-link" @click="play(props.track.id)">{{props.track.title}}</button>
             </div>
         </td>
-        <td class="col-2 text-nowrap text-truncate">
+        <td class="col-2 d-flex align-items-center text-nowrap text-truncate">
             <div>
-                <router-link :to="/artist/+props.artist.id" @click="$emit('route-click')">{{props.artist.title}}
+                <router-link :to="/artist/+props.artist.id" @click="emit('route-click')">{{props.artist.title}}
                 </router-link>
             </div>
         </td>
-        <td class="col-3 text-nowrap text-truncate">
+        <td class="col-3 d-flex align-items-center text-nowrap text-truncate">
             <div>
-                <router-link :to="/album/+props.album.id" @click="$emit('route-click')">{{props.album.title}}
+                <router-link :to="/album/+props.album.id" @click="emit('route-click')">{{props.album.title}}
                 </router-link>
             </div>
         </td>
-        <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
+        <td class="col-1 d-flex align-items-center justify-content-end text-nowrap text-truncate">
             <div><span>{{Math.floor(props.duration/60)}}:{{padWithZero(props.duration % 60)}}</span></div>
         </td>
     </tr>
@@ -26,6 +26,8 @@
 
 <script setup>
 import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+
+const emit = defineEmits(['route-click']);
 
 function padWithZero(num) {
     return String(num).padStart(2, '0');

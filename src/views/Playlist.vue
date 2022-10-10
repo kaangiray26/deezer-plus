@@ -68,30 +68,32 @@
                         <tbody>
                             <tr v-for="track in playlist.tracks" :track_id="track.id" :album_id="track.album.id"
                                 :artist_id="track.artist.id" class="row gx-0 d-flex flex-row"
-                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
+                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
-                                <td class="col-6 text-nowrap text-truncate">
+                                <td class="col-6 d-flex align-items-center text-nowrap text-truncate">
                                     <div><img class="img-fluid" :src="track.album.cover_small" width="40" height="40" />
                                         <button class="btn btn-link track-link"
                                             @click="playTrack(track.id)">{{track.title}}</button>
                                     </div>
                                 </td>
-                                <td class="col-2 text-nowrap text-truncate">
+                                <td class="col-2 d-flex align-items-center text-nowrap text-truncate">
                                     <div>
-                                        <router-link :to="/artist/+track.artist.id" @click="$emit('route-click')">
+                                        <router-link :to="/artist/+track.artist.id" @click="emit('route-click')">
                                             {{track.artist.name}}</router-link>
                                     </div>
                                 </td>
-                                <td class="col-2 text-nowrap text-truncate">
+                                <td class="col-2 d-flex align-items-center text-nowrap text-truncate">
                                     <div>
-                                        <router-link :to="/album/+track.album.id" @click="$emit('route-click')">
+                                        <router-link :to="/album/+track.album.id" @click="emit('route-click')">
                                             {{track.album.title}}</router-link>
                                     </div>
                                 </td>
-                                <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
+                                <td
+                                    class="col-1 d-flex align-items-center justify-content-end text-nowrap text-truncate">
                                     {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}
                                 </td>
-                                <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
+                                <td
+                                    class="col-1 d-flex align-items-center justify-content-end text-nowrap text-truncate">
                                     <button type="button" class="btn btn-outline-dark bi bi-x-lg"
                                         @click="removeTrack(track.id)"></button>
                                 </td>
@@ -113,6 +115,8 @@ import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 import { addToFav, removeFromFav } from "/js/favs.js";
 import Toast from "/components/liveToast.vue";
+
+const emit = defineEmits(["right-click", "route-click"]);
 
 const playlist = ref({});
 const playlistLoaded = ref(false);

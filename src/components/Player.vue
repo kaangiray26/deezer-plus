@@ -42,7 +42,7 @@
                                                 @trigger-volume="triggerVolume" :mute="mute" :volumeLevel="volumeLevel">
                                             </VolumeButton>
                                             <button class="btn btn-dark bi bi-collection hover-color" type="button"
-                                                @click="$emit('queueButton')">
+                                                @click="emit('queueButton')">
                                             </button>
                                         </div>
                                     </div>
@@ -64,6 +64,8 @@ import { getQueueTracks } from '/js/queue.js';
 
 import VolumeButton from "/components/VolumeButton.vue";
 import Scrobbler from "/components/Scrobbler.vue";
+
+const emit = defineEmits(['queueButton']);
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);

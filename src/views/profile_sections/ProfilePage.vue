@@ -30,7 +30,7 @@
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2" v-for="item in charts.tracks">
                 <TrackRecommendation :id="item.id" :title="item.title" :track_id="item.id" :album="item.album"
                     :artist="item.artist" :cover="item.album.cover_medium"
-                    @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                    @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                 </TrackRecommendation>
             </div>
         </div>
@@ -40,6 +40,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import TrackRecommendation from "../TrackRecommendation.vue";
+
+const emit = defineEmits(["right-click"]);
 
 const chartsLoaded = ref(false);
 const charts = ref({

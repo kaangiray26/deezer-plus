@@ -10,22 +10,22 @@
         </td>
         <td class="col-2 d-flex align-items-center text-nowrap text-truncate">
             <div>
-                <router-link :to="/artist/+props.artist.id" @click="$emit('route-click')">{{props.artist.title}}
+                <router-link :to="/artist/+props.artist.id" @click="emit('route-click')">{{props.artist.title}}
                 </router-link>
             </div>
         </td>
         <td class="col-2 d-flex align-items-center text-nowrap text-truncate">
             <div>
-                <router-link :to="/album/+props.album.id" @click="$emit('route-click')">{{props.album.title}}
+                <router-link :to="/album/+props.album.id" @click="emit('route-click')">{{props.album.title}}
                 </router-link>
             </div>
         </td>
         <td class="col-1 d-flex align-items-center text-nowrap text-truncate">
             <div><span>{{Math.floor(props.duration/60)}}:{{padWithZero(props.duration % 60)}}</span></div>
         </td>
-        <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
+        <td class="col-1 d-flex align-items-center justify-content-end text-nowrap text-truncate">
             <button type="button" class="btn btn-outline-dark bi bi-x-lg"
-                @click="$emit('remove-track', props.index)"></button>
+                @click="emit('remove-track', props.index)"></button>
         </td>
     </tr>
 </template>
@@ -34,6 +34,8 @@
 import { computed } from "vue";
 import { store } from '/js/store.js';
 import { getQueueTracks } from "/js/queue.js";
+
+const emit = defineEmits(['route-click', 'remove-track']);
 
 const playing = computed(() => {
     return (store.queue_index == props.index);

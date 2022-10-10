@@ -41,7 +41,7 @@
                     <tbody @scroll.passive="onScroll($event)">
                         <ArtistResult v-for="item in loved.artists" :id="item.artist.id" :cover="item.cover"
                             :artist="item.artist" :nb_album="item.nb_album" :nb_fan="item.nb_fan"
-                            @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                         </ArtistResult>
                     </tbody>
                 </table>
@@ -53,6 +53,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import ArtistResult from "/components/results/ArtistResult.vue";
+
+const emit = defineEmits(["right-click"]);
 
 const lovedLoaded = ref(false);
 const searchFinished = ref(true);

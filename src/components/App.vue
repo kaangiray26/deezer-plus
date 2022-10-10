@@ -102,6 +102,7 @@ async function keyPress(event) {
 }
 
 onMounted(() => {
+    window.focus();
     window.addEventListener('keydown', keyPress);
 });
 </script>

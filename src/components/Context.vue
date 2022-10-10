@@ -9,8 +9,9 @@
 
 <script setup>
 import { ref, nextTick } from "vue";
+import { store } from '/js/store.js';
 import { addToFav, removeFromFav } from "/js/favs.js";
-import { addToQueue, removeFromQueue } from "/js/queue.js";
+import { addToQueue, getQueueTracks } from "/js/queue.js";
 
 import router from "/router";
 import Toast from "/components/liveToast.vue";
@@ -152,6 +153,7 @@ async function contextMenuEvent(event) {
     if (event == 'addTrackToQueue') {
         await addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
         notify("Added to the queue.");
+
         return;
     }
     if (event == 'addAlbumToQueue') {

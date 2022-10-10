@@ -61,13 +61,13 @@
                         <tbody>
                             <tr v-for="(track, index) in album.tracks" :track_id="track.id" :album_id="album.id"
                                 :artist_id="album.artist_id" class="row gx-0 d-flex flex-row"
-                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
+                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
-                                <td class="col-1 text-nowrap text-truncate">{{index+1}}</td>
-                                <td class="col-10 text-nowrap text-truncate"><button :id="track.id"
-                                        class="btn btn-link track-link px-0"
+                                <td class="col-1 d-flex align-items-center text-nowrap text-truncate">{{index+1}}</td>
+                                <td class="col-10 d-flex align-items-center text-nowrap text-truncate"><button
+                                        :id="track.id" class="btn btn-link track-link px-0"
                                         @click="playTrack(track.id)">{{track.title}}</button></td>
-                                <td class="col-1 text-nowrap text-truncate">
+                                <td class="col-1 d-flex align-items-center text-nowrap text-truncate">
                                     {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}</td>
                             </tr>
                         </tbody>
@@ -86,6 +86,8 @@ import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 import { addToFav, removeFromFav } from "/js/favs.js";
 import Toast from "/components/liveToast.vue";
+
+const emit = defineEmits(["right-click"]);
 
 const album = ref({});
 const albumLoaded = ref(false);

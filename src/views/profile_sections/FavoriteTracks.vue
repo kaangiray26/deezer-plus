@@ -42,7 +42,7 @@
                     <tbody @scroll.passive="onScroll($event)">
                         <TrackResult v-for="item in loved.tracks" :id="item.track.id" :cover="item.cover"
                             :artist="item.artist" :album="item.album" :track="item.track" :duration="item.duration"
-                            @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                         </TrackResult>
                     </tbody>
                 </table>
@@ -54,6 +54,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import TrackResult from "/components/results/TrackResult.vue";
+
+const emit = defineEmits(["right-click"]);
 
 const lovedLoaded = ref(false);
 const searchFinished = ref(true);

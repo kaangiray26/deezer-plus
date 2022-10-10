@@ -145,11 +145,12 @@ async function _toggle() {
 }
 
 DZ.Event.subscribe('track_end', async function (val) {
-    console.log("Track ending:");
-
     if (increment.value.index != store.queue_index) {
         increment.value.index = store.queue_index;
         store.queue_index++;
+        getQueueTracks().then(tracks => {
+            DZ.player.playTracks(tracks, store.queue_index);
+        });
     }
 
     if (store.queue_index == queue.value.tracks.length) {

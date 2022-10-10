@@ -43,7 +43,7 @@
                         <AlbumResult v-for="item in loved.albums" :id="item.album.id" :cover="item.cover"
                             :artist="item.artist" :album="item.album" :nb_tracks="item.nb_tracks"
                             :explicit_lyrics="item.explicit_lyrics"
-                            @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
                         </AlbumResult>
                     </tbody>
                 </table>
@@ -55,6 +55,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AlbumResult from "/components/results/AlbumResult.vue";
+
+const emit = defineEmits(["right-click"]);
 
 const lovedLoaded = ref(false);
 const searchFinished = ref(true);

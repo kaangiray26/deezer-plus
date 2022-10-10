@@ -27,7 +27,7 @@
                         <router-link to="/settings" class="btn btn-outline-dark fw-bolder">Settings</router-link>
                     </div>
                     <hr />
-                    <router-view @right-click="$emit('right-click', $event)"></router-view>
+                    <router-view @right-click="emit('right-click', $event)"></router-view>
                 </div>
             </div>
         </div>
@@ -36,6 +36,8 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+
+const emit = defineEmits(["right-click"]);
 
 const user = ref({});
 const userLoaded = ref(false);

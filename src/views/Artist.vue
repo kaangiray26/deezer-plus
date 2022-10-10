@@ -47,19 +47,19 @@
                         <tbody v-show="albumsLoaded">
                             <tr v-for="album in artist.albums" :album_id="album.id" :artist_id="artist.id"
                                 class="row gx-0 d-flex flex-row"
-                                @contextmenu.prevent="$emit('right-click', {'event':$event, 'target':$event.currentTarget})"
+                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                 type="albums" style="flex-wrap: nowrap; width: 100% !important;">
-                                <td class="col-9 text-nowrap text-truncate">
+                                <td class="col-9 d-flex align-items-center text-nowrap text-truncate">
                                     <div><img class="me-2 img-thumbnail" :src="album.cover" width="56" height="56" />
-                                        <router-link :to="/album/+album.id" @click="$emit('route-click')">
+                                        <router-link :to="/album/+album.id" @click="emit('route-click')">
                                             {{album.title}}
                                         </router-link>
                                     </div>
                                 </td>
-                                <td class="col-2 text-nowrap text-truncate">
+                                <td class="col-2 d-flex align-items-center text-nowrap text-truncate">
                                     <div><span>{{formatDate(album.release_date)}}</span></div>
                                 </td>
-                                <td class="col-1 text-nowrap text-truncate">
+                                <td class="col-1 d-flex align-items-center text-nowrap text-truncate">
                                     <div><span>{{album.explicit_lyrics?'Yes' : 'No'}}</span></div>
                                 </td>
                             </tr>
@@ -78,6 +78,8 @@ import router from "../router";
 
 import { addToFav, removeFromFav } from "/js/favs.js";
 import Toast from "/components/liveToast.vue";
+
+const emit = defineEmits(["right-click", "route-click"]);
 
 const artist = ref({
     albums: [],
