@@ -37,11 +37,13 @@
                                         </caption>
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
-                                                <th class="col-6">Track</th>
-                                                <th class="col-2">Artist</th>
-                                                <th class="col-2">Album</th>
-                                                <th class="col-1 bi bi-clock-fill"></th>
-                                                <th class="col-1">
+                                                <th class="col-6 d-flex align-items-center">Track</th>
+                                                <th class="col-2 d-flex align-items-center">Artist</th>
+                                                <th class="col-2 d-flex align-items-center">Album</th>
+                                                <th
+                                                    class="col-1 d-flex align-items-center justify-content-end bi bi-clock-fill">
+                                                </th>
+                                                <th class="col-1 d-flex align-items-center justify-content-end">
                                                     <button class="btn btn-light bi bi-heart-fill disabled"
                                                         type="button" style="opacity: 0.90;">
                                                     </button>
@@ -72,10 +74,10 @@
                                         </caption>
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
-                                                <th class="col-6">Playlist</th>
-                                                <th class="col-4">User</th>
-                                                <th class="col-1">Tracks</th>
-                                                <th class="col-1">
+                                                <th class="col-6 d-flex align-items-center">Playlist</th>
+                                                <th class="col-4 d-flex align-items-center">User</th>
+                                                <th class="col-1 d-flex align-items-center">Tracks</th>
+                                                <th class="col-1 d-flex align-items-center justify-content-end">
                                                     <button class="btn btn-light bi bi-heart-fill disabled"
                                                         type="button" style="opacity: 0.90;">
                                                     </button>
@@ -106,11 +108,12 @@
                                         </caption>
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
-                                                <th class="col-6">Album</th>
-                                                <th class="col-3">Artist</th>
-                                                <th class="col-1">Tracks</th>
-                                                <th class="col-1 bi bi-explicit-fill"></th>
-                                                <th class="col-1">
+                                                <th class="col-6 d-flex align-items-center">Album</th>
+                                                <th class="col-3 d-flex align-items-center">Artist</th>
+                                                <th class="col-1 d-flex align-items-center">Tracks</th>
+                                                <th class="col-1 d-flex align-items-center bi bi-explicit-fill">
+                                                </th>
+                                                <th class="col-1 d-flex align-items-center justify-content-end">
                                                     <button class="btn btn-light bi bi-heart-fill disabled"
                                                         type="button" style="opacity: 0.90;">
                                                     </button>
@@ -141,10 +144,10 @@
                                         </caption>
                                         <thead>
                                             <tr class="row gx-0 table-active" style="width: 100% !important;">
-                                                <th class="col-9">Artist</th>
-                                                <th class="col-1">Albums</th>
-                                                <th class="col-1">Fans</th>
-                                                <th class="col-1">
+                                                <th class="col-9 d-flex align-items-center">Artist</th>
+                                                <th class="col-1 d-flex align-items-center">Albums</th>
+                                                <th class="col-1 d-flex align-items-center">Fans</th>
+                                                <th class="col-1 d-flex align-items-center justify-content-end">
                                                     <button class="btn btn-light bi bi-heart-fill disabled"
                                                         type="button" style="opacity: 0.90;">
                                                     </button>

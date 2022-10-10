@@ -17,7 +17,7 @@
         <td class="col-1 text-nowrap text-truncate">
             <div><span>{{props.nb_tracks}}</span></div>
         </td>
-        <td class="col-1 text-nowrap text-truncate">
+        <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
             <button class="btn btn-light bi" :class="isFav" type="button" style="opacity: 0.90;"
                 @click="fav(props.playlist.id)">
             </button>
