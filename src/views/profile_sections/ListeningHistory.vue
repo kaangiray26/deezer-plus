@@ -28,10 +28,13 @@
                 <table class="table table-hover table-borderless">
                     <thead>
                         <tr class="row gx-0 table-active" style="width: 100% !important;">
-                            <th class="col-6">Track</th>
-                            <th class="col-2">Artist</th>
-                            <th class="col-3">Album</th>
-                            <th class="col-1 bi bi-clock-fill"></th>
+                            <th class="col-6 d-flex align-items-center">Track</th>
+                            <th class="col-2 d-flex align-items-center">Artist</th>
+                            <th class="col-2 d-flex align-items-center">Album</th>
+                            <th class="col-1 bi bi-clock-fill d-flex align-items-center justify-content-end"></th>
+                            <th class="col-1 d-flex align-items-center justify-content-end">
+                                <button class="btn btn-light bi bi-heart-fill disabled" type="button"></button>
+                            </th>
                         </tr>
                     </thead>
                     <tbody @scroll.passive="onScroll($event)">
@@ -48,7 +51,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import TrackResult from "/components/results/TrackResult.vue";
+import TrackResult from "/components/results/TrackResultFav.vue";
 
 const historyLoaded = ref(false);
 const searchFinished = ref(true);

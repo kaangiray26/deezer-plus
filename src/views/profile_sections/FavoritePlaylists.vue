@@ -33,9 +33,9 @@
                     </caption>
                     <thead>
                         <tr class="row gx-0 table-active" style="width: 100% !important;">
-                            <th class="col-6">Playlist</th>
-                            <th class="col-5">User</th>
-                            <th class="col-1">Tracks</th>
+                            <th class="col-6 d-flex align-items-center">Playlist</th>
+                            <th class="col-5 d-flex align-items-center">User</th>
+                            <th class="col-1 d-flex align-items-center">Tracks</th>
                         </tr>
                     </thead>
                     <tbody @scroll.passive="onScroll($event)">

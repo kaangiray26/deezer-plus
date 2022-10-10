@@ -33,10 +33,10 @@
                     </caption>
                     <thead>
                         <tr class="row gx-0 table-active" style="width: 100% !important;">
-                            <th class="col-6">Track</th>
-                            <th class="col-4">Artist</th>
-                            <th class="col-1">Tracks</th>
-                            <th class="col-1 bi-explicit-fill"></th>
+                            <th class="col-6 d-flex align-items-center">Track</th>
+                            <th class="col-4 d-flex align-items-center">Artist</th>
+                            <th class="col-1 d-flex align-items-center">Tracks</th>
+                            <th class="col-1 d-flex align-items-center bi-explicit-fill"></th>
                         </tr>
                     </thead>
                     <tbody @scroll.passive="onScroll($event)">

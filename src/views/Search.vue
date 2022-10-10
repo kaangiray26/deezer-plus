@@ -174,10 +174,10 @@
 import { ref, watch, computed, onMounted } from "vue";
 import router from "/router";
 
-import TrackResult from "../components/results/TrackResult.vue";
-import PlaylistResult from "../components/results/PlaylistResult.vue";
-import ArtistResult from "../components/results/ArtistResult.vue";
-import AlbumResult from "../components/results/AlbumResult.vue";
+import TrackResult from "/components/results/TrackResultFav.vue";
+import PlaylistResult from "/components/results/PlaylistResultFav.vue";
+import ArtistResult from "/components/results/ArtistResultFav.vue";
+import AlbumResult from "/components/results/AlbumResultFav.vue";
 
 const query = ref(null);
 

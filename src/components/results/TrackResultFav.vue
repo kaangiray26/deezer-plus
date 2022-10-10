@@ -12,7 +12,7 @@
                 </router-link>
             </div>
         </td>
-        <td class="col-3 text-nowrap text-truncate">
+        <td class="col-2 text-nowrap text-truncate">
             <div>
                 <router-link :to="/album/+props.album.id" @click="$emit('route-click')">{{props.album.title}}
                 </router-link>
@@ -21,11 +21,19 @@
         <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
             <div><span>{{Math.floor(props.duration/60)}}:{{padWithZero(props.duration % 60)}}</span></div>
         </td>
+        <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
+            <button class="btn btn-light bi" :class="isFav" type="button" style="opacity: 0.90;"
+                @click="fav(props.track.id)">
+            </button>
+        </td>
     </tr>
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from "vue";
 import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+
+const fav_tracks = ref([]);
 
 function padWithZero(num) {
     return String(num).padStart(2, '0');
@@ -37,6 +45,20 @@ async function play(id) {
         DZ.player.playTracks(tracks);
     });
 }
+
+async function fav(id) {
+    if (fav_tracks.value.includes(id)) {
+        fav_tracks.value = fav_tracks.value.filter((item) => item !== id);
+        localStorage.setItem('fav_tracks', JSON.stringify(fav_tracks.value));
+    } else {
+        fav_tracks.value.push(id);
+        localStorage.setItem('fav_tracks', JSON.stringify(fav_tracks.value));
+    }
+}
+
+const isFav = computed(() => {
+    return fav_tracks.value.includes(props.track.id) ? 'bi-heart-fill text-danger' : 'bi-heart';
+});
 
 const props = defineProps({
     cover: {
@@ -57,5 +79,9 @@ const props = defineProps({
     fav: {
         type: Boolean,
     }
+});
+
+onMounted(() => {
+    fav_tracks.value = JSON.parse(localStorage.getItem('fav_tracks'));
 });
 </script>

@@ -56,10 +56,13 @@
                     <table class="table table-borderless table-hover">
                         <thead>
                             <tr class="row gx-0 table-active" style="width: 100% !important;">
-                                <th class="col-6">Track</th>
-                                <th class="col-2">Artist</th>
-                                <th class="col-3">Album</th>
-                                <th class="col-1 bi bi-clock-fill"></th>
+                                <th class="col-6 d-flex align-items-center">Track</th>
+                                <th class="col-2 d-flex align-items-center">Artist</th>
+                                <th class="col-2 d-flex align-items-center">Album</th>
+                                <th class="col-1 bi bi-clock-fill d-flex align-items-center justify-content-end"></th>
+                                <th class="col-1 d-flex align-items-center justify-content-end">
+                                    <button type=" button" class="btn btn-outline-dark bi bi-x-lg disabled"></button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,14 +82,19 @@
                                             {{track.artist.name}}</router-link>
                                     </div>
                                 </td>
-                                <td class="col-3 text-nowrap text-truncate">
+                                <td class="col-2 text-nowrap text-truncate">
                                     <div>
                                         <router-link :to="/album/+track.album.id" @click="$emit('route-click')">
                                             {{track.album.title}}</router-link>
                                     </div>
                                 </td>
-                                <td class="col-1 text-nowrap text-truncate">
-                                    {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}</td>
+                                <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
+                                    {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}
+                                </td>
+                                <td class="col-1 d-flex justify-content-end text-nowrap text-truncate">
+                                    <button type="button" class="btn btn-outline-dark bi bi-x-lg"
+                                        @click="removeTrack(track.id)"></button>
+                                </td>
                             </tr>
                         </tbody>
 
@@ -146,7 +154,7 @@ function formatDuration(num) {
     if (num > 3600) {
         return Math.floor(num / 3600) + " hrs " + Math.floor((num % 3600) / 60) + " mins";
     }
-    return (num % 3600) / 60 + " mins";
+    return parseInt((num % 3600) / 60) + " mins";
 }
 
 function numberWithCommas(x) {
@@ -167,7 +175,16 @@ async function play(id) {
     });
 }
 
+async function removeTrack(id) {
+    DZ.api(`/playlist/${playlist.value.id}/tracks?access_token=${localStorage.getItem('token')}`, 'DELETE', {
+        songs: String(id)
+    }, async function () {
+        await get_playlist(router.currentRoute.value.params.id);
+        notify('Track removed from playlist');
+    });
+}
+
 onMounted(() => {
     get_playlist(router.currentRoute.value.params.id);
-})
+});
 </script>
