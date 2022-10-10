@@ -1,5 +1,5 @@
 <template>
-    <tr class="row gx-0 d-flex flex-row" :class="{'table-warning':playing}" :track_id="props.track.id"
+    <tr class="row gx-0 d-flex flex-row" :class="{'table-warning placeholder-glow':playing}" :track_id="props.track.id"
         :album_id="props.album.id" :artist_id="props.artist.id" type="tracks"
         style="flex-wrap: nowrap; width: 100% !important;">
         <td class="col-6 d-flex align-items-center text-nowrap text-truncate">
