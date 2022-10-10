@@ -114,15 +114,17 @@ async function buttonPlay() {
 
 async function buttonNext() {
     getQueueTracks().then(tracks => {
-        let index = (DZ.player.getCurrentIndex() + 1) % tracks.length;
+        let index = (store.queue_index + 1) % tracks.length;
         DZ.player.playTracks(tracks, index);
+        store.queue_index++;
     });
 }
 
 async function buttonPrev() {
     getQueueTracks().then(tracks => {
-        let index = (DZ.player.getCurrentIndex() - 1) % tracks.length;
+        let index = (store.queue_index - 1) % tracks.length;
         DZ.player.playTracks(tracks, index);
+        store.queue_index--;
     });
 }
 
@@ -250,10 +252,6 @@ DZ.Event.subscribe('mute_changed', async function (val) {
 DZ.Event.subscribe('volume_changed', async function (val) {
     volumeLevel.value = val;
 });
-
-DZ.Event.subscribe('track_end', async function (val) {
-    console.log("Track ending:", val);
-})
 
 defineExpose({
     buttonPlay,

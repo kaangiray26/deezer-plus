@@ -30,10 +30,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { computed } from "vue";
+import { store } from '/js/store.js';
 import { getQueueTracks } from "/js/queue.js";
 
-const playing = ref(false);
+const playing = computed(() => {
+    return (store.queue_index == props.index);
+});
 
 const props = defineProps({
     index: {
@@ -67,18 +70,10 @@ async function play(index) {
     });
 }
 
-DZ.Event.subscribe('current_track', async function (obj) {
-    if (props.index == parseInt(DZ.player.getCurrentIndex())) {
-        playing.value = true;
-        return;
-    }
-    playing.value = false;
-});
-
-onMounted(() => {
-    if (props.index == parseInt(DZ.player.getCurrentIndex())) {
-        playing.value = true;
-    }
-})
+// onMounted(() => {
+//     if (props.index == parseInt(DZ.player.getCurrentIndex())) {
+//         playing.value = true;
+//     }
+// })
 
 </script>

@@ -4,8 +4,13 @@
         <div class="offcanvas-body">
             <div class="row justify-content-center gx-0">
                 <div class="btn-group bg-dark justify-content-end border p-2 mb-1" role="group">
-                    <div>
-                        <button class="btn btn-outline-light hover-color" type="button"
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <input type="checkbox" class="btn-check" id="btn-check" autocomplete="off"
+                                @change="buttonFlow">
+                            <label class="btn btn-outline-light" for="btn-check">Flow</label>
+                        </div>
+                        <button class="btn btn-outline-light hover-color mx-1" type="button"
                             @click="buttonClear">Clear</button>
                     </div>
                 </div>
@@ -38,13 +43,17 @@ import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
 
 import QueueTrack from "/components/results/QueueTrack.vue";
-import { getQueue, clearQueue } from "/js/queue.js";
+import { getQueue, clearQueue, getQueueTracks } from "/js/queue.js";
 
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
 
 const queue = ref({
     tracks: []
+});
+
+const increment = ref({
+    index: -1,
 });
 
 function buttonClear() {
@@ -87,9 +96,21 @@ function buttonClear() {
     // }
 }
 
+async function buttonFlow(event) {
+    if (event.target.checked) {
+        DZ.api(`/user/me/flow?access_token=${localStorage.getItem("token")}`, response => {
+            console.log(response);
+        });
+    }
+}
+
 async function removeTrack(index) {
     queue.value.tracks.splice(index, 1);
     clearQueue(queue.value.tracks);
+
+    getQueueTracks().then(tracks => {
+        DZ.player.playTracks(tracks);
+    });
 
     // if (DZ.player.isPlaying()) {
     //     DZ.player.playTracks(queue.value.tracks.map(item => parseInt(item.track.id)));
@@ -113,6 +134,24 @@ async function _hide() {
 async function _toggle() {
     thisOffCanvasObj.toggle();
 }
+
+DZ.Event.subscribe('track_end', async function (val) {
+    console.log("Track ending:");
+    console.log(increment.value.index, store.queue_index)
+
+    if (increment.value.index != store.queue_index) {
+        increment.value.index = store.queue_index;
+        store.queue_index++;
+    }
+
+    if (store.queue_index == queue.value.tracks.length - 1) {
+        console.log("Reached queue end.");
+    }
+});
+
+DZ.Event.subscribe('tracklist_changed', async function (obj) {
+    store.queue_index = obj.index;
+});
 
 defineExpose({
     show: _show,
