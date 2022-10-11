@@ -58,6 +58,15 @@
                         </table>
                     </div>
                     <hr />
+                    <div class="d-flex flex-column ">
+                        <div class="d-flex justify-content-start mb-4">
+                            <img class="img-fluid figure-img rounded" src="/assets/Deezer_Logo_RVB_Black.svg"
+                                style="height: 32px;">
+                        </div>
+                        <div class="input-group">
+                            <button class="btn btn-outline-dark" @click="logout">Logout</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,6 +104,13 @@ async function displayLastfm() {
     let data = JSON.parse(localStorage.getItem('lastfm'));
     data['connected'] = true;
     settings.value.lastfm = data;
+}
+
+async function logout() {
+    localStorage.clear();
+    document.cookie = 'currentAuthResponse' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    window.location.href = "/";
+
 }
 
 onMounted(() => {

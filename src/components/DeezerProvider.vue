@@ -124,7 +124,7 @@ function hideModal() {
 
 async function getLoginStatus(response) {
     let token = localStorage.getItem("token");
-    if (token == null) {
+    if (!token) {
         showModal();
         return;
     }
@@ -137,7 +137,6 @@ async function getLoginStatus(response) {
 function login() {
     DZ.login(function (response) {
         if (response.authResponse) {
-            localStorage.setItem('id', response.userID);
             localStorage.setItem('token', response.authResponse.accessToken);
             localStorage.setItem('queue', JSON.stringify([]));
             localStorage.setItem('scrobbling', false);
@@ -146,8 +145,13 @@ function login() {
             localStorage.setItem('fav_artists', JSON.stringify([]));
             localStorage.setItem('fav_playlists', JSON.stringify([]));
             localStorage.setItem('fav_radios', JSON.stringify([]));
-            hideModal();
-            location.reload();
+
+            DZ.api(`/user/me?access_token=${localStorage.getItem("token")}`, data => {
+                localStorage.setItem('id', data.id);
+                localStorage.setItem('username', data.name);
+                hideModal();
+                location.reload();
+            });
         } else {
             console.log('User cancelled login or did not fully authorize.');
         }
