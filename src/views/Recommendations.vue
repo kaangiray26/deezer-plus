@@ -152,11 +152,11 @@ const recommendations = ref({
 const recsVisible = ref(false);
 
 async function get_recommendations() {
+    get_rec_tracks();
     get_rec_albums();
     get_rec_releases();
     get_rec_artists();
     get_rec_playlists();
-    get_rec_tracks();
     get_rec_radios();
     recsVisible.value = true;
 }
@@ -257,7 +257,7 @@ function handleRecRadios(item) {
     return;
 }
 
-onMounted(function () {
+onMounted(() => {
     get_recommendations();
 });
 </script>
