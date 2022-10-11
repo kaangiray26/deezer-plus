@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="modal-body d-flex justify-content-center">
-                    <button class="btn btn-dark" @click="goHome">
+                    <button class="btn btn-dark bi bi-plugin" @click="goHome">
                         Plug back in.
                     </button>
                 </div>
