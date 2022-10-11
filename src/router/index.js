@@ -18,6 +18,7 @@ import FavoritePlaylists from '/views/profile_sections/FavoritePlaylists.vue';
 
 import Settings from '/views/Settings.vue';
 import Lastfm from '/views/Lastfm.vue';
+import PageNotFound from '/views/PageNotFound.vue';
 
 const routes = [
     {
@@ -85,6 +86,10 @@ const routes = [
     {
         path: '/lastfm',
         component: Lastfm
+    },
+    {
+        path: '/:catchAll(.*)',
+        component: PageNotFound
     }
 ]
 
