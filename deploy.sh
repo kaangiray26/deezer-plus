@@ -10,6 +10,8 @@ rm -rf src/dist
 npm run build
 
 # navigate into the build output directory
+cp src/assets/404.png src/dist/assets/
+
 cd src/dist
 
 # if you are deploying to a custom domain
