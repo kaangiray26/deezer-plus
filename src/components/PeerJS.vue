@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { store } from "/js/store.js";
 
 const emit = defineEmits(['show', 'reset']);
