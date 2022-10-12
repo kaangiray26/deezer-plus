@@ -100,6 +100,7 @@ async function rejectRequest() {
         username: localStorage.getItem('username'),
     });
     cleanup();
+    emit('reset');
 }
 
 async function disconnect() {
@@ -145,7 +146,8 @@ props.conn.on("data", data => {
     if (data.type == 'reject') {
         store.peer_status = 'disconnected';
         notify(data.username + ' rejected your request.');
-        emit('show');
+        cleanup();
+        emit('reset');
     }
 });
 
