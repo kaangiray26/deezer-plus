@@ -67,6 +67,17 @@
                             <button class="btn btn-outline-dark" @click="logout">Logout</button>
                         </div>
                     </div>
+                    <hr />
+                    <div>
+                        <p>
+                            <a href="https://github.com/kaangiray26/deezer-plus" target="_blank">Deezer+</a> is a free,
+                            open-source project.<br />
+                            If you like it, please consider supporting it by <a
+                                href="https://www.buymeacoffee.com/DeezerPlus" target="_blank">buying me a
+                                coffee</a>.<br />
+                            Made with <del class="fw-bolder text-danger">love</del> fritz-kola.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

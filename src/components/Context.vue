@@ -9,9 +9,8 @@
 
 <script setup>
 import { ref, nextTick } from "vue";
-import { store } from '/js/store.js';
 import { addToFav, removeFromFav } from "/js/favs.js";
-import { addToQueue, getQueueTracks } from "/js/queue.js";
+import { addToQueue } from "/js/queue.js";
 
 import router from "/router";
 import Toast from "/components/liveToast.vue";

@@ -16,6 +16,7 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)),
             'bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
             'md5': path.resolve(__dirname, 'node_modules/md5'),
+            'peerjs': path.resolve(__dirname, 'node_modules/peerjs'),
         }
     },
 })

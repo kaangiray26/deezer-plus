@@ -1,10 +1,13 @@
 <template>
     <div @click="context_hide" @key.esc="context_hide" tabindex="0">
         <HelpModal ref="thisHelpModal"></HelpModal>
-        <DeezerProvider></DeezerProvider>
+        <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"></GroupSession>
+        <DeezerProvider>
+        </DeezerProvider>
         <Context ref="thisContext"></Context>
         <NavBar ref="thisNavBar" @right-click="right_click"></NavBar>
-        <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()"></Player>
+        <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @groupSession="thisGroupSession.toggle()">
+        </Player>
         <Queue ref="thisOffCanvas"></Queue>
     </div>
 </template>
@@ -18,12 +21,20 @@ import NavBar from '/components/NavBar.vue';
 import Player from '/components/Player.vue';
 import Queue from '/components/Queue.vue';
 import HelpModal from '/components/HelpModal.vue';
+import GroupSession from '/components/GroupSession.vue';
 
 let thisContext = ref(null);
 let thisOffCanvas = ref(null);
 let thisNavBar = ref(null);
 let thisHelpModal = ref(null);
 let thisPlayer = ref(null);
+let thisGroupSession = ref(null);
+
+const groupKey = ref(0);
+
+async function reset_group_session() {
+    groupKey.value += 1;
+}
 
 async function right_click(event) {
     thisContext.value.right_click(event);
@@ -46,6 +57,12 @@ async function keyPress(event) {
     if (event.target.tagName != 'INPUT' && event.key == 'h') {
         event.preventDefault();
         thisHelpModal.value.show();
+        return;
+    }
+
+    if (event.target.tagName != 'INPUT' && event.key == 'g') {
+        event.preventDefault();
+        thisGroupSession.value.show();
         return;
     }
 

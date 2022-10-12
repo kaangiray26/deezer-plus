@@ -114,6 +114,13 @@ td {
     z-index: 1031;
 }
 
+.online {
+    background-color: var(--bs-success) !important;
+    border-color: var(--bs-success) !important;
+    border-radius: 100% !important;
+    border: 8px solid rgba(0, 0, 0, 0.25);
+}
+
 #playerBar {
     opacity: 0.95;
 }

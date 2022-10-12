@@ -12,6 +12,7 @@ if (window.location.hostname == 'localhost') {
 const store = reactive({
     playerHeight: 0,
     queue_index: 0,
+    peer_status: 'disconnected',
     scrobbling: false,
     api_key: api_key,
     shared_secret: shared_secret,

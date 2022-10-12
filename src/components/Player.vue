@@ -35,6 +35,9 @@
                                     <span class="font-monospace mx-2">{{duration}}</span>
                                     <div class="d-flex ms-4">
                                         <div class="btn-group">
+                                            <button class="btn btn-dark bi bi-soundwave" type="button"
+                                                @click="emit('groupSession')">
+                                            </button>
                                             <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
                                                 type="button" @click="buttonRepeat">
                                             </button>
@@ -65,7 +68,7 @@ import { getQueueTracks } from '/js/queue.js';
 import VolumeButton from "/components/VolumeButton.vue";
 import Scrobbler from "/components/Scrobbler.vue";
 
-const emit = defineEmits(['queueButton']);
+const emit = defineEmits(['queueButton', 'groupSession']);
 
 const isPlaying = ref(false);
 const isLoaded = ref(false);
@@ -190,6 +193,10 @@ async function lowerVolume() {
 
 async function showVolume() {
     thisTooltip.value.show();
+}
+
+async function groupSession() {
+    console.log("Group session...");
 }
 
 function padWithZero(num) {

@@ -56,6 +56,10 @@
                                 <td>Queue</td>
                                 <td><span class="keypress">Q</span></td>
                             </tr>
+                            <tr>
+                                <td>Group Session</td>
+                                <td><span class="keypress">G</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -65,8 +69,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { Modal } from 'bootstrap'
+import { onMounted, ref } from 'vue';
+import { Modal } from 'bootstrap';
 
 let modalEle = ref(null);
 let thisModalObj = null;
