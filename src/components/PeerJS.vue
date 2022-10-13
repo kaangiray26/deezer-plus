@@ -160,6 +160,11 @@ props.conn.on("data", async function (data) {
         emit('reset');
         return;
     }
+
+    if (data.type == 'play') {
+        console.log("Playing tracks...", data.tracks);
+        DZ.player.playTracks(data.tracks);
+    }
 });
 
 const props = defineProps({

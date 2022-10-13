@@ -9,9 +9,13 @@ rm -rf src/dist
 # build
 npm run build
 
-# navigate into the build output directory
+# copy 404.png into the build output directory
 cp src/assets/404.png src/dist/assets/
 
+# replace index.html for deployment
+cp src/https.html src/dist/index.html
+
+# navigate into the build output directory
 cd src/dist
 
 # if you are deploying to a custom domain

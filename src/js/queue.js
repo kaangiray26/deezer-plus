@@ -5,6 +5,10 @@ function currentQueue() {
     return (store.peer_status == 'connected') ? 'groupSession' : 'queue';
 }
 
+function inGroupSession() {
+    return (store.peer_status == 'connected');
+}
+
 function getCurrentTrack() {
     return getQueue()[store.queue_index];
 }
@@ -103,9 +107,12 @@ async function getTrackStart(id) {
 }
 
 async function notifyPeer(obj) {
-    window.dispatchEvent(new CustomEvent('peer', {
-        detail: obj
-    }));
+    if (inGroupSession()) {
+        window.dispatchEvent(new CustomEvent('peer', {
+            detail: obj
+        }));
+    }
+    return;
 }
 
 export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks, getCurrentTrack, notifyPeer }
