@@ -55,10 +55,7 @@ async function play(id) {
     let groupSession = await notifyPeer({
         type: 'execute',
         object: [id],
-        operations: [
-            "addToQueueStart",
-            "playTracks",
-        ],
+        operation: 'TrackRecommendation.play'
     });
 
     if (!groupSession) {

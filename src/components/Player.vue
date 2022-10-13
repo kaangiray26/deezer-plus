@@ -103,7 +103,6 @@ const now = ref('00:00');
 const duration = ref('00:00');
 
 async function buttonPlay() {
-    console.log(getCurrentTrack(), isPlaying.value);
     if (DZ.player.getCurrentTrack()) {
         if (isPlaying.value) {
             DZ.player.pause();
