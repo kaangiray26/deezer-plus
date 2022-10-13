@@ -12,16 +12,13 @@ npm run build
 # copy 404.png into the build output directory
 cp src/assets/404.png src/dist/assets/
 
-# replace index.html for deployment
-cp src/https.html src/dist/index.html
-cp src/https.html src/dist/404.html
-
 # navigate into the build output directory
 cd src/dist
 
 # if you are deploying to a custom domain
 echo 'deezer.buzl.uk' > CNAME
 echo '<script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>' > channel.html
+cp index.html 404.html
 
 git init
 
