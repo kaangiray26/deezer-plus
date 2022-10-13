@@ -111,8 +111,9 @@ async function notifyPeer(obj) {
         window.dispatchEvent(new CustomEvent('peer', {
             detail: obj
         }));
+        return true;
     }
-    return;
+    return false;
 }
 
 export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks, getCurrentTrack, notifyPeer }

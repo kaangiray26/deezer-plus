@@ -113,6 +113,7 @@ defineExpose({
 });
 
 onMounted(() => {
+    localStorage.setItem('groupSession', JSON.stringify([]));
     thisModalObj = new Modal(modalEle.value);
 
     peer_id.value = 'dz' + localStorage.getItem('id');

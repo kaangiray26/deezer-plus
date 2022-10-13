@@ -16,6 +16,7 @@ const store = reactive({
     scrobbling: false,
     api_key: api_key,
     shared_secret: shared_secret,
+    stack: [],
 });
 
 export { store }

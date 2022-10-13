@@ -113,6 +113,7 @@ async function _toggle() {
 }
 
 DZ.Event.subscribe('track_end', async function (val) {
+    console.log("Track end.");
     if (increment.value.index != store.queue_index) {
         increment.value.index = store.queue_index;
         store.queue_index++;

@@ -63,7 +63,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
-import { getQueueTracks } from '/js/queue.js';
+import { getQueueTracks, getCurrentTrack } from '/js/queue.js';
 
 import VolumeButton from "/components/VolumeButton.vue";
 import Scrobbler from "/components/Scrobbler.vue";
@@ -103,6 +103,7 @@ const now = ref('00:00');
 const duration = ref('00:00');
 
 async function buttonPlay() {
+    console.log(getCurrentTrack(), isPlaying.value);
     if (DZ.player.getCurrentTrack()) {
         if (isPlaying.value) {
             DZ.player.pause();

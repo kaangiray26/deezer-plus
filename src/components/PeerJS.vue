@@ -40,7 +40,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { store } from "/js/store.js";
-import { addToQueue, getCurrentTrack } from '/js/queue.js';
+import { addToQueue, getCurrentTrack, addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 const emit = defineEmits(['show', 'reset']);
 
@@ -118,13 +118,20 @@ function setRecipient() {
     contacts.value.recipient = contacts.value.requester;
 }
 
+async function ack() {
+    props.conn.send({
+        type: 'ack',
+        timestamp: Date.now(),
+        peer_id: props.peer_id,
+    });
+}
+
 async function peer_event(obj) {
-    console.log("PeerJS event:", obj)
     props.conn.send(obj);
 }
 
 props.conn.on("data", async function (data) {
-    console.log("Incoming:", data);
+    console.log("Incoming:", Date.now(), data);
     if (data.type == 'connect') {
         contacts.value.requester = {
             peer_id: data.peer_id,
@@ -161,9 +168,29 @@ props.conn.on("data", async function (data) {
         return;
     }
 
-    if (data.type == 'play') {
-        console.log("Playing tracks...", data.tracks);
-        DZ.player.playTracks(data.tracks);
+    if (data.type == 'execute') {
+        ack();
+        for (let i = 0; i < data.operations.length; i++) {
+            let op = data.operations[i];
+            if (op == 'addToQueueStart') {
+                await addToQueueStart(data.object);
+                continue;
+            }
+
+            if (op == 'playTracks') {
+                getQueueTracks().then(tracks => {
+                    DZ.player.playTracks(tracks);
+                });
+                continue;
+            }
+        }
+        return;
+    }
+
+    if (data.type == 'ack') {
+        let func = store.stack.pop();
+        func();
+        return;
     }
 });
 

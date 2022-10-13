@@ -23,6 +23,7 @@
 </template>
 
 <script setup>
+import { store } from '/js/store.js';
 import { addToQueueStart, getQueueTracks, notifyPeer } from '/js/queue.js';
 
 defineProps({
@@ -44,13 +45,25 @@ defineProps({
 });
 
 async function play(id) {
-    await addToQueueStart([id]);
-    getQueueTracks().then(tracks => {
-        DZ.player.playTracks(tracks);
-        notifyPeer({
-            type: 'play',
-            tracks: tracks,
+    store.stack.push(async function op() {
+        await addToQueueStart([id]);
+        getQueueTracks().then(tracks => {
+            DZ.player.playTracks(tracks);
         });
     });
+
+    let groupSession = await notifyPeer({
+        type: 'execute',
+        object: [id],
+        operations: [
+            "addToQueueStart",
+            "playTracks",
+        ],
+    });
+
+    if (!groupSession) {
+        let func = store.stack.pop();
+        func();
+    }
 }
 </script>
