@@ -18,7 +18,8 @@
                             @keyup.enter="search($event)">
                     </div>
                     <div class="ms-2">
-                        <button type="button" class="btn btn-dark" @click="openProfile">
+                        <button id="usernameTooltip" type="button" class="btn btn-dark position-relative"
+                            data-bs-toggle="tooltip" :data-bs-title="username" @click="openProfile">
                             Profile
                         </button>
                     </div>
@@ -30,7 +31,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { Tooltip } from 'bootstrap';
 import router from "/router";
 
 const emit = defineEmits(["right-click"]);
@@ -53,7 +55,18 @@ async function _focus_search() {
     search_input.value.focus();
 }
 
+const username = computed(() => {
+    return localStorage.getItem('username');
+});
+
 defineExpose({
     focus_search: _focus_search,
 });
+
+onMounted(() => {
+    new Tooltip(document.getElementById('usernameTooltip'), {
+        'placement': 'bottom',
+        'trigger': 'hover',
+    });
+})
 </script>

@@ -40,6 +40,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { store } from "/js/store.js";
+import { addToQueue, getCurrentTrack } from '/js/queue.js';
 
 const emit = defineEmits(['show', 'reset']);
 
@@ -117,7 +118,13 @@ function setRecipient() {
     contacts.value.recipient = contacts.value.requester;
 }
 
-props.conn.on("data", data => {
+async function peer_event(obj) {
+    console.log("PeerJS event:", obj)
+    props.conn.send(obj);
+}
+
+props.conn.on("data", async function (data) {
+    console.log("Incoming:", data);
     if (data.type == 'connect') {
         contacts.value.requester = {
             peer_id: data.peer_id,
@@ -126,11 +133,13 @@ props.conn.on("data", data => {
         };
         store.peer_status = 'requesting';
         emit('show');
+        return;
     }
 
     if (data.type == 'disconnect') {
         cleanup();
         emit('reset');
+        return;
     }
 
     if (data.type == 'accept') {
@@ -141,6 +150,7 @@ props.conn.on("data", data => {
         };
         store.peer_status = 'connected';
         emit('show');
+        return;
     }
 
     if (data.type == 'reject') {
@@ -148,6 +158,7 @@ props.conn.on("data", data => {
         notify(data.username + ' rejected your request.');
         cleanup();
         emit('reset');
+        return;
     }
 });
 
@@ -167,5 +178,6 @@ defineExpose({
     status,
     peer_id,
     recipient_id,
+    peer_event,
 });
 </script>

@@ -138,8 +138,11 @@ function login() {
     DZ.login(function (response) {
         if (response.authResponse) {
             localStorage.setItem('token', response.authResponse.accessToken);
-            localStorage.setItem('queue', JSON.stringify([]));
             localStorage.setItem('scrobbling', false);
+
+            localStorage.setItem('queue', JSON.stringify([]));
+            localStorage.setItem('groupSession', JSON.stringify([]));
+
             localStorage.setItem('fav_tracks', JSON.stringify([]));
             localStorage.setItem('fav_albums', JSON.stringify([]));
             localStorage.setItem('fav_artists', JSON.stringify([]));

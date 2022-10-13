@@ -1,14 +1,12 @@
 <template>
     <div @click="context_hide" @key.esc="context_hide" tabindex="0">
-        <HelpModal ref="thisHelpModal"></HelpModal>
-        <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"></GroupSession>
-        <DeezerProvider>
-        </DeezerProvider>
-        <Context ref="thisContext"></Context>
-        <NavBar ref="thisNavBar" @right-click="right_click"></NavBar>
-        <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @groupSession="thisGroupSession.toggle()">
-        </Player>
-        <Queue ref="thisOffCanvas"></Queue>
+        <HelpModal ref="thisHelpModal" />
+        <DeezerProvider />
+        <Context ref="thisContext" />
+        <NavBar ref="thisNavBar" @right-click="right_click" />
+        <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @groupSession="thisGroupSession.toggle()" />
+        <Queue ref="thisOffCanvas" />
+        <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session" />
     </div>
 </template>
 
@@ -121,5 +119,8 @@ async function keyPress(event) {
 onMounted(() => {
     window.focus();
     window.addEventListener('keydown', keyPress);
+    window.addEventListener('peer', event => {
+        thisGroupSession.value.peer_event(event.detail);
+    });
 });
 </script>

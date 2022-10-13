@@ -195,10 +195,6 @@ async function showVolume() {
     thisTooltip.value.show();
 }
 
-async function groupSession() {
-    console.log("Group session...");
-}
-
 function padWithZero(num) {
     return String(num).padStart(2, '0');
 }

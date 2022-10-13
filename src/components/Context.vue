@@ -152,7 +152,6 @@ async function contextMenuEvent(event) {
     if (event == 'addTrackToQueue') {
         await addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
         notify("Added to the queue.");
-
         return;
     }
     if (event == 'addAlbumToQueue') {

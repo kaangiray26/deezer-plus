@@ -101,10 +101,15 @@ async function _toggle() {
     thisModalObj.toggle();
 }
 
+async function _peer_event(obj) {
+    thisPeerJS.value.peer_event(obj);
+}
+
 defineExpose({
     show: _show,
     hide: _hide,
     toggle: _toggle,
+    peer_event: _peer_event,
 });
 
 onMounted(() => {

@@ -41,10 +41,8 @@
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
-
+import { addToQueue, getQueue, clearQueue, getQueueTracks } from "/js/queue.js";
 import QueueTrack from "/components/results/QueueTrack.vue";
-import { getQueue, clearQueue, getQueueTracks } from "/js/queue.js";
-import { addToQueue } from "../js/queue";
 
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
@@ -73,30 +71,6 @@ function buttonClear() {
     queue.value.tracks = queue.value.tracks.filter(item => item.track.id === current_track_id);
     clearQueue(queue.value.tracks);
     return;
-
-    // if (DZ.player.isPlaying) {
-    //     queue.value.tracks = queue.value.tracks.filter((item) => item.track.id !== current_track.id);
-    //     clearQueue([parseInt(current_track.id)]);
-
-    //     DZ.player.playTracks([parseInt(current_track.id)]);
-    //     queue.value.tracks = [{
-    //         cover: `https://api.deezer.com/album/${current_track.album.id}/image`,
-    //         duration: parseInt(current_track.duration),
-    //         artist: {
-    //             "id": parseInt(current_track.artist.id),
-    //             "title": current_track.artist.name,
-    //         },
-    //         album: {
-    //             "id": parseInt(current_track.album.id),
-    //             "title": current_track.album.title,
-    //         },
-    //         track: {
-    //             "id": parseInt(current_track.id),
-    //             "title": current_track.title,
-    //         },
-    //     }];
-    //     return;
-    // }
 }
 
 async function buttonFlow(event) {
@@ -120,12 +94,6 @@ async function removeTrack(index) {
     getQueueTracks().then(tracks => {
         DZ.player.playTracks(tracks);
     });
-
-    // if (DZ.player.isPlaying()) {
-    //     DZ.player.playTracks(queue.value.tracks.map(item => parseInt(item.track.id)));
-    //     return;
-    // }
-    // DZ.player.addToQueue(queue.value.tracks.map(item => parseInt(item.track.id)));
 }
 
 async function refresh() {

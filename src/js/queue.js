@@ -1,20 +1,28 @@
 // queue.js
+import { store } from '/js/store.js';
+
+function currentQueue() {
+    return (store.peer_status == 'connected') ? 'groupSession' : 'queue';
+}
+
+function getCurrentTrack() {
+    return getQueue()[store.queue_index];
+}
 
 function removeFromQueue(id) {
     localStorage.setItem(
-        "queue",
-        JSON.stringify(JSON.parse(localStorage.getItem("queue")).filter((item) => item !== id))
+        currentQueue(),
+        JSON.stringify(getQueue().filter((item) => item !== id))
     );
 }
 
 function getQueue() {
-    return JSON.parse(localStorage.getItem("queue"));
+    return JSON.parse(localStorage.getItem(currentQueue()));
 }
-
 
 function clearQueue(arr = []) {
     localStorage.setItem(
-        "queue",
+        currentQueue(),
         JSON.stringify(arr)
     );
 }
@@ -33,14 +41,13 @@ async function addToQueueStart(tracks) {
 }
 
 async function getQueueTracks() {
-    let tracks = getQueue();
-    return tracks.map(item => parseInt(item.track.id));
+    return getQueue().map(item => parseInt(item.track.id));
 }
 
 async function getTrack(id) {
     return new Promise((resolve, reject) => {
         DZ.api(`/track/${id}`, item => {
-            let arr = JSON.parse(localStorage.getItem("queue"));
+            let arr = getQueue();
             arr.push({
                 cover: `https://api.deezer.com/album/${item.album.id}/image`,
                 duration: parseInt(item.duration),
@@ -58,7 +65,7 @@ async function getTrack(id) {
                 },
             });
             localStorage.setItem(
-                "queue",
+                currentQueue(),
                 JSON.stringify(arr)
             );
             resolve(true);
@@ -69,7 +76,7 @@ async function getTrack(id) {
 async function getTrackStart(id) {
     return new Promise((resolve, reject) => {
         DZ.api(`/track/${id}`, item => {
-            let arr = JSON.parse(localStorage.getItem("queue"));
+            let arr = getQueue();
             arr.unshift({
                 cover: `https://api.deezer.com/album/${item.album.id}/image`,
                 duration: parseInt(item.duration),
@@ -87,7 +94,7 @@ async function getTrackStart(id) {
                 },
             });
             localStorage.setItem(
-                "queue",
+                currentQueue(),
                 JSON.stringify(arr)
             );
             resolve(true);
@@ -95,4 +102,10 @@ async function getTrackStart(id) {
     });
 }
 
-export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks }
+async function notifyPeer(obj) {
+    window.dispatchEvent(new CustomEvent('peer', {
+        detail: obj
+    }));
+}
+
+export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks, getCurrentTrack, notifyPeer }

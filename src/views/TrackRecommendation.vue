@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+import { addToQueueStart, getQueueTracks, notifyPeer } from '/js/queue.js';
 
 defineProps({
     track_id: {
@@ -47,6 +47,10 @@ async function play(id) {
     await addToQueueStart([id]);
     getQueueTracks().then(tracks => {
         DZ.player.playTracks(tracks);
+        notifyPeer({
+            type: 'play',
+            tracks: tracks,
+        });
     });
 }
 </script>
