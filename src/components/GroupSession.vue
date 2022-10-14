@@ -13,7 +13,8 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-floating mb-2">
-                        <input type="text" class="form-control" id="floatingInputValue" :value="peer_id" readonly>
+                        <input type="text" class="form-control user-select-all" id="floatingInputValue" :value="peer_id"
+                            readonly>
                         <label for="floatingInputValue">My PeerID <input class="form-check-input online" type="radio"
                                 checked></label>
                     </form>
@@ -27,7 +28,7 @@
                             @click="stopConnection">Stop</button>
                     </div>
                     <PeerJS ref="thisPeerJS" v-if="peerInit" :key="peer_key" :peer="peer" :conn="conn"
-                        :peer_id="peer_id" @show="_show" @reset="reset">
+                        :peer_id="peer_id" @show="_show" @reset="reset" @reaction="reaction">
                     </PeerJS>
                 </div>
             </div>
@@ -42,7 +43,7 @@ import { Modal } from 'bootstrap';
 import { Peer } from "peerjs";
 import PeerJS from '/components/PeerJS.vue';
 
-const emit = defineEmits(['reset']);
+const emit = defineEmits(['reset', 'reaction']);
 
 let modalEle = ref(null);
 let thisModalObj = null;
@@ -89,6 +90,10 @@ async function reset() {
     emit('reset');
 }
 
+async function reaction(event) {
+    emit('reaction', event);
+}
+
 async function _show() {
     thisModalObj.show();
 }
@@ -116,10 +121,14 @@ onMounted(() => {
     localStorage.setItem('groupSession', JSON.stringify([]));
     thisModalObj = new Modal(modalEle.value);
 
-    peer_id.value = 'dz' + localStorage.getItem('id');
-    peer.value = new Peer(peer_id.value);
+    peer.value = new Peer();
+
+    peer.value.on('open', id => {
+        peer_id.value = id;
+    });
 
     peer.value.on('connection', connection => {
+
         conn.value = connection;
         peerInit.value = true;
     });

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "animejs": "^3.2.1",
     "bootstrap": "^5.2.1",
     "md5": "^2.3.0",
     "peerjs": "^1.4.7",

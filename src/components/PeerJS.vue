@@ -3,9 +3,19 @@
         <div class="input-group mb-2">
             <span class="input-group-text bg-dark text-white">Connected to:</span>
             <input type="text" class="form-control" :value="contacts.recipient.username" readonly>
-        </div>
-        <div>
             <button class="btn btn-danger" @click="disconnect">Disconnect</button>
+        </div>
+        <hr />
+        <div class="d-flex">
+            <div class="input-group">
+                <button class="btn btn-outline-light border" type="button" @click="send_reaction('love')">❤️</button>
+                <button class="btn btn-outline-light border" type="button" @click="send_reaction('hand')">🤘</button>
+                <button class="btn btn-outline-light border" type="button" @click="send_reaction('eyes')">👀</button>
+                <button class="btn btn-outline-light border" type="button" @click="send_reaction('ship')">🚀</button>
+                <button class="btn btn-outline-light border" type="button" @click="send_reaction('bomb')">💣</button>
+                <button class="btn btn-outline-light border" type="button" @click="send_reaction('puke')">🤮</button>
+                <button class="btn btn-outline-light border" type="button" @click="send_reaction('shit')">💩</button>
+            </div>
         </div>
     </div>
     <div v-show="alert.show">
@@ -42,7 +52,7 @@ import { ref, computed } from "vue";
 import { store } from "/js/store.js";
 import { addToQueue, getCurrentTrack, addToQueueStart, getQueueTracks } from '/js/queue.js';
 
-const emit = defineEmits(['show', 'reset']);
+const emit = defineEmits(['show', 'reset', 'reaction']);
 
 const status = ref("disconnected");
 
@@ -128,6 +138,13 @@ async function peer_event(obj) {
     props.conn.send(obj);
 }
 
+async function send_reaction(event) {
+    props.conn.send({
+        type: 'reaction',
+        event: event,
+    });
+}
+
 props.conn.on("data", async function (data) {
     if (data.type == 'ack') {
         let func = store.stack.pop();
@@ -148,6 +165,11 @@ props.conn.on("data", async function (data) {
             func();
             return;
         }
+    }
+
+    if (data.type == 'reaction') {
+        emit('reaction', data.event);
+        return;
     }
 
     if (data.type == 'connect') {

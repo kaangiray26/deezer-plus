@@ -6,7 +6,9 @@
         <NavBar ref="thisNavBar" @right-click="right_click" />
         <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @groupSession="thisGroupSession.toggle()" />
         <Queue ref="thisOffCanvas" />
-        <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session" />
+        <Animation ref="thisAnimation" />
+        <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"
+            @reaction="thisAnimation.toggle($event)" />
     </div>
 </template>
 
@@ -20,12 +22,14 @@ import Player from '/components/Player.vue';
 import Queue from '/components/Queue.vue';
 import HelpModal from '/components/HelpModal.vue';
 import GroupSession from '/components/GroupSession.vue';
+import Animation from '/components/Animation.vue';
 
 let thisContext = ref(null);
 let thisOffCanvas = ref(null);
 let thisNavBar = ref(null);
 let thisHelpModal = ref(null);
 let thisPlayer = ref(null);
+let thisAnimation = ref(null);
 let thisGroupSession = ref(null);
 
 const groupKey = ref(0);
@@ -119,6 +123,7 @@ async function keyPress(event) {
 onMounted(() => {
     window.focus();
     window.addEventListener('keydown', keyPress);
+
     window.addEventListener('peer', event => {
         thisGroupSession.value.peer_event(event.detail);
     });
