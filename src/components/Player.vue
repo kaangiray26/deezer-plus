@@ -63,7 +63,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
-import { getQueueTracks, getCurrentTrack } from '/js/queue.js';
+import { sessionAction } from '/js/session.js';
+import { getQueueTracks } from '/js/queue.js';
 
 import VolumeButton from "/components/VolumeButton.vue";
 import Scrobbler from "/components/Scrobbler.vue";
@@ -105,54 +106,107 @@ const duration = ref('00:00');
 async function buttonPlay() {
     if (DZ.player.getCurrentTrack()) {
         if (isPlaying.value) {
-            DZ.player.pause();
+            sessionAction({
+                func: async function op() {
+                    DZ.player.pause();
+                },
+                object: null,
+                operation: 'Player.pause',
+            });
         } else {
-            DZ.player.play();
+            sessionAction({
+                func: async function op() {
+                    DZ.player.play();
+                },
+                object: null,
+                operation: 'Player.play',
+            });
         }
         return;
     }
 
-    getQueueTracks().then(tracks => {
-        DZ.player.playTracks(tracks);
+    sessionAction({
+        func: async function op() {
+            getQueueTracks().then(tracks => {
+                DZ.player.playTracks(tracks);
+            });
+        },
+        object: null,
+        operation: 'Player.playTracks',
     });
 }
 
 async function buttonNext() {
-    getQueueTracks().then(tracks => {
-        let index = (store.queue_index + 1) % tracks.length;
-        DZ.player.playTracks(tracks, index);
-        store.queue_index++;
+    sessionAction({
+        func: async function op() {
+            getQueueTracks().then(tracks => {
+                let index = (store.queue_index + 1) % tracks.length;
+                DZ.player.playTracks(tracks, index);
+                store.queue_index++;
+            });
+        },
+        object: null,
+        operation: 'Player.next',
     });
 }
 
 async function buttonPrev() {
-    getQueueTracks().then(tracks => {
-        let index = (store.queue_index - 1) % tracks.length;
-        DZ.player.playTracks(tracks, index);
-        store.queue_index--;
+    sessionAction({
+        func: async function op() {
+            getQueueTracks().then(tracks => {
+                let index = (store.queue_index - 1) % tracks.length;
+                DZ.player.playTracks(tracks, index);
+                store.queue_index--;
+            });
+        },
+        object: null,
+        operation: 'Player.prev',
     });
 }
 
 async function buttonRepeat() {
     repeat.value = (DZ.player.getRepeat() + 1) % 3;
-    DZ.player.setRepeat(repeat.value);
+    sessionAction({
+        func: async function op() {
+            DZ.player.setRepeat(repeat.value);
+        },
+        object: repeat.value,
+        operation: 'Player.repeat',
+    });
 }
 
 async function seekProgress(event) {
     let pos = event.offsetX;
 
     if (pos <= 0) {
-        DZ.player.seek(0);
+        sessionAction({
+            func: async function op() {
+                DZ.player.seek(0);
+            },
+            object: 0,
+            operation: 'Player.seek',
+        });
         return;
     }
 
     if (pos >= progress_width.value) {
-        DZ.player.seek(100);
+        sessionAction({
+            func: async function op() {
+                DZ.player.seek(100);
+            },
+            object: 100,
+            operation: 'Player.seek',
+        });
         return;
     }
 
-    DZ.player.seek(pos / progress_width.value * 100);
-    return;
+    sessionAction({
+        func: async function op() {
+            DZ.player.seek(pos / progress_width.value * 100);
+        },
+        object: pos / progress_width.value * 100,
+        operation: 'Player.seek',
+    });
 }
 
 async function changeVolume(obj) {

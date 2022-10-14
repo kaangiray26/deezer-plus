@@ -145,6 +145,12 @@ async function send_reaction(event) {
     });
 }
 
+async function runFunc() {
+    ack();
+    let func = store.stack.pop();
+    func();
+}
+
 props.conn.on("data", async function (data) {
     if (data.type == 'ack') {
         let func = store.stack.pop();
@@ -153,18 +159,100 @@ props.conn.on("data", async function (data) {
     }
 
     if (data.type == 'execute') {
-        if (data.operation == 'TrackRecommendation.play') {
-            store.stack.push(async function op() {
-                await addToQueueStart(data.object);
-                getQueueTracks().then(tracks => {
-                    DZ.player.playTracks(tracks);
+        switch (data.operation) {
+            case 'TrackRecommendation.play':
+                store.stack.push(async function op() {
+                    await addToQueueStart([data.object]);
+                    getQueueTracks().then(tracks => {
+                        DZ.player.playTracks(tracks);
+                    });
                 });
-            });
-            ack();
-            let func = store.stack.pop();
-            func();
-            return;
+                break;
+
+            case 'AlbumRecommendation.play':
+                store.stack.push(async function op() {
+                    DZ.api('/album/' + data.object, async function (response) {
+                        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                        getQueueTracks().then(tracks => {
+                            DZ.player.playTracks(tracks);
+                        });
+                    });
+                });
+                break;
+
+            case 'PlaylistRecommendation.play':
+                store.stack.push(async function op() {
+                    DZ.api('/playlist/' + data.object, async function (response) {
+                        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                        getQueueTracks().then(tracks => {
+                            DZ.player.playTracks(tracks);
+                        });
+                    });
+                });
+                break;
+
+            case 'RadioRecommendation.play':
+                store.stack.push(async function op() {
+                    DZ.player.playRadio(data.object);
+                });
+                break;
+
+            case 'Player.play':
+                store.stack.push(async function op() {
+                    DZ.player.play();
+                });
+                break;
+
+            case 'Player.pause':
+                store.stack.push(async function op() {
+                    DZ.player.pause();
+                });
+                break;
+
+            case 'Player.playTracks':
+                store.stack.push(async function op() {
+                    getQueueTracks().then(tracks => {
+                        DZ.player.playTracks(tracks);
+                    });
+                });
+                break;
+
+            case 'Player.next':
+                store.stack.push(async function op() {
+                    getQueueTracks().then(tracks => {
+                        let index = (store.queue_index + 1) % tracks.length;
+                        DZ.player.playTracks(tracks, index);
+                        store.queue_index++;
+                    });
+                });
+                break;
+
+            case 'Player.prev':
+                store.stack.push(async function op() {
+                    getQueueTracks().then(tracks => {
+                        let index = (store.queue_index - 1) % tracks.length;
+                        DZ.player.playTracks(tracks, index);
+                        store.queue_index--;
+                    });
+                });
+                break;
+
+            case 'Player.repeat':
+                store.stack.push(async function op() {
+                    DZ.player.setRepeat(data.object);
+                });
+                break;
+
+            case 'Player.seek':
+                store.stack.push(async function op() {
+                    DZ.player.seek(data.object);
+                });
+                break;
+
+            default:
+                return;
         }
+        runFunc();
     }
 
     if (data.type == 'reaction') {

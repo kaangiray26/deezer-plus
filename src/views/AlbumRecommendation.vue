@@ -22,6 +22,7 @@
 </template>
 
 <script setup>
+import { sessionAction } from '/js/session.js';
 import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 defineProps({
@@ -40,11 +41,17 @@ defineProps({
 });
 
 async function play(id) {
-    DZ.api('/album/' + id, async function (response) {
-        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
-        getQueueTracks().then(tracks => {
-            DZ.player.playTracks(tracks);
-        });
+    sessionAction({
+        func: async function op() {
+            DZ.api('/album/' + id, async function (response) {
+                await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                getQueueTracks().then(tracks => {
+                    DZ.player.playTracks(tracks);
+                });
+            });
+        },
+        object: id,
+        operation: 'AlbumRecommendation.play',
     });
 }
 </script>

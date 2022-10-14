@@ -5,10 +5,6 @@ function currentQueue() {
     return (store.peer_status == 'connected') ? 'groupSession' : 'queue';
 }
 
-function inGroupSession() {
-    return (store.peer_status == 'connected');
-}
-
 function getCurrentTrack() {
     return getQueue()[store.queue_index];
 }
@@ -106,14 +102,4 @@ async function getTrackStart(id) {
     });
 }
 
-async function notifyPeer(obj) {
-    if (inGroupSession()) {
-        window.dispatchEvent(new CustomEvent('peer', {
-            detail: obj
-        }));
-        return true;
-    }
-    return false;
-}
-
-export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks, getCurrentTrack, notifyPeer }
+export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks, getCurrentTrack }

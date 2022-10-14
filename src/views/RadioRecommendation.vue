@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+import { sessionAction } from '/js/session.js';
 
 defineProps({
     radio_id: {
@@ -42,6 +42,12 @@ defineProps({
 });
 
 async function play(id) {
-    DZ.player.playRadio(id);
+    sessionAction({
+        func: async function op() {
+            DZ.player.playRadio(id);
+        },
+        object: id,
+        operation: 'RadioRecommendation.play',
+    });
 }
 </script>

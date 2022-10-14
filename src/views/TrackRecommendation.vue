@@ -23,8 +23,8 @@
 </template>
 
 <script setup>
-import { store } from '/js/store.js';
-import { addToQueueStart, getQueueTracks, notifyPeer } from '/js/queue.js';
+import { sessionAction } from '/js/session.js';
+import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 defineProps({
     track_id: {
@@ -45,22 +45,15 @@ defineProps({
 });
 
 async function play(id) {
-    store.stack.push(async function op() {
-        await addToQueueStart([id]);
-        getQueueTracks().then(tracks => {
-            DZ.player.playTracks(tracks);
-        });
+    sessionAction({
+        func: async function op() {
+            await addToQueueStart([id]);
+            getQueueTracks().then(tracks => {
+                DZ.player.playTracks(tracks);
+            });
+        },
+        object: id,
+        operation: 'TrackRecommendation.play',
     });
-
-    let groupSession = await notifyPeer({
-        type: 'execute',
-        object: [id],
-        operation: 'TrackRecommendation.play'
-    });
-
-    if (!groupSession) {
-        let func = store.stack.pop();
-        func();
-    }
 }
 </script>
