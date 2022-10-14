@@ -45,16 +45,26 @@
             </div>
         </div>
     </div>
+    <Toast ref="thisToast" :message="toastMessage"></Toast>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { store } from "/js/store.js";
 import { addToQueue, getCurrentTrack, addToQueueStart, getQueueTracks } from '/js/queue.js';
+import Toast from "/components/liveToast.vue";
 
 const emit = defineEmits(['show', 'reset', 'reaction']);
 
 const status = ref("disconnected");
+
+let thisToast = ref(null);
+const toastMessage = ref("");
+
+async function notify(message) {
+    toastMessage.value = message;
+    thisToast.value.show();
+}
 
 const peer_id = ref(null);
 const recipient_id = ref(null);
@@ -86,7 +96,7 @@ async function cleanup() {
     store.peer_status = 'disconnected';
 }
 
-async function notify(msg) {
+async function alert_notify(msg) {
     alert.value = {
         show: true,
         message: msg,
@@ -139,6 +149,7 @@ async function peer_event(obj) {
 }
 
 async function send_reaction(event) {
+    notify('Reaction sent.');
     props.conn.send({
         type: 'reaction',
         event: event,
@@ -160,16 +171,16 @@ props.conn.on("data", async function (data) {
 
     if (data.type == 'execute') {
         switch (data.operation) {
-            case 'TrackRecommendation.play':
+            case 'Track.play':
                 store.stack.push(async function op() {
-                    await addToQueueStart([data.object]);
+                    await addToQueueStart([parseInt(data.object)]);
                     getQueueTracks().then(tracks => {
                         DZ.player.playTracks(tracks);
                     });
                 });
                 break;
 
-            case 'AlbumRecommendation.play':
+            case 'Album.play':
                 store.stack.push(async function op() {
                     DZ.api('/album/' + data.object, async function (response) {
                         await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
@@ -180,7 +191,7 @@ props.conn.on("data", async function (data) {
                 });
                 break;
 
-            case 'PlaylistRecommendation.play':
+            case 'Playlist.play':
                 store.stack.push(async function op() {
                     DZ.api('/playlist/' + data.object, async function (response) {
                         await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
@@ -191,7 +202,7 @@ props.conn.on("data", async function (data) {
                 });
                 break;
 
-            case 'RadioRecommendation.play':
+            case 'Radio.play':
                 store.stack.push(async function op() {
                     DZ.player.playRadio(data.object);
                 });
@@ -249,6 +260,36 @@ props.conn.on("data", async function (data) {
                 });
                 break;
 
+            case 'Queue.Track.add':
+                store.stack.push(async function op() {
+                    await addToQueue([data.object]);
+                });
+                break;
+
+            case 'Queue.Album.add':
+                store.stack.push(async function op() {
+                    DZ.api('/album/' + data.object + '/tracks', async function (response) {
+                        await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                    });
+                });
+                break;
+
+            case 'Queue.Playlist.add':
+                store.stack.push(async function op() {
+                    DZ.api('/playlist/' + data.object + '/tracks', async function (response) {
+                        await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                    });
+                });
+                break;
+
+            case 'Queue.Radio.add':
+                store.stack.push(async function op() {
+                    DZ.api('/radio/' + data.object + '/tracks', async function (response) {
+                        await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                    });
+                });
+                break;
+
             default:
                 return;
         }
@@ -290,7 +331,7 @@ props.conn.on("data", async function (data) {
 
     if (data.type == 'reject') {
         store.peer_status = 'disconnected';
-        notify(data.username + ' rejected your request.');
+        alert_notify(data.username + ' rejected your request.');
         cleanup();
         emit('reset');
         return;

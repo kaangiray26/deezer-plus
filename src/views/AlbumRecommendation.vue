@@ -40,6 +40,7 @@ defineProps({
     },
 });
 
+// Must be synchronized in groupSession: ok
 async function play(id) {
     sessionAction({
         func: async function op() {
@@ -51,7 +52,7 @@ async function play(id) {
             });
         },
         object: id,
-        operation: 'AlbumRecommendation.play',
+        operation: 'Album.play',
     });
 }
 </script>

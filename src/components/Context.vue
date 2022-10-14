@@ -10,7 +10,8 @@
 <script setup>
 import { ref, nextTick } from "vue";
 import { addToFav, removeFromFav } from "/js/favs.js";
-import { addToQueue } from "/js/queue.js";
+import { addToQueue, addToQueueStart, getQueueTracks } from "/js/queue.js";
+import { sessionAction } from '/js/session.js';
 
 import router from "/router";
 import Toast from "/components/liveToast.vue";
@@ -128,49 +129,121 @@ async function contextMenuEvent(event) {
     }
 
     // Play Events
+    // Must be synchronized in groupSession: ok
     if (event == 'playTrack') {
-        DZ.player.playTracks([parseInt(selectedItem.value.attributes.track_id.value)], true, 0);
+        sessionAction({
+            func: async function op() {
+                await addToQueueStart([parseInt(selectedItem.value.attributes.track_id.value)]);
+                getQueueTracks().then(tracks => {
+                    DZ.player.playTracks(tracks);
+                });
+            },
+            object: parseInt(selectedItem.value.attributes.track_id.value),
+            operation: 'Track.play',
+        });
         return;
     }
 
+    // Must be synchronized in groupSession: ok
     if (event == 'playAlbum') {
-        DZ.player.playAlbum(parseInt(selectedItem.value.attributes.album_id.value), true, 0);
+        sessionAction({
+            func: async function op() {
+                DZ.api('/album/' + selectedItem.value.attributes.album_id.value, async function (response) {
+                    await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                    getQueueTracks().then(tracks => {
+                        DZ.player.playTracks(tracks);
+                    });
+                });
+            },
+            object: selectedItem.value.attributes.album_id.value,
+            operation: 'Album.play',
+        });
         return;
     }
 
+    // Must be synchronized in groupSession: ok
     if (event == 'playPlaylist') {
-        DZ.player.playPlaylist(parseInt(selectedItem.value.id), true, 0);
+        sessionAction({
+            func: async function op() {
+                DZ.api('/playlist/' + selectedItem.value.id, async function (response) {
+                    await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                    getQueueTracks().then(tracks => {
+                        DZ.player.playTracks(tracks);
+                    });
+                });
+            },
+            object: selectedItem.value.id,
+            operation: 'Playlist.play',
+        });
         return;
     }
 
+    // Must be synchronized in groupSession: ok
     if (event == 'playRadio') {
-        DZ.player.playRadio(parseInt(selectedItem.value.id), true, 0);
+        sessionAction({
+            func: async function op() {
+                DZ.player.playRadio(parseInt(selectedItem.value.id));
+            },
+            object: parseInt(selectedItem.value.id),
+            operation: 'Radio.play',
+        });
         return;
     }
 
     // Add to Queue Events
+    // Must be synchronized in groupSession: ok
     if (event == 'addTrackToQueue') {
-        await addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
+        sessionAction({
+            func: async function op() {
+                await addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
+            },
+            object: parseInt(selectedItem.value.attributes.track_id.value),
+            operation: 'Queue.Track.add',
+        });
         notify("Added to the queue.");
         return;
     }
+
+    // Must be synchronized in groupSession: ok
     if (event == 'addAlbumToQueue') {
-        DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', async function (response) {
-            await addToQueue([...response.data.map(item => parseInt(item.id))]);
+        sessionAction({
+            func: async function op() {
+                DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', async function (response) {
+                    await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                });
+            },
+            object: selectedItem.value.attributes.album_id.value,
+            operation: 'Queue.Album.add',
         });
         notify("Added to the queue.");
         return;
     }
+
+    // Must be synchronized in groupSession: ok
     if (event == 'addPlaylistToQueue') {
-        DZ.api('/playlist/' + selectedItem.value.id + '/tracks', async function (response) {
-            await addToQueue([...response.data.map(item => parseInt(item.id))]);
+        sessionAction({
+            func: async function op() {
+                DZ.api('/playlist/' + selectedItem.value.id + '/tracks', async function (response) {
+                    await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                });
+            },
+            object: selectedItem.value.id,
+            operation: 'Queue.Playlist.add',
         });
         notify("Added to the queue.");
         return;
     }
+
+    // Must be synchronized in groupSession: ok
     if (event == 'addRadioToQueue') {
-        DZ.api('/radio/' + selectedItem.value.id + '/tracks', async function (response) {
-            await addToQueue([...response.data.map(item => parseInt(item.id))]);
+        sessionAction({
+            func: async function op() {
+                DZ.api('/radio/' + selectedItem.value.id + '/tracks', async function (response) {
+                    await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                });
+            },
+            object: selectedItem.value.id,
+            operation: 'Queue.Radio.add',
         });
         notify("Added to the queue.");
         return;

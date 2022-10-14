@@ -81,7 +81,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import router from "../router";
+import router from "/router";
+
+import { sessionAction } from '/js/session.js';
 import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 import { addToFav, removeFromFav } from "/js/favs.js";
@@ -137,17 +139,34 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+// Must be synchronized in groupSession: ok
 async function playTrack(id) {
-    DZ.player.playTracks([parseInt(id)]);
+    sessionAction({
+        func: async function op() {
+            await addToQueueStart([parseInt(id)]);
+            getQueueTracks().then(tracks => {
+                DZ.player.playTracks(tracks);
+            });
+        },
+        object: id,
+        operation: 'Track.play',
+    });
 }
 
+// Must be synchronized in groupSession: ok
 async function play(id) {
     notify("Loading album...");
-    DZ.api('/album/' + id, async function (response) {
-        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
-        getQueueTracks().then(tracks => {
-            DZ.player.playTracks(tracks);
-        });
+    sessionAction({
+        func: async function op() {
+            DZ.api('/album/' + id, async function (response) {
+                await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                getQueueTracks().then(tracks => {
+                    DZ.player.playTracks(tracks);
+                });
+            });
+        },
+        object: id,
+        operation: 'Album.play',
     });
 }
 

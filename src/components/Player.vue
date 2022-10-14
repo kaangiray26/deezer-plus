@@ -103,6 +103,7 @@ const progress_max = ref(0);
 const now = ref('00:00');
 const duration = ref('00:00');
 
+// Must be synchronized in groupSession: ok
 async function buttonPlay() {
     if (DZ.player.getCurrentTrack()) {
         if (isPlaying.value) {
@@ -136,6 +137,7 @@ async function buttonPlay() {
     });
 }
 
+// Must be synchronized in groupSession: ok
 async function buttonNext() {
     sessionAction({
         func: async function op() {
@@ -150,6 +152,7 @@ async function buttonNext() {
     });
 }
 
+// Must be synchronized in groupSession: ok
 async function buttonPrev() {
     sessionAction({
         func: async function op() {
@@ -164,6 +167,7 @@ async function buttonPrev() {
     });
 }
 
+// Must be synchronized in groupSession:
 async function buttonRepeat() {
     repeat.value = (DZ.player.getRepeat() + 1) % 3;
     sessionAction({
@@ -175,6 +179,7 @@ async function buttonRepeat() {
     });
 }
 
+// Must be synchronized in groupSession: ok
 async function seekProgress(event) {
     let pos = event.offsetX;
 
@@ -258,7 +263,6 @@ function formatTime(time) {
     let seconds = Math.floor(time - minutes * 60);
     return padWithZero(minutes) + ":" + padWithZero(seconds);
 }
-
 
 DZ.Event.subscribe('player_play', async function () {
     isPlaying.value = true;

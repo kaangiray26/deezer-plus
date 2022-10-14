@@ -44,16 +44,17 @@ defineProps({
     },
 });
 
+// Must be synchronized in groupSession: ok
 async function play(id) {
     sessionAction({
         func: async function op() {
-            await addToQueueStart([id]);
+            await addToQueueStart([parseInt(id)]);
             getQueueTracks().then(tracks => {
                 DZ.player.playTracks(tracks);
             });
         },
         object: id,
-        operation: 'TrackRecommendation.play',
+        operation: 'Track.play',
     });
 }
 </script>

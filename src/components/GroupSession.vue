@@ -13,8 +13,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-floating mb-2">
-                        <input type="text" class="form-control user-select-all" id="floatingInputValue" :value="peer_id"
-                            readonly>
+                        <input type="text" class="form-control" id="floatingInputValue" :value="peer_id" readonly>
                         <label for="floatingInputValue">My PeerID <input class="form-check-input online" type="radio"
                                 checked></label>
                     </form>

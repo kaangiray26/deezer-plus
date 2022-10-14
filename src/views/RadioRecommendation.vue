@@ -41,13 +41,14 @@ defineProps({
     },
 });
 
+// Must be synchronized in groupSession
 async function play(id) {
     sessionAction({
         func: async function op() {
             DZ.player.playRadio(id);
         },
         object: id,
-        operation: 'RadioRecommendation.play',
+        operation: 'Radio.play',
     });
 }
 </script>
