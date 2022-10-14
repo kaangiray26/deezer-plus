@@ -142,6 +142,7 @@ function login() {
 
             localStorage.setItem('queue', JSON.stringify([]));
             localStorage.setItem('groupSession', JSON.stringify([]));
+            localStorage.setItem('groupSessionID', '');
 
             localStorage.setItem('fav_tracks', JSON.stringify([]));
             localStorage.setItem('fav_albums', JSON.stringify([]));

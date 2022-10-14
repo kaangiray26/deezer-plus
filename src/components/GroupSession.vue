@@ -12,11 +12,15 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <form class="form-floating mb-2">
-                        <input type="text" class="form-control" id="floatingInputValue" :value="peer_id" readonly>
-                        <label for="floatingInputValue">My PeerID <input class="form-check-input online" type="radio"
-                                checked></label>
-                    </form>
+                    <div class="input-group mb-2">
+                        <form class="form-floating">
+                            <input type="text" class="form-control" id="floatingInputValue" :value="peer_id" readonly>
+                            <label for="floatingInputValue">My PeerID <input class="form-check-input online"
+                                    type="radio" checked>
+                            </label>
+                        </form>
+                        <button class="btn btn-dark" @click="copyPeerID">Link</button>
+                    </div>
                     <div class="input-group mb-2" v-show="store.peer_status.startsWith('disconnected')">
                         <span class="input-group-text" id="basic-addon1">@</span>
                         <input ref="recipient_id" type="text" class="form-control" placeholder="PeerID"
@@ -63,9 +67,25 @@ async function createConnection() {
     if (!id.length) {
         return;
     }
+
     store.peer_status = 'disconnected.connecting';
 
     conn.value = peer.value.connect(id);
+    peerInit.value = true;
+
+    conn.value.on("open", () => {
+        conn.value.send({
+            type: 'connect',
+            peer_id: peer_id.value,
+            username: localStorage.getItem('username'),
+        });
+    });
+}
+
+async function createConnectionWithStoredID(stored_id) {
+    store.peer_status = 'disconnected.connecting';
+
+    conn.value = peer.value.connect(stored_id);
     peerInit.value = true;
 
     conn.value.on("open", () => {
@@ -109,6 +129,10 @@ async function _peer_event(obj) {
     thisPeerJS.value.peer_event(obj);
 }
 
+async function copyPeerID() {
+    navigator.clipboard.writeText('https://deezer.buzl.uk/groupsession/' + peer_id.value);
+}
+
 defineExpose({
     show: _show,
     hide: _hide,
@@ -124,10 +148,15 @@ onMounted(() => {
 
     peer.value.on('open', id => {
         peer_id.value = id;
+
+        let group_session_id = localStorage.getItem('groupSessionID');
+        if (group_session_id.length) {
+            createConnectionWithStoredID(group_session_id);
+            localStorage.setItem('groupSessionID', '');
+        }
     });
 
     peer.value.on('connection', connection => {
-
         conn.value = connection;
         peerInit.value = true;
     });

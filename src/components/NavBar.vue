@@ -40,14 +40,14 @@ const emit = defineEmits(["right-click"]);
 let search_input = ref(null);
 
 async function openProfile() {
-    router.push("/profile");
+    router.push('/profile');
 }
 
 async function search(event) {
     if (!event.target.value.length) {
         return;
     }
-    router.push("/search/" + event.target.value);
+    router.push('/search/' + event.target.value);
 }
 
 async function _focus_search() {

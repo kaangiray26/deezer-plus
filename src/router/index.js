@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Recommendations from '../views/Recommendations.vue';
+import Recommendations from '/views/Recommendations.vue';
 
 import Track from '/views/Track.vue';
 import Album from '/views/Album.vue';
@@ -19,6 +19,7 @@ import FavoritePlaylists from '/views/profile_sections/FavoritePlaylists.vue';
 import Settings from '/views/Settings.vue';
 import Lastfm from '/views/Lastfm.vue';
 import PageNotFound from '/views/PageNotFound.vue';
+import GroupSessionLink from '/views/GroupSessionLink.vue';
 
 const routes = [
     {
@@ -48,6 +49,10 @@ const routes = [
     {
         path: '/radio/:id',
         component: Radio
+    },
+    {
+        path: '/groupsession/:id',
+        component: GroupSessionLink
     },
     {
         path: '/profile',
