@@ -41,10 +41,17 @@ function padWithZero(num) {
     return String(num).padStart(2, '0');
 }
 
+// Must be synchronized in groupSession: ok
 async function play(id) {
-    await addToQueueStart([id]);
-    getQueueTracks().then(tracks => {
-        DZ.player.playTracks(tracks);
+    sessionAction({
+        func: async function op() {
+            await addToQueueStart([parseInt(id)]);
+            getQueueTracks().then(tracks => {
+                DZ.player.playTracks(tracks);
+            });
+        },
+        object: id,
+        operation: 'Track.play',
     });
 }
 

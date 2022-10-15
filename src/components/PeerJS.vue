@@ -290,6 +290,14 @@ props.conn.on("data", async function (data) {
                 });
                 break;
 
+            case 'Queue.play':
+                store.stack.push(async function op() {
+                    getQueueTracks().then((tracks) => {
+                        DZ.player.playTracks(tracks, data.object);
+                    });
+                });
+                break;
+
             default:
                 return;
         }

@@ -33,6 +33,7 @@
 <script setup>
 import { computed } from "vue";
 import { store } from '/js/store.js';
+import { sessionAction } from '/js/session.js';
 import { getQueueTracks } from "/js/queue.js";
 
 const emit = defineEmits(['route-click', 'remove-track']);
@@ -67,16 +68,17 @@ function padWithZero(num) {
     return String(num).padStart(2, '0');
 }
 
+// Must be synchronized in groupSession: ok
 async function play(index) {
-    getQueueTracks().then((tracks) => {
-        DZ.player.playTracks(tracks, index);
+    sessionAction({
+        func: async function op() {
+            getQueueTracks().then((tracks) => {
+                DZ.player.playTracks(tracks, index);
+            });
+        },
+        object: index,
+        operation: 'Queue.play',
     });
 }
-
-// onMounted(() => {
-//     if (props.index == parseInt(DZ.player.getCurrentIndex())) {
-//         playing.value = true;
-//     }
-// })
 
 </script>
