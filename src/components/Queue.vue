@@ -100,7 +100,7 @@ async function getFlow() {
     });
 }
 
-// Must be synchronized in groupSession:
+// Must be synchronized in groupSession: ok
 async function removeTrack(index) {
     sessionAction({
         func: async function op() {

@@ -8,12 +8,16 @@
         <Queue ref="thisOffCanvas" />
         <Animation ref="thisAnimation" />
         <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"
-            @reaction="thisAnimation.toggle($event)" />
+            @reaction="thisAnimation.toggle($event)" @notify="notify($event)" @message="message($event)" />
+        <Toast ref="thisToast" :message="toastNotification"></Toast>
+        <messageToast ref="thisMessageToast" :message="toastMessage" :from="toastFrom"></messageToast>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
+import Toast from "/components/liveToast.vue";
+import messageToast from "/components/messageToast.vue";
 
 import DeezerProvider from '/components/DeezerProvider.vue';
 import Context from '/components/Context.vue';
@@ -33,6 +37,24 @@ let thisAnimation = ref(null);
 let thisGroupSession = ref(null);
 
 const groupKey = ref(0);
+
+let thisToast = ref(null);
+let thisMessageToast = ref(null);
+
+const toastNotification = ref("");
+const toastMessage = ref("");
+const toastFrom = ref("");
+
+async function notify(msg) {
+    toastNotification.value = msg;
+    thisToast.value.show();
+}
+
+async function message(obj) {
+    toastMessage.value = obj.message;
+    toastFrom.value = obj.from;
+    thisMessageToast.value.show();
+}
 
 async function reset_group_session() {
     groupKey.value += 1;

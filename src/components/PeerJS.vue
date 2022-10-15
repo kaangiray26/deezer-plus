@@ -6,7 +6,7 @@
             <button class="btn btn-danger" @click="disconnect">Disconnect</button>
         </div>
         <hr />
-        <div class="d-flex">
+        <div class="d-flex mb-2">
             <div class="input-group">
                 <button class="btn btn-outline-light border" type="button" @click="send_reaction('love')">❤️</button>
                 <button class="btn btn-outline-light border" type="button" @click="send_reaction('hand')">🤘</button>
@@ -16,6 +16,11 @@
                 <button class="btn btn-outline-light border" type="button" @click="send_reaction('puke')">🤮</button>
                 <button class="btn btn-outline-light border" type="button" @click="send_reaction('shit')">💩</button>
             </div>
+        </div>
+        <div class="input-group">
+            <input ref="message" type="text" class="form-control" placeholder="Send a message..."
+                @keyup.enter="sendMessage">
+            <button class="btn btn-outline-dark" @click="sendMessage">Send</button>
         </div>
     </div>
     <div v-show="alert.show">
@@ -45,26 +50,17 @@
             </div>
         </div>
     </div>
-    <Toast ref="thisToast" :message="toastMessage"></Toast>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { store } from "/js/store.js";
-import { addToQueue, getCurrentTrack, addToQueueStart, getQueueTracks, clearQueue } from '/js/queue.js';
-import Toast from "/components/liveToast.vue";
+import { addToQueue, addToQueueStart, getQueueTracks, clearQueue } from '/js/queue.js';
 
-const emit = defineEmits(['show', 'reset', 'reaction']);
+const emit = defineEmits(['show', 'reset', 'reaction', 'notify', 'message']);
 
+const message = ref(null);
 const status = ref("disconnected");
-
-let thisToast = ref(null);
-const toastMessage = ref("");
-
-async function notify(message) {
-    toastMessage.value = message;
-    thisToast.value.show();
-}
 
 const peer_id = ref(null);
 const recipient_id = ref(null);
@@ -101,6 +97,19 @@ async function alert_notify(msg) {
         show: true,
         message: msg,
     };
+}
+
+async function sendMessage() {
+    let msg = message.value.value;
+    if (!msg.length) {
+        return;
+    }
+
+    props.conn.send({
+        type: 'message',
+        message: msg,
+    });
+    message.value.value = '';
 }
 
 async function acceptRequest() {
@@ -149,7 +158,7 @@ async function peer_event(obj) {
 }
 
 async function send_reaction(event) {
-    notify('Reaction sent.');
+    emit('notify', 'Reaction sent.');
     props.conn.send({
         type: 'reaction',
         event: event,
@@ -330,6 +339,15 @@ props.conn.on("data", async function (data) {
                 return;
         }
         runFunc();
+        return;
+    }
+
+    if (data.type == 'message') {
+        emit('message', {
+            message: data.message,
+            from: contacts.value.recipient.username,
+        });
+        return;
     }
 
     if (data.type == 'reaction') {

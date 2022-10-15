@@ -125,10 +125,10 @@ td {
     opacity: 0.95;
 }
 
-#liveToast {
+/* #liveToast {
     opacity: 0.90;
     z-index: 1031;
-}
+} */
 
 .right-0 {
     right: 0 !important;
@@ -136,4 +136,8 @@ td {
 
 #app {
     height: 100%;
+}
+
+.toast-container {
+    z-index: 1051;
 }
