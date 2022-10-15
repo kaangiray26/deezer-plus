@@ -51,7 +51,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { store } from "/js/store.js";
-import { addToQueue, getCurrentTrack, addToQueueStart, getQueueTracks } from '/js/queue.js';
+import { addToQueue, getCurrentTrack, addToQueueStart, getQueueTracks, clearQueue } from '/js/queue.js';
 import Toast from "/components/liveToast.vue";
 
 const emit = defineEmits(['show', 'reset', 'reaction']);
@@ -294,6 +294,34 @@ props.conn.on("data", async function (data) {
                 store.stack.push(async function op() {
                     getQueueTracks().then((tracks) => {
                         DZ.player.playTracks(tracks, data.object);
+                    });
+                });
+                break;
+
+            case 'Queue.clear_all':
+                store.stack.push(async function op() {
+                    store.queue = [];
+                    store.queue_index = 0;
+                    clearQueue();
+                });
+                break;
+
+            case 'Queue.clear_except':
+                store.stack.push(async function op() {
+                    let current_track_id = parseInt(data.object);
+                    store.queue = store.queue.filter(item => item.track.id === current_track_id);
+                    store.queue_index = 0;
+                    clearQueue(store.queue);
+                });
+                break;
+
+            case 'Queue.remove':
+                store.stack.push(async function op() {
+                    store.queue.splice(data.object, 1);
+                    clearQueue(store.queue);
+
+                    getQueueTracks().then(tracks => {
+                        DZ.player.playTracks(tracks);
                     });
                 });
                 break;
