@@ -39,6 +39,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { sessionAction } from '/js/session.js';
 import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
 import { addToQueue, getQueue, clearQueue, getQueueTracks } from "/js/queue.js";
@@ -46,6 +47,8 @@ import QueueTrack from "/components/results/QueueTrack.vue";
 
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
+
+const flow = ref(false);
 
 const queue = ref({
     tracks: []
@@ -55,8 +58,7 @@ const increment = ref({
     index: -1,
 });
 
-const flow = ref(false);
-
+// Must be synchronized in groupSession:
 function buttonClear() {
     let current_track = DZ.player.getCurrentTrack();
     console.log("Current:", current_track);
@@ -73,10 +75,12 @@ function buttonClear() {
     return;
 }
 
+// Must not be synchronized in groupSession!
 async function buttonFlow(event) {
     flow.value = event.target.checked;
 }
 
+// Must not be synchronized in groupSession!
 async function getFlow() {
     console.log("Getting flow...");
     DZ.api(`/user/me/flow?access_token=${localStorage.getItem("token")}`, async function (response) {
@@ -87,6 +91,7 @@ async function getFlow() {
     });
 }
 
+// Must be synchronized in groupSession:
 async function removeTrack(index) {
     queue.value.tracks.splice(index, 1);
     clearQueue(queue.value.tracks);
