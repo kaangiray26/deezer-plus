@@ -10,7 +10,7 @@
                         <div class="d-flex flex-fill align-items-center">
                             <div class="d-flex flex-column flex-fill">
                                 <div v-if="isLoaded" class="mx-2 mb-2">
-                                    <router-link :to="/track/ + track.id">{{track.title}}</router-link>
+                                    <router-link :to="/album/ + album.id">{{track.title}}</router-link>
                                     <span> - </span>
                                     <router-link :to="/artist/ + artist.id">{{artist.title}}</router-link>
                                 </div>
