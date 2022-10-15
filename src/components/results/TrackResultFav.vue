@@ -31,6 +31,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { sessionAction } from '/js/session.js';
 import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 const emit = defineEmits(['route-click']);
