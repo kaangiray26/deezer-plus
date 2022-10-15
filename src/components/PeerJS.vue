@@ -54,10 +54,10 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { store } from "/js/store.js";
+import { store, notify } from "/js/store.js";
 import { addToQueue, addToQueueStart, getQueueTracks, clearQueue } from '/js/queue.js';
 
-const emit = defineEmits(['show', 'reset', 'reaction', 'notify', 'message']);
+const emit = defineEmits(['show', 'reset', 'reaction', 'message']);
 
 const message = ref(null);
 const status = ref("disconnected");
@@ -158,7 +158,7 @@ async function peer_event(obj) {
 }
 
 async function send_reaction(event) {
-    emit('notify', 'Reaction sent.');
+    notify({ n: 'Reaction sent.' });
     props.conn.send({
         type: 'reaction',
         event: event,

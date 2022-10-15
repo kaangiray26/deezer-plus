@@ -149,5 +149,9 @@ onMounted(() => {
     window.addEventListener('peer', event => {
         thisGroupSession.value.peer_event(event.detail);
     });
+
+    window.addEventListener('notify', event => {
+        notify(event.detail.n);
+    });
 });
 </script>

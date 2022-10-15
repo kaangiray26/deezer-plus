@@ -2,9 +2,8 @@
     <component ref="contextMenu" id="contextMenu" v-show="isContextMenuVisible" :is="contextMenus[currentSearchField]"
         :style="{'bottom':posY+'px', 'right':posX+'px'}" @context-menu-event="contextMenuEvent" :item_id="item_id">
     </component>
-    <Toast ref="thisToast" :message="toastMessage"></Toast>
-    <ShareModal @text-copy="notify('URL Copied.')" ref="thisShareModal"></ShareModal>
-    <PlaylistModal @playlist-add="notify('Added to playlist.')" ref="thisPlaylistModal"></PlaylistModal>
+    <ShareModal @text-copy="notify({n:'URL Copied.'})" ref="thisShareModal"></ShareModal>
+    <PlaylistModal @playlist-add="notify({n:'Added to playlist.'})" ref="thisPlaylistModal"></PlaylistModal>
 </template>
 
 <script setup>
@@ -12,9 +11,9 @@ import { ref, nextTick } from "vue";
 import { addToFav, removeFromFav } from "/js/favs.js";
 import { addToQueue, addToQueueStart, getQueueTracks } from "/js/queue.js";
 import { sessionAction } from '/js/session.js';
+import { notify } from '/js/store.js';
 
 import router from "/router";
-import Toast from "/components/liveToast.vue";
 import ShareModal from '/components/ShareModal.vue';
 import PlaylistModal from '/components/PlaylistModal.vue';
 
@@ -30,9 +29,6 @@ const posY = ref(0);
 const item_id = ref(0);
 const selectedItem = ref(null);
 
-let thisToast = ref(null);
-const toastMessage = ref("");
-
 let thisShareModal = ref(null);
 
 let thisPlaylistModal = ref(null);
@@ -47,11 +43,6 @@ const contextMenus = {
     "playlists": PlaylistContextMenu,
     "radios": RadioContextMenu,
 };
-
-async function notify(message) {
-    toastMessage.value = message;
-    thisToast.value.show();
-}
 
 async function _hide() {
     isContextMenuVisible.value = false;
@@ -200,7 +191,7 @@ async function contextMenuEvent(event) {
             object: parseInt(selectedItem.value.attributes.track_id.value),
             operation: 'Queue.Track.add',
         });
-        notify("Added to the queue.");
+        notify({ n: "Added to the queue." });
         return;
     }
 
@@ -215,7 +206,7 @@ async function contextMenuEvent(event) {
             object: selectedItem.value.attributes.album_id.value,
             operation: 'Queue.Album.add',
         });
-        notify("Added to the queue.");
+        notify({ n: "Added to the queue." });
         return;
     }
 
@@ -230,7 +221,7 @@ async function contextMenuEvent(event) {
             object: selectedItem.value.id,
             operation: 'Queue.Playlist.add',
         });
-        notify("Added to the queue.");
+        notify({ n: "Added to the queue." });
         return;
     }
 
@@ -245,50 +236,50 @@ async function contextMenuEvent(event) {
             object: selectedItem.value.id,
             operation: 'Queue.Radio.add',
         });
-        notify("Added to the queue.");
+        notify({ n: "Added to the queue." });
         return;
     }
 
     // Add to Favorites Events
     if (event == 'addTrackToFavorites') {
         addToFav('fav_tracks', parseInt(selectedItem.value.attributes.track_id.value));
-        notify("Added to favorites.");
+        notify({ n: "Added to favorites." });
     }
 
     if (event == 'addAlbumToFavorites') {
         addToFav('fav_albums', parseInt(selectedItem.value.attributes.album_id.value));
-        notify("Added to favorites.");
+        notify({ n: "Added to favorites." });
     }
 
     if (event == 'addArtistToFavorites') {
         addToFav('fav_artists', parseInt(selectedItem.value.attributes.artist_id.value));
-        notify("Added to favorites.");
+        notify({ n: "Added to favorites." });
     }
 
     if (event == 'addPlaylistToFavorites') {
         addToFav('fav_playlists', parseInt(selectedItem.value.attributes.playlist_id.value));
-        notify("Added to favorites.");
+        notify({ n: "Added to favorites." });
     }
 
     // Remove From Favorites Events
     if (event == 'removeTrackFromFavorites') {
         removeFromFav('fav_tracks', parseInt(selectedItem.value.attributes.track_id.value));
-        notify("Removed from favorites.");
+        notify({ n: "Removed from favorites." });
     }
 
     if (event == 'removeAlbumFromFavorites') {
         removeFromFav('fav_albums', parseInt(selectedItem.value.attributes.album_id.value));
-        notify("Removed from favorites.");
+        notify({ n: "Removed from favorites." });
     }
 
     if (event == 'removeArtistFromFavorites') {
         removeFromFav('fav_artists', parseInt(selectedItem.value.attributes.artist_id.value));
-        notify("Removed from favorites.");
+        notify({ n: "Removed from favorites." });
     }
 
     if (event == 'removePlaylistFromFavorites') {
         removeFromFav('fav_playlists', parseInt(selectedItem.value.attributes.playlist_id.value));
-        notify("Removed from favorites.");
+        notify({ n: "Removed from favorites." });
     }
 
     // Track Events

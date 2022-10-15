@@ -31,8 +31,7 @@
                             @click="stopConnection">Stop</button>
                     </div>
                     <PeerJS ref="thisPeerJS" v-if="peerInit" :key="peer_key" :peer="peer" :conn="conn"
-                        :peer_id="peer_id" @show="_show" @reset="reset" @reaction="showReaction"
-                        @notify="showNotification" @message="showMessage">
+                        :peer_id="peer_id" @show="_show" @reset="reset" @reaction="showReaction" @message="showMessage">
                     </PeerJS>
                 </div>
             </div>
@@ -47,7 +46,7 @@ import { Modal } from 'bootstrap';
 import { Peer } from "peerjs";
 import PeerJS from '/components/PeerJS.vue';
 
-const emit = defineEmits(['reset', 'reaction', 'notify', 'message']);
+const emit = defineEmits(['reset', 'reaction', 'message']);
 
 let modalEle = ref(null);
 let thisModalObj = null;
@@ -112,10 +111,6 @@ async function reset() {
 
 async function showReaction(event) {
     emit('reaction', event);
-}
-
-async function showNotification(event) {
-    emit('notify', event);
 }
 
 async function showMessage(event) {

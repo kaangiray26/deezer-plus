@@ -17,11 +17,11 @@
                             <div class="position-absolute bottom-0">
                                 <button v-show="isFav" class="btn btn-light shadow bi bi-heart-fill text-danger"
                                     type="button" style="opacity: 0.90;"
-                                    @click="isFav = !isFav; removeFromFav('fav_albums', album.id); notify('Removed from favorites.')">
+                                    @click="isFav = !isFav; removeFromFav('fav_albums', album.id); notify({n:'Removed from favorites.'})">
                                 </button>
                                 <button v-show="!isFav" class="btn btn-light shadow bi bi-heart" type="button"
                                     style="opacity: 0.90;"
-                                    @click="isFav = !isFav; addToFav('fav_albums', album.id); notify('Added to favorites.')">
+                                    @click="isFav = !isFav; addToFav('fav_albums', album.id); notify({n:'Added to favorites.'})">
                                 </button>
                                 <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                                     @click="play(album.id)">
@@ -76,18 +76,17 @@
             </div>
         </div>
     </div>
-    <Toast ref="thisToast" :message="toastMessage"></Toast>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { notify } from '/js/store.js';
 import router from "/router";
 
 import { sessionAction } from '/js/session.js';
 import { addToQueueStart, getQueueTracks } from '/js/queue.js';
 
 import { addToFav, removeFromFav } from "/js/favs.js";
-import Toast from "/components/liveToast.vue";
 
 const emit = defineEmits(["right-click"]);
 
@@ -95,14 +94,6 @@ const album = ref({});
 const albumLoaded = ref(false);
 
 const isFav = ref(false);
-
-let thisToast = ref(null);
-const toastMessage = ref("");
-
-async function notify(message) {
-    toastMessage.value = message;
-    thisToast.value.show();
-}
 
 async function get_album(id) {
     DZ.api('/album/' + id, function (response) {
@@ -155,7 +146,7 @@ async function playTrack(id) {
 
 // Must be synchronized in groupSession: ok
 async function play(id) {
-    notify("Loading album...");
+    notify({ n: "Loading album..." });
     sessionAction({
         func: async function op() {
             DZ.api('/album/' + id, async function (response) {

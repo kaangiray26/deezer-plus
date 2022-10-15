@@ -9,6 +9,12 @@ if (window.location.hostname == 'localhost') {
     shared_secret = 'fbe7d3161c399a80cd77dd3e6a660a5e';
 }
 
+async function notify(obj) {
+    window.dispatchEvent(new CustomEvent('notify', {
+        detail: obj
+    }));
+}
+
 const store = reactive({
     playerHeight: 0,
     queue_index: 0,
@@ -20,4 +26,4 @@ const store = reactive({
     stack: [],
 });
 
-export { store }
+export { store, notify }
