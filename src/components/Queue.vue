@@ -20,7 +20,7 @@
                             <div class="table-responsive">
                                 <table class="table table-hover table-borderless">
                                     <tbody>
-                                        <QueueTrack v-for="(item, index) in queue.tracks" :index="index"
+                                        <QueueTrack v-for="(item, index) in store.queue" :index="index"
                                             :id="item.track.id" :artist="item.artist" :album="item.album"
                                             :track="item.track" :duration="item.duration" :cover="item.cover"
                                             @remove-track="removeTrack" @route-click="_hide">
@@ -39,9 +39,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { sessionAction } from '/js/session.js';
 import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
+import { sessionAction } from '/js/session.js';
 import { addToQueue, getQueue, clearQueue, getQueueTracks } from "/js/queue.js";
 import QueueTrack from "/components/results/QueueTrack.vue";
 
@@ -50,28 +50,37 @@ let thisOffCanvasObj = null;
 
 const flow = ref(false);
 
-const queue = ref({
-    tracks: []
-});
-
 const increment = ref({
     index: -1,
 });
 
-// Must be synchronized in groupSession:
+// Must be synchronized in groupSession: ok
 function buttonClear() {
     let current_track = DZ.player.getCurrentTrack();
-    console.log("Current:", current_track);
 
     if (!current_track) {
-        queue.value.tracks = [];
-        clearQueue();
+        sessionAction({
+            func: async function op() {
+                store.queue = [];
+                store.queue_index = 0;
+                clearQueue();
+            },
+            object: null,
+            operation: 'Queue.clear_all',
+        });
         return;
     }
 
-    let current_track_id = parseInt(current_track.id);
-    queue.value.tracks = queue.value.tracks.filter(item => item.track.id === current_track_id);
-    clearQueue(queue.value.tracks);
+    sessionAction({
+        func: async function op() {
+            let current_track_id = parseInt(current_track.id);
+            store.queue = store.queue.filter(item => item.track.id === current_track_id);
+            store.queue_index = 0;
+            clearQueue(store.queue);
+        },
+        object: current_track.id,
+        operation: 'Queue.clear_except',
+    });
     return;
 }
 
@@ -93,16 +102,22 @@ async function getFlow() {
 
 // Must be synchronized in groupSession:
 async function removeTrack(index) {
-    queue.value.tracks.splice(index, 1);
-    clearQueue(queue.value.tracks);
+    sessionAction({
+        func: async function op() {
+            store.queue.splice(index, 1);
+            clearQueue(store.queue);
 
-    getQueueTracks().then(tracks => {
-        DZ.player.playTracks(tracks);
+            getQueueTracks().then(tracks => {
+                DZ.player.playTracks(tracks);
+            });
+        },
+        object: index,
+        operation: 'Queue.remove',
     });
 }
 
 async function refresh() {
-    queue.value.tracks = getQueue();
+    store.queue = getQueue();
 }
 
 async function _show() {
@@ -127,7 +142,7 @@ DZ.Event.subscribe('track_end', async function (val) {
         });
     }
 
-    if (store.queue_index == queue.value.tracks.length) {
+    if (store.queue_index == store.queue.length) {
         console.log("Reached queue end.");
         if (flow.value) {
             getFlow();
