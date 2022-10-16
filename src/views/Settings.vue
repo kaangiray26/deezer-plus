@@ -68,15 +68,21 @@
                         </div>
                     </div>
                     <hr />
-                    <div>
+                    <div class="d-flex flex-column">
                         <p>
-                            <a href="https://github.com/kaangiray26/deezer-plus" target="_blank">Deezer+</a> is a free,
+                            <span class="fw-bolder text-danger">Deezer+</span> is a free,
                             open-source project.<br />
                             If you like it, please consider supporting it by <a
-                                href="https://www.buymeacoffee.com/DeezerPlus" target="_blank">buying me a
-                                coffee</a>.<br />
+                                href="https://www.buymeacoffee.com/kaangiray26" target="_blank"><u>buying me a
+                                    beer</u></a>.<br />
                             Made with <del class="fw-bolder text-danger">love</del> fritz-kola.
                         </p>
+                        <div>
+                            <div class="d-inline-flex position-relative">
+                                <img class="img-fluid" src="/assets/github.svg" height="32" width="32">
+                                <a class="stretched-link" href="https://github.com/kaangiray26/deezer-plus"></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
