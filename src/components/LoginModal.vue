@@ -4,12 +4,11 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Authorization</h4><button class="btn-close" type="button"
-                        data-bs-dismiss="modal" aria-label=" Close"></button>
+                    <h4 class="modal-title">Authorization</h4>
                 </div>
                 <div class="modal-body">
                     <p>If you want to use this application with your own account, you need to log in.</p>
-                    <div class="input-group"><button class="btn btn-primary flex-fill" type="button"
+                    <div class="input-group"><button class="btn btn-dark flex-fill" type="button"
                             @click="emit('requestLogin')">Log in</button></div>
                 </div>
             </div>
@@ -27,7 +26,9 @@ let thisModalObj = null;
 const emit = defineEmits(['requestLogin']);
 
 onMounted(() => {
-    thisModalObj = new Modal(modalEle.value);
+    thisModalObj = new Modal(modalEle.value, {
+        keyboard: false
+    });
 });
 
 function _show() {

@@ -136,29 +136,31 @@ async function getLoginStatus(response) {
 
 function login() {
     DZ.login(function (response) {
-        if (response.authResponse) {
-            localStorage.setItem('token', response.authResponse.accessToken);
-            localStorage.setItem('scrobbling', false);
-
-            localStorage.setItem('queue', JSON.stringify([]));
-            localStorage.setItem('groupSession', JSON.stringify([]));
-            localStorage.setItem('groupSessionID', '');
-
-            localStorage.setItem('fav_tracks', JSON.stringify([]));
-            localStorage.setItem('fav_albums', JSON.stringify([]));
-            localStorage.setItem('fav_artists', JSON.stringify([]));
-            localStorage.setItem('fav_playlists', JSON.stringify([]));
-            localStorage.setItem('fav_radios', JSON.stringify([]));
-
-            DZ.api(`/user/me?access_token=${localStorage.getItem("token")}`, data => {
-                localStorage.setItem('id', data.id);
-                localStorage.setItem('username', data.name);
-                hideModal();
-                location.reload();
-            });
-        } else {
-            console.log('User cancelled login or did not fully authorize.');
+        if (!response.authResponse.accessToken) {
+            alert('Login failed, please try again later.');
+            return;
         }
+
+        console.log("Welcome!  Fetching your information.... ", response.authResponse);
+        localStorage.setItem('token', response.authResponse.accessToken);
+        localStorage.setItem('scrobbling', false);
+
+        localStorage.setItem('queue', JSON.stringify([]));
+        localStorage.setItem('groupSession', JSON.stringify([]));
+        localStorage.setItem('groupSessionID', '');
+
+        localStorage.setItem('fav_tracks', JSON.stringify([]));
+        localStorage.setItem('fav_albums', JSON.stringify([]));
+        localStorage.setItem('fav_artists', JSON.stringify([]));
+        localStorage.setItem('fav_playlists', JSON.stringify([]));
+        localStorage.setItem('fav_radios', JSON.stringify([]));
+
+        DZ.api(`/user/me?access_token=${localStorage.getItem("token")}`, data => {
+            localStorage.setItem('id', data.id);
+            localStorage.setItem('username', data.name);
+            hideModal();
+            location.reload();
+        });
     }, { perms: 'basic_access,email,offline_access,manage_library,manage_community,delete_library,listening_history' });
 }
 

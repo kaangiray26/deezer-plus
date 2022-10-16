@@ -1,7 +1,7 @@
 <template>
     <div @click="context_hide" @key.esc="context_hide" tabindex="0">
-        <HelpModal ref="thisHelpModal" />
         <DeezerProvider />
+        <HelpModal ref="thisHelpModal" />
         <Context ref="thisContext" />
         <NavBar ref="thisNavBar" @right-click="right_click" />
         <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @groupSession="thisGroupSession.toggle()" />
