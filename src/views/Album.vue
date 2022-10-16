@@ -61,6 +61,7 @@
                         <tbody>
                             <tr v-for="(track, index) in album.tracks" :track_id="track.id" :album_id="album.id"
                                 :artist_id="album.artist_id" class="row gx-0 d-flex flex-row"
+                                :class="{'table-warning':track.id == redirected_track_id}"
                                 @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
                                 <td class="col-1 d-flex align-items-center text-nowrap text-truncate">{{index+1}}</td>
@@ -92,6 +93,8 @@ const emit = defineEmits(["right-click"]);
 
 const album = ref({});
 const albumLoaded = ref(false);
+
+const redirected_track_id = ref(null);
 
 const isFav = ref(false);
 
@@ -162,6 +165,9 @@ async function play(id) {
 }
 
 onMounted(() => {
+    if (router.currentRoute.value.query.hasOwnProperty('track')) {
+        redirected_track_id.value = parseInt(router.currentRoute.value.query.track);
+    }
     get_album(router.currentRoute.value.params.id);
 });
 </script>

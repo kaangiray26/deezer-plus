@@ -94,6 +94,11 @@ async function contextMenuEvent(event) {
     isContextMenuVisible.value = false;
 
     // Open Page Events
+    if (event == 'openTrackPage') {
+        router.push('/album/' + selectedItem.value.attributes.album_id.value + '?track=' + selectedItem.value.attributes.track_id.value);
+        return;
+    }
+
     if (event == 'openAlbumPage') {
         router.push('/album/' + selectedItem.value.attributes.album_id.value);
         return;

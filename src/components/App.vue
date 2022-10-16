@@ -9,14 +9,14 @@
         <Animation ref="thisAnimation" />
         <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"
             @reaction="thisAnimation.toggle($event)" @notify="notify($event)" @message="message($event)" />
-        <Toast ref="thisToast" :message="toastNotification"></Toast>
+        <liveToast ref="thisToast" :message="toastNotification"></liveToast>
         <messageToast ref="thisMessageToast" :message="toastMessage" :from="toastFrom"></messageToast>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import Toast from "/components/liveToast.vue";
+import liveToast from "/components/liveToast.vue";
 import messageToast from "/components/messageToast.vue";
 
 import DeezerProvider from '/components/DeezerProvider.vue';
