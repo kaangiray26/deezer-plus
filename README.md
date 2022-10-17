@@ -1,5 +1,5 @@
 ![](src/assets/deezer.svg)
-# deezer-plus
+# Deezer+
 Deezer Web Player with extra features
 
 Check out at https://deezer.buzl.uk
