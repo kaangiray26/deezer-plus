@@ -1,0 +1,7 @@
+{
+  "name": "Deezer+",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}

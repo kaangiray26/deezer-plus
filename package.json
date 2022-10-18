@@ -8,6 +8,7 @@
     "deploy": "sh deploy.sh"
   },
   "dependencies": {
+    "@ionic/cli": "^6.20.3",
     "@popperjs/core": "^2.11.6",
     "animejs": "^3.2.1",
     "bootstrap": "^5.2.1",
