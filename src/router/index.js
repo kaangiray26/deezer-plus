@@ -15,6 +15,8 @@ import FavoriteTracks from '/views/profile_sections/FavoriteTracks.vue';
 import FavoriteAlbums from '/views/profile_sections/FavoriteAlbums.vue';
 import FavoriteArtists from '/views/profile_sections/FavoriteArtists.vue';
 import FavoritePlaylists from '/views/profile_sections/FavoritePlaylists.vue';
+import Followings from '/views/profile_sections/Followings.vue';
+import Followers from '/views/profile_sections/Followers.vue';
 
 import Settings from '/views/Settings.vue';
 import Lastfm from '/views/Lastfm.vue';
@@ -81,6 +83,14 @@ const routes = [
             {
                 path: 'artists',
                 component: FavoriteArtists
+            },
+            {
+                path: 'following',
+                component: Followings
+            },
+            {
+                path: 'followers',
+                component: Followers
             }
         ]
     },

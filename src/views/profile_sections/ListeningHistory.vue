@@ -20,6 +20,14 @@
             <router-link class="nav-link fw-bolder text-dark" to="/profile/artists">Artists
             </router-link>
         </li>
+        <li class="nav-item">
+            <router-link class="nav-link fw-bolder text-dark" to="/profile/following">Following
+            </router-link>
+        </li>
+        <li class="nav-item">
+            <router-link class="nav-link fw-bolder text-dark" to="/profile/followers">Followers
+            </router-link>
+        </li>
     </ul>
     <hr />
     <ul v-show="historyLoaded" class="list-group">
