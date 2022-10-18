@@ -18,6 +18,15 @@ import FavoritePlaylists from '/views/profile_sections/FavoritePlaylists.vue';
 import Followings from '/views/profile_sections/Followings.vue';
 import Followers from '/views/profile_sections/Followers.vue';
 
+import User from '/views/User.vue';
+import UserPage from '/views/user_sections/UserPage.vue';
+import UserFavoriteTracks from '/views/user_sections/FavoriteTracks.vue';
+import UserFavoriteAlbums from '/views/user_sections/FavoriteAlbums.vue';
+import UserFavoriteArtists from '/views/user_sections/FavoriteArtists.vue';
+import UserFavoritePlaylists from '/views/user_sections/FavoritePlaylists.vue';
+import UserFollowings from '/views/user_sections/Followings.vue';
+import UserFollowers from '/views/user_sections/Followers.vue';
+
 import Settings from '/views/Settings.vue';
 import Lastfm from '/views/Lastfm.vue';
 import PageNotFound from '/views/PageNotFound.vue';
@@ -91,6 +100,40 @@ const routes = [
             {
                 path: 'followers',
                 component: Followers
+            }
+        ]
+    },
+    {
+        path: '/user/:id',
+        component: User,
+        children: [
+            {
+                path: '',
+                component: UserPage
+            },
+            {
+                path: 'tracks',
+                component: UserFavoriteTracks
+            },
+            {
+                path: 'playlists',
+                component: UserFavoritePlaylists
+            },
+            {
+                path: 'albums',
+                component: UserFavoriteAlbums
+            },
+            {
+                path: 'artists',
+                component: UserFavoriteArtists
+            },
+            {
+                path: 'following',
+                component: UserFollowings
+            },
+            {
+                path: 'followers',
+                component: UserFollowers
             }
         ]
     },

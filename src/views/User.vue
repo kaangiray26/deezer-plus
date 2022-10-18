@@ -21,10 +21,9 @@
                 </div>
                 <div class="col">
                     <div class="d-inline-flex flex-column">
-                        <router-link to="/profile">
+                        <router-link :to="'/user/'+user.id">
                             <h1 class="text-bold mb-2" style="font-size: 32px; font-weight: 700;">{{user.name}}</h1>
                         </router-link>
-                        <router-link to="/settings" class="btn btn-outline-dark fw-bolder">Settings</router-link>
                     </div>
                     <hr />
                     <router-view @right-click="emit('right-click', $event)"></router-view>
@@ -36,14 +35,15 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import router from "/router";
 
 const emit = defineEmits(["right-click"]);
 
 const user = ref({});
 const userLoaded = ref(false);
 
-async function get_user() {
-    DZ.api(`/user/me?access_token=${localStorage.getItem("token")}`, function (response) {
+async function get_user(id) {
+    DZ.api(`/user/${id}?access_token=${localStorage.getItem("token")}`, function (response) {
         user.value = {
             id: parseInt(response.id),
             name: response.name,
@@ -55,6 +55,6 @@ async function get_user() {
 }
 
 onMounted(() => {
-    get_user();
-})
+    get_user(router.currentRoute.value.params.id);
+});
 </script>
