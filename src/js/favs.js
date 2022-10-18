@@ -21,6 +21,11 @@ function get_params(fav_array_name, id) {
             return ['playlists', {
                 playlist_id: id
             }]
+
+        case 'fav_radios':
+            return ['radios', {
+                radio_id: id
+            }]
     }
 }
 

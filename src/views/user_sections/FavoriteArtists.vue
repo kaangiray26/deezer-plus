@@ -128,5 +128,5 @@ window.onscroll = () => {
 onMounted(() => {
     user_id.value = router.currentRoute.value.params.id;
     get_loved(router.currentRoute.value.params.id);
-})
+});
 </script>

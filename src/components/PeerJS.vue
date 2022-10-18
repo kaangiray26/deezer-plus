@@ -213,7 +213,12 @@ props.conn.on("data", async function (data) {
 
             case 'Radio.play':
                 store.stack.push(async function op() {
-                    DZ.player.playRadio(data.object);
+                    DZ.api(`/radio/${data.object}/tracks`, async function (response) {
+                        await addToQueueStart(response.data.map(item => parseInt(item.id)));
+                        getQueueTracks().then(tracks => {
+                            DZ.player.playTracks(tracks);
+                        });
+                    });
                 });
                 break;
 
