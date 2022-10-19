@@ -50,7 +50,7 @@ const toastMessage = ref("");
 const toastFrom = ref("");
 
 async function set_player_init() {
-    console.log("Player initialized");
+    console.log("=> Player initialized.");
     player_init.value = true;
 }
 
