@@ -41,11 +41,14 @@ defineProps({
     },
 });
 
-// Must be synchronized in groupSession
+// Must be synchronized in groupSession: ok
 async function play(id) {
     sessionAction({
         func: async function op() {
-            DZ.player.playRadio(id);
+            DZ.player.playRadio(parseInt(id));
+            DZ.api(`/radio/${id}/tracks`, async function (response) {
+                await addToQueueStart(response.data.map(item => parseInt(item.id)));
+            });
         },
         object: id,
         operation: 'Radio.play',

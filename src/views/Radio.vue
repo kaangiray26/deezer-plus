@@ -141,11 +141,9 @@ async function play(id) {
     notify({ n: "Loading radio..." });
     sessionAction({
         func: async function op() {
+            DZ.player.playRadio(parseInt(id));
             DZ.api(`/radio/${id}/tracks`, async function (response) {
                 await addToQueueStart(response.data.map(item => parseInt(item.id)));
-                getQueueTracks().then(tracks => {
-                    DZ.player.playTracks(tracks);
-                });
             });
         },
         object: id,

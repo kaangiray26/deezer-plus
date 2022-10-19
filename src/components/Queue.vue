@@ -165,5 +165,8 @@ onMounted(() => {
         toggle: false
     });
     document.getElementById('OffCanvas').addEventListener('show.bs.offcanvas', refresh);
-})
+    window.addEventListener('queue', () => {
+        refresh();
+    });
+});
 </script>

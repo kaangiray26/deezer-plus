@@ -44,11 +44,9 @@ defineProps({
 async function play(id) {
     sessionAction({
         func: async function op() {
+            DZ.player.playAlbum(parseInt(id));
             DZ.api('/album/' + id, async function (response) {
                 await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
-                getQueueTracks().then(tracks => {
-                    DZ.player.playTracks(tracks);
-                });
             });
         },
         object: id,

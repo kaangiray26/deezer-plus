@@ -48,10 +48,8 @@ defineProps({
 async function play(id) {
     sessionAction({
         func: async function op() {
+            DZ.player.playTracks([parseInt(id)]);
             await addToQueueStart([parseInt(id)]);
-            getQueueTracks().then(tracks => {
-                DZ.player.playTracks(tracks);
-            });
         },
         object: id,
         operation: 'Track.play',

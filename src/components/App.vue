@@ -1,14 +1,16 @@
 <template>
     <div @click="context_hide" @key.esc="context_hide" tabindex="0">
-        <DeezerProvider />
+        <DeezerProvider @player_initialized="set_player_init" />
         <HelpModal ref="thisHelpModal" />
-        <Context ref="thisContext" />
-        <NavBar ref="thisNavBar" @right-click="right_click" />
-        <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @groupSession="thisGroupSession.toggle()" />
-        <Queue ref="thisOffCanvas" />
-        <Animation ref="thisAnimation" />
-        <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"
-            @reaction="thisAnimation.toggle($event)" @notify="notify($event)" @message="message($event)" />
+        <div v-if="player_init">
+            <Context ref="thisContext" />
+            <NavBar ref="thisNavBar" @right-click="right_click" />
+            <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @groupSession="thisGroupSession.toggle()" />
+            <Queue ref="thisOffCanvas" />
+            <Animation ref="thisAnimation" />
+            <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"
+                @reaction="thisAnimation.toggle($event)" @notify="notify($event)" @message="message($event)" />
+        </div>
         <liveToast ref="thisToast" :message="toastNotification"></liveToast>
         <messageToast ref="thisMessageToast" :message="toastMessage" :from="toastFrom"></messageToast>
     </div>
@@ -16,10 +18,10 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import DeezerProvider from '/components/DeezerProvider.vue';
+
 import liveToast from "/components/liveToast.vue";
 import messageToast from "/components/messageToast.vue";
-
-import DeezerProvider from '/components/DeezerProvider.vue';
 import Context from '/components/Context.vue';
 import NavBar from '/components/NavBar.vue';
 import Player from '/components/Player.vue';
@@ -36,6 +38,8 @@ let thisPlayer = ref(null);
 let thisAnimation = ref(null);
 let thisGroupSession = ref(null);
 
+const player_init = ref(false);
+
 const groupKey = ref(0);
 
 let thisToast = ref(null);
@@ -44,6 +48,11 @@ let thisMessageToast = ref(null);
 const toastNotification = ref("");
 const toastMessage = ref("");
 const toastFrom = ref("");
+
+async function set_player_init() {
+    console.log("Player initialized");
+    player_init.value = true;
+}
 
 async function notify(msg) {
     toastNotification.value = msg;

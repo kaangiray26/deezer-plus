@@ -177,11 +177,9 @@ async function play(id) {
     notify({ n: "Loading playlist..." });
     sessionAction({
         func: async function op() {
+            DZ.player.playPlaylist(parseInt(id));
             DZ.api('/playlist/' + id, async function (response) {
                 await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
-                getQueueTracks().then(tracks => {
-                    DZ.player.playTracks(tracks);
-                });
             });
         },
         object: id,

@@ -8,6 +8,8 @@ import Modal from "/components/LoginModal.vue";
 
 let thisModal = ref(null);
 
+const emit = defineEmits(['player_initialized']);
+
 const favs = ref({
     tracks: [],
     albums: [],
@@ -132,6 +134,7 @@ async function getLoginStatus(response) {
     DZ.player.setVolume(100);
     DZ.player.setShuffle(false);
     await save_favorites();
+    emit('player_initialized');
 }
 
 function login() {
