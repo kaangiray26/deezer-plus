@@ -31,6 +31,10 @@ async function addToQueue(tracks) {
     for (let id of tracks) {
         await getTrack(id);
     }
+    localStorage.setItem(
+        currentQueue(),
+        JSON.stringify(store.queue)
+    );
 }
 
 async function addToQueueStart(tracks) {
@@ -38,6 +42,10 @@ async function addToQueueStart(tracks) {
     for (let id of tracks) {
         await getTrackStart(id);
     }
+    localStorage.setItem(
+        currentQueue(),
+        JSON.stringify(store.queue)
+    );
 }
 
 async function getQueueTracks() {
@@ -47,8 +55,7 @@ async function getQueueTracks() {
 async function getTrack(id) {
     return new Promise((resolve, reject) => {
         DZ.api(`/track/${id}`, item => {
-            let arr = getQueue();
-            arr.push({
+            store.queue.push({
                 cover: `https://api.deezer.com/album/${item.album.id}/image`,
                 duration: parseInt(item.duration),
                 artist: {
@@ -64,10 +71,6 @@ async function getTrack(id) {
                     "title": item.title,
                 },
             });
-            localStorage.setItem(
-                currentQueue(),
-                JSON.stringify(arr)
-            );
             resolve(true);
         });
     });
@@ -76,8 +79,7 @@ async function getTrack(id) {
 async function getTrackStart(id) {
     return new Promise((resolve, reject) => {
         DZ.api(`/track/${id}`, item => {
-            let arr = getQueue();
-            arr.unshift({
+            store.queue.unshift({
                 cover: `https://api.deezer.com/album/${item.album.id}/image`,
                 duration: parseInt(item.duration),
                 artist: {
@@ -93,10 +95,6 @@ async function getTrackStart(id) {
                     "title": item.title,
                 },
             });
-            localStorage.setItem(
-                currentQueue(),
-                JSON.stringify(arr)
-            );
             resolve(true);
         });
     });

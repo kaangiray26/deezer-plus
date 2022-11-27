@@ -132,7 +132,6 @@ async function getLoginStatus(response) {
     }
     hideModal();
     DZ.player.setVolume(100);
-    DZ.player.setShuffle(false);
     await save_favorites();
     emit('player_initialized');
 }

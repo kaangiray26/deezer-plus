@@ -12,10 +12,10 @@
                     </div>
                 </div>
             </figure>
-            <router-link :to="/album/+album.id">
+            <router-link :to="/album/ + album.id">
                 <div class="d-flex flex-column mt-2">
-                    <span class="text-truncate"><mark>{{artist.name}}</mark></span>
-                    <span class="text-truncate">{{title}}</span>
+                    <span class="text-truncate"><mark>{{ artist.name }}</mark></span>
+                    <span class="text-truncate">{{ title }}</span>
                 </div>
             </router-link>
         </div>
@@ -24,7 +24,7 @@
 
 <script setup>
 import { sessionAction } from '/js/session.js';
-import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+import { addToQueueStart } from '/js/queue.js';
 
 defineProps({
     track_id: {

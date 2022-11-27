@@ -11,63 +11,63 @@
                 </div>
                 <div class="modal-body">
                     <div v-if="type == 'track'">
-                        <span class="fw-bold"><mark>{{content.artist.name}}</mark> - {{content.title}}</span>
+                        <span class="fw-bold"><mark>{{ content.artist.name }}</mark> - {{ content.title }}</span>
                         <div class="input-group my-2">
                             <span class="input-group-text">via Deezer+</span>
-                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/track/'+content.id"
+                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/track/' + content.id"
                                 readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text">via Google</span>
                             <input type="text" class="form-control" :value="googleSearch" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'album'">
-                        <span class="fw-bold"><mark>{{content.artist.name}}</mark> - {{content.title}}</span>
+                        <span class="fw-bold"><mark>{{ content.artist.name }}</mark> - {{ content.title }}</span>
                         <div class="input-group my-2">
                             <span class="input-group-text">via Deezer+</span>
-                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/album/'+content.id"
+                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/album/' + content.id"
                                 readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text">via Google</span>
                             <input type="text" class="form-control" :value="googleSearch" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'artist'">
-                        <span class="fw-bold"><mark>{{content.name}}</mark></span>
+                        <span class="fw-bold"><mark>{{ content.name }}</mark></span>
                         <div class="input-group my-2">
                             <span class="input-group-text">via Deezer+</span>
-                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/artist/'+content.id"
+                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/artist/' + content.id"
                                 readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text">via Google</span>
                             <input type="text" class="form-control" :value="googleSearch" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'playlist'">
-                        <span class="fw-bold"><mark>{{content.title}}</mark></span>
+                        <span class="fw-bold"><mark>{{ content.title }}</mark></span>
                         <div class="input-group my-2">
                             <span class="input-group-text">via Deezer+</span>
                             <input type="text" class="form-control"
-                                :value="'https://deezer.buzl.uk/playlist/'+content.id" readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                                :value="'https://deezer.buzl.uk/playlist/' + content.id" readonly>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                     </div>
                     <div v-if="type == 'radio'">
-                        <span class="fw-bold"><mark>{{content.title}}</mark></span>
+                        <span class="fw-bold"><mark>{{ content.title }}</mark></span>
                         <div class="input-group my-2">
                             <span class="input-group-text">via Deezer</span>
-                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/radio/'+content.id"
+                            <input type="text" class="form-control" :value="'https://deezer.buzl.uk/radio/' + content.id"
                                 readonly>
-                            <button class="btn btn-dark" @click="copyText($event);emit('text-copy')">Copy</button>
+                            <button class="btn btn-dark" @click="copyText($event); emit('text-copy')">Copy</button>
                         </div>
                     </div>
                 </div>

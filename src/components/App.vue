@@ -78,9 +78,6 @@ async function context_hide() {
 }
 
 async function keyPress(event) {
-    // console.log("Event:", event);
-    // console.log(event.target.tagName);
-
     if (event.target.tagName != 'INPUT' && event.key == 's') {
         event.preventDefault();
         thisNavBar.value.focus_search();

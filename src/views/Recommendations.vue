@@ -1,5 +1,5 @@
 <template>
-    <div class=" row justify-content-center gx-0">
+    <div class="row justify-content-center gx-0">
         <div class="col">
             <div id="recommendationsAccordion" class="accordion" role="tablist">
                 <div class="accordion-item">
@@ -16,7 +16,7 @@
                                     <TrackRecommendation :id="item.track_id" :title="item.title"
                                         :track_id="item.track_id" :album="item.album" :artist="item.artist"
                                         :cover="item.cover"
-                                        @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                        @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </TrackRecommendation>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                     v-for="item in recommendations.albums">
                                     <AlbumRecommendation :id="item.album_id" :artist="item.artist" :title="item.title"
                                         :cover="item.cover" :album_id="item.album_id"
-                                        @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                        @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </AlbumRecommendation>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                                     v-for="item in recommendations.releases">
                                     <AlbumRecommendation :id="item.album_id" :artist="item.artist" :title="item.title"
                                         :cover="item.cover" :album_id="item.album_id"
-                                        @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                        @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </AlbumRecommendation>
                                 </div>
                             </div>
@@ -75,8 +75,8 @@
                                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
                                     v-for="item in recommendations.artists">
                                     <ArtistRecommendation :id="item.artist_id" :artist="item.artist"
-                                        :artist_id="item.artist_id" :cover=" item.cover"
-                                        @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                        :artist_id="item.artist_id" :cover="item.cover"
+                                        @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </ArtistRecommendation>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                                     <PlaylistRecommendation :id="item.playlist_id" :user="item.user"
                                         :playlist_id="item.playlist_id" :title="item.title" :tracks="item.tracks"
                                         :cover="item.cover"
-                                        @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                        @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </PlaylistRecommendation>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                                     v-for="item in recommendations.radios">
                                     <RadioRecommendation :id="item.radio_id" :radio_id="item.radio_id"
                                         :title="item.title" :cover="item.cover"
-                                        @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                        @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </RadioRecommendation>
                                 </div>
                             </div>

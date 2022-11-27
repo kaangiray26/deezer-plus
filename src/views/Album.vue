@@ -17,11 +17,11 @@
                             <div class="position-absolute bottom-0">
                                 <button v-show="isFav" class="btn btn-light shadow bi bi-heart-fill text-danger"
                                     type="button" style="opacity: 0.90;"
-                                    @click="isFav = !isFav; removeFromFav('fav_albums', album.id); notify({n:'Removed from favorites.'})">
+                                    @click="isFav = !isFav; removeFromFav('fav_albums', album.id); notify({ n: 'Removed from favorites.' })">
                                 </button>
                                 <button v-show="!isFav" class="btn btn-light shadow bi bi-heart" type="button"
                                     style="opacity: 0.90;"
-                                    @click="isFav = !isFav; addToFav('fav_albums', album.id); notify({n:'Added to favorites.'})">
+                                    @click="isFav = !isFav; addToFav('fav_albums', album.id); notify({ n: 'Added to favorites.' })">
                                 </button>
                                 <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                                     @click="play(album.id)">
@@ -32,20 +32,21 @@
                 </div>
                 <div class="col">
                     <div class="d-inline-flex flex-column">
-                        <h1 class="text-bold mb-4" style="font-size: 32px; font-weight: 700;">{{album.title}}</h1>
+                        <h1 class="text-bold mb-4" style="font-size: 32px; font-weight: 700;">{{ album.title }}</h1>
                         <div class="d-inline-flex align-content-center align-items-center mb-2">
-                            <router-link :to="/artist/+album.artist_id">
+                            <router-link :to="/artist/ + album.artist_id">
                                 <img class="img-fluid figure-img rounded" :src="album.artist_cover"
                                     style="width:28px;height: 28px;">
                             </router-link>
-                            <router-link :to="/artist/+album.artist_id">
-                                <span class="mx-2">{{album.artist_name}}</span>
+                            <router-link :to="/artist/ + album.artist_id">
+                                <span class="mx-2">{{ album.artist_name }}</span>
                             </router-link>
                         </div>
                         <p class="mb-0">
-                            <small class="text-muted">{{album.release_date}} - {{album.nb_tracks}} tracks -
-                                {{Math.floor(album.duration /
-                                60)}} mins - {{album.fans}} fans
+                            <small class="text-muted">{{ album.release_date }} - {{ album.nb_tracks }} tracks -
+                                {{ Math.floor(album.duration /
+                                        60)
+                                }} mins - {{ album.fans }} fans
                             </small>
                         </p>
                     </div>
@@ -61,15 +62,15 @@
                         <tbody>
                             <tr v-for="(track, index) in album.tracks" :track_id="track.id" :album_id="album.id"
                                 :artist_id="album.artist_id" class="row gx-0 d-flex flex-row"
-                                :class="{'table-warning':track.id == redirected_track_id}"
-                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})"
+                                :class="{ 'table-warning': track.id == redirected_track_id }"
+                                @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
-                                <td class="col-1 d-flex align-items-center text-nowrap text-truncate">{{index+1}}</td>
+                                <td class="col-1 d-flex align-items-center text-nowrap text-truncate">{{ index + 1 }}</td>
                                 <td class="col-10 d-flex align-items-center text-nowrap text-truncate"><button
                                         :id="track.id" class="btn btn-link track-link px-0"
-                                        @click="playTrack(track.id)">{{track.title}}</button></td>
+                                        @click="playTrack(track.id)">{{ track.title }}</button></td>
                                 <td class="col-1 d-flex align-items-center text-nowrap text-truncate">
-                                    {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}</td>
+                                    {{ Math.floor(track.duration / 60) }}:{{ padWithZero(track.duration % 60) }}</td>
                             </tr>
                         </tbody>
                     </table>

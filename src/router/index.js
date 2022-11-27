@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import Recommendations from '/views/Recommendations.vue';
 
 import Track from '/views/Track.vue';
@@ -39,7 +39,7 @@ const routes = [
     },
     {
         path: '/search/:query',
-        component: Search
+        component: Search,
     },
     {
         path: '/track/:id',

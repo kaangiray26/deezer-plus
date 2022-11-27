@@ -20,16 +20,16 @@
                             <div class="table-responsive">
                                 <table class="table table-hover table-borderless">
                                     <tbody>
-                                        <QueueTrack v-for="(item, index) in store.queue" :index="index"
-                                            :id="item.track.id" :artist="item.artist" :album="item.album"
-                                            :track="item.track" :duration="item.duration" :cover="item.cover"
-                                            @remove-track="removeTrack" @route-click="_hide">
+                                        <QueueTrack v-for="(item, index) in queue" :index="index" :id="item.track.id"
+                                            :artist="item.artist" :album="item.album" :track="item.track"
+                                            :duration="item.duration" :cover="item.cover" @remove-track="removeTrack"
+                                            @route-click="_hide">
                                         </QueueTrack>
                                     </tbody>
                                 </table>
                             </div>
                         </li>
-                        <div :style="{'height': store.playerHeight + 'px'}"></div>
+                        <div :style="{ 'height': store.playerHeight + 'px' }"></div>
                     </ul>
                 </div>
             </div>
@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, toRaw } from "vue";
 import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
 import { sessionAction } from '/js/session.js';
@@ -48,11 +48,16 @@ import QueueTrack from "/components/results/QueueTrack.vue";
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
 
+const queue = ref([]);
 const flow = ref(false);
 
 const increment = ref({
     index: -1,
 });
+
+function set_queue() {
+    queue.value = store.queue;
+}
 
 // Must be synchronized in groupSession: ok
 function buttonClear() {
@@ -61,8 +66,9 @@ function buttonClear() {
     if (!current_track) {
         sessionAction({
             func: async function op() {
-                store.queue = [];
                 store.queue_index = 0;
+                store.queue = [];
+                queue.value = store.queue;
                 clearQueue();
             },
             object: null,
@@ -75,6 +81,7 @@ function buttonClear() {
         func: async function op() {
             let current_track_id = parseInt(current_track.id);
             store.queue = store.queue.filter(item => item.track.id === current_track_id);
+            queue.value = store.queue;
             store.queue_index = 0;
             clearQueue(store.queue);
         },
@@ -105,19 +112,12 @@ async function removeTrack(index) {
     sessionAction({
         func: async function op() {
             store.queue.splice(index, 1);
+            queue.value = store.queue;
             clearQueue(store.queue);
-
-            getQueueTracks().then(tracks => {
-                DZ.player.playTracks(tracks);
-            });
         },
         object: index,
         operation: 'Queue.remove',
     });
-}
-
-async function refresh() {
-    store.queue = getQueue();
 }
 
 async function _show() {
@@ -161,12 +161,11 @@ defineExpose({
 });
 
 onMounted(() => {
+    store.queue = getQueue();
+
     thisOffCanvasObj = new Offcanvas(offCanvasEle.value, {
         toggle: false
     });
-    document.getElementById('OffCanvas').addEventListener('show.bs.offcanvas', refresh);
-    window.addEventListener('queue', () => {
-        refresh();
-    });
+    document.getElementById('OffCanvas').addEventListener('show.bs.offcanvas', set_queue);
 });
 </script>

@@ -2,8 +2,8 @@
     <component ref="contextMenu" id="contextMenu" v-show="isContextMenuVisible" :is="contextMenus[currentSearchField]"
         :style="{'bottom':posY+'px', 'right':posX+'px'}" @context-menu-event="contextMenuEvent" :item_id="item_id">
     </component>
-    <ShareModal @text-copy="notify({n:'URL Copied.'})" ref="thisShareModal"></ShareModal>
-    <PlaylistModal @playlist-add="notify({n:'Added to playlist.'})" ref="thisPlaylistModal"></PlaylistModal>
+    <ShareModal @text-copy="notify({ n: 'URL Copied.' })" ref="thisShareModal"></ShareModal>
+    <PlaylistModal @playlist-add="notify({ n: 'Added to playlist.' })" ref="thisPlaylistModal"></PlaylistModal>
 </template>
 
 <script setup>

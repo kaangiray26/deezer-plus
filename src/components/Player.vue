@@ -1,7 +1,6 @@
 <template>
-    <div v-if="navBarVisible" :style="{'height': navBar.clientHeight + 'px', 'color':'transparent'}">
-        {{store.playerHeight =
-        navBar.clientHeight}}</div>
+    <div v-if="navBarVisible" :style="{ 'height': navBar.clientHeight + 'px', 'color': 'transparent' }">
+        {{ store.playerHeight = navBar.clientHeight }}</div>
     <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
@@ -10,10 +9,10 @@
                         <div class="d-flex flex-fill align-items-center">
                             <div class="d-flex flex-column flex-fill">
                                 <div v-if="isLoaded" class="mx-2 mb-2">
-                                    <router-link :to="/album/ + album.id + '?track=' + track.id">{{track.title}}
+                                    <router-link :to="/album/ + album.id + '?track=' + track.id">{{ track.title }}
                                     </router-link>
                                     <span> - </span>
-                                    <router-link :to="/artist/ + artist.id">{{artist.title}}</router-link>
+                                    <router-link :to="/artist/ + artist.id">{{ artist.title }}</router-link>
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
                                     <div class="btn-group btn-group-sm me-4" role="group">
@@ -25,15 +24,15 @@
                                         <button class="btn btn-dark bi-skip-end-fill hover-color" type="button"
                                             @click="buttonNext"></button>
                                     </div>
-                                    <span class="font-monospace mx-2">{{now}}</span>
+                                    <span class="font-monospace mx-2">{{ now }}</span>
                                     <div id="seekProgress" class="progress flex-fill" @click="seekProgress($event)">
                                         <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
                                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                            :style="{'width': position + '%'}">
+                                            :style="{ 'width': position + '%' }">
                                             <span class="visually-hidden"></span>
                                         </div>
                                     </div>
-                                    <span class="font-monospace mx-2">{{duration}}</span>
+                                    <span class="font-monospace mx-2">{{ duration }}</span>
                                     <div class="d-flex ms-4">
                                         <div class="btn-group">
                                             <button class="btn btn-dark bi bi-soundwave" type="button"
@@ -295,13 +294,7 @@ DZ.Event.subscribe('current_track', async function (obj) {
     duration.value = formatTime(parseInt(obj.track.duration));
 
     document.title = track.value.title + ' - ' + artist.value.title;
-
-    if (!isLoaded.value) {
-        getQueueTracks().then(tracks => {
-            DZ.player.playTracks(tracks);
-            isLoaded.value = true;
-        });
-    }
+    isLoaded.value = true;
 });
 
 DZ.Event.subscribe('player_position', async function (arr) {
