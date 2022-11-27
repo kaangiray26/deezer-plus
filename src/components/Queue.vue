@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, toRaw } from "vue";
+import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
 import { Offcanvas } from 'bootstrap';
 import { sessionAction } from '/js/session.js';

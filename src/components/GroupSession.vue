@@ -145,15 +145,14 @@ defineExpose({
 });
 
 onMounted(() => {
-    if (localStorage.getItem('groupSession')) {
-        localStorage.setItem('groupSession', JSON.stringify([]));
-    }
-    thisModalObj = new Modal(modalEle.value);
+    console.log("GroupSession mounted");
 
+    thisModalObj = new Modal(modalEle.value);
     peer.value = new Peer();
 
     peer.value.on('open', id => {
         peer_id.value = id;
+        localStorage.setItem('groupSession', JSON.stringify([]));
 
         let group_session_id = localStorage.getItem('groupSessionID');
         if (group_session_id.length) {
@@ -163,6 +162,7 @@ onMounted(() => {
     });
 
     peer.value.on('connection', connection => {
+        console.log("Connection!");
         conn.value = connection;
         peerInit.value = true;
     });

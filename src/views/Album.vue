@@ -65,7 +65,8 @@
                                 :class="{ 'table-warning': track.id == redirected_track_id }"
                                 @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
-                                <td class="col-1 d-flex align-items-center text-nowrap text-truncate">{{ index + 1 }}</td>
+                                <td class="col-1 d-flex align-items-center text-nowrap text-truncate">{{ index + 1 }}
+                                </td>
                                 <td class="col-10 d-flex align-items-center text-nowrap text-truncate"><button
                                         :id="track.id" class="btn btn-link track-link px-0"
                                         @click="playTrack(track.id)">{{ track.title }}</button></td>

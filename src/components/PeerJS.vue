@@ -25,7 +25,7 @@
     </div>
     <div v-show="alert.show">
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{alert.message}}
+            {{ alert.message }}
             <button type="button" class="btn-close" @click="reset_alert"></button>
         </div>
     </div>
@@ -40,7 +40,7 @@
         <div class="d-flex flex-column card bg-dark p-4 rounded text-white">
             <div class="d-flex mb-2 ">
                 <p>
-                    <a class="text-danger" :href="recipient_profile">{{contacts.requester.username}}</a>
+                    <a class="text-danger" :href="recipient_profile">{{ contacts.requester.username }}</a>
                     wants to start a group session with you.
                 </p>
             </div>
@@ -311,32 +311,28 @@ props.conn.on("data", async function (data) {
 
             case 'Queue.clear_all':
                 store.stack.push(async function op() {
-                    store.queue = [];
                     store.queue_index = 0;
+                    store.queue = [];
+                    queue.value = store.queue;
                     clearQueue();
-                    window.dispatchEvent(new CustomEvent('queue'));
                 });
                 break;
 
             case 'Queue.clear_except':
                 store.stack.push(async function op() {
-                    let current_track_id = parseInt(data.object);
+                    let current_track_id = parseInt(current_track.id);
                     store.queue = store.queue.filter(item => item.track.id === current_track_id);
+                    queue.value = store.queue;
                     store.queue_index = 0;
                     clearQueue(store.queue);
-                    window.dispatchEvent(new CustomEvent('queue'));
                 });
                 break;
 
             case 'Queue.remove':
                 store.stack.push(async function op() {
-                    store.queue.splice(data.object, 1);
+                    store.queue.splice(index, 1);
+                    queue.value = store.queue;
                     clearQueue(store.queue);
-
-                    getQueueTracks().then(tracks => {
-                        DZ.player.playTracks(tracks);
-                        window.dispatchEvent(new CustomEvent('queue'));
-                    });
                 });
                 break;
 
