@@ -151,6 +151,7 @@ onMounted(() => {
     peer.value.on('open', id => {
         peer_id.value = id;
         localStorage.setItem('groupSession', JSON.stringify([]));
+        store.queue = [];
 
         let group_session_id = localStorage.getItem('groupSessionID');
         if (group_session_id.length) {
