@@ -11,9 +11,9 @@
                     </div>
                 </div>
             </figure>
-            <router-link :to="/radio/+radio_id">
+            <router-link :to="/radio/ + radio_id">
                 <div class="d-flex flex-column mt-2">
-                    <span class="text-truncate">{{title}}</span>
+                    <span class="text-truncate">{{ title }}</span>
                 </div>
             </router-link>
         </div>
@@ -45,9 +45,8 @@ defineProps({
 async function play(id) {
     sessionAction({
         func: async function op() {
-            DZ.player.playRadio(parseInt(id));
-            DZ.api(`/radio/${id}/tracks`, async function (response) {
-                await addToQueueStart(response.data.map(item => parseInt(item.id)));
+            DZ.player.playRadio(parseInt(id), async function (response) {
+                await addToQueueStart(response.tracks);
             });
         },
         object: id,

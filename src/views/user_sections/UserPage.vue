@@ -1,27 +1,27 @@
 <template>
     <ul class="nav nav-pills" role="tablist">
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/tracks'">Favorite Tracks
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/' + user_id + '/tracks'">Favorite Tracks
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/playlists'">Playlists
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/' + user_id + '/playlists'">Playlists
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/albums'">Albums
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/' + user_id + '/albums'">Albums
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/artists'">Artists
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/' + user_id + '/artists'">Artists
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/following'">Following
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/' + user_id + '/following'">Following
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/followers'">Followers
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/' + user_id + '/followers'">Followers
             </router-link>
         </li>
     </ul>
@@ -32,9 +32,9 @@
         </div>
         <div class="row gx-1 gy-1" style="margin: 0px;padding: 0px;">
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2" v-for="item in charts.tracks">
-                <TrackRecommendation :id="item.id" :title="item.title" :track_id="item.id" :album="item.album"
-                    :artist="item.artist" :cover="item.album.cover_medium"
-                    @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                <TrackRecommendation :id="item.id" :track_id="item.id" :duration="item.duration" :title="item.title"
+                    :artist="item.artist" :album="item.album" :cover="item.album.cover_medium"
+                    @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                 </TrackRecommendation>
             </div>
         </div>

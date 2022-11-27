@@ -17,11 +17,11 @@
                             <div class="position-absolute bottom-0">
                                 <button v-show="isFav" class="btn btn-light shadow bi bi-heart-fill text-danger"
                                     type="button" style="opacity: 0.90;"
-                                    @click="isFav = !isFav; removeFromFav('fav_radios', radio.id); notify({n:'Removed from favorites.'})">
+                                    @click="isFav = !isFav; removeFromFav('fav_radios', radio.id); notify({ n: 'Removed from favorites.' })">
                                 </button>
                                 <button v-show="!isFav" class="btn btn-light shadow bi bi-heart" type="button"
                                     style="opacity: 0.90;"
-                                    @click="isFav = !isFav; addToFav('fav_radios', radio.id); notify({n:'Added to favorites.'})">
+                                    @click="isFav = !isFav; addToFav('fav_radios', radio.id); notify({ n: 'Added to favorites.' })">
                                 </button>
                                 <button class="btn btn-light bi bi-play shadow m-2" type="button" style="opacity: 0.90;"
                                     @click="play(radio.id)">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col">
                     <div class="d-inline-flex flex-column">
-                        <h1 class="text-bold mb-2" style="font-size: 32px; font-weight: 700;">{{radio.title}}</h1>
+                        <h1 class="text-bold mb-2" style="font-size: 32px; font-weight: 700;">{{ radio.title }}</h1>
                     </div>
                     <hr />
                     <table class="table table-borderless table-hover">
@@ -47,29 +47,30 @@
                         <tbody>
                             <tr v-for="track in tracks" :track_id="track.id" :album_id="track.album.id"
                                 :artist_id="track.artist.id" class="row gx-0 d-flex flex-row"
-                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})"
+                                @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })"
                                 type="tracks" style="flex-wrap: nowrap; width: 100% !important;">
                                 <td class="col-6 d-flex align-items-center text-nowrap text-truncate">
                                     <div><img class="img-fluid" :src="track.album.cover_small" width="40" height="40" />
-                                        <button class="btn btn-link track-link"
-                                            @click="playTrack(track.id)">{{track.title}}</button>
+                                        <button class="btn btn-link track-link" @click="playTrack(track.id)">{{
+                                                track.title
+                                        }}</button>
                                     </div>
                                 </td>
                                 <td class="col-2 d-flex align-items-center text-nowrap text-truncate">
                                     <div>
-                                        <router-link :to="/artist/+track.artist.id" @click="emit('route-click')">
-                                            {{track.artist.name}}</router-link>
+                                        <router-link :to="/artist/ + track.artist.id" @click="emit('route-click')">
+                                            {{ track.artist.name }}</router-link>
                                     </div>
                                 </td>
                                 <td class="col-3 d-flex align-items-center text-nowrap text-truncate">
                                     <div>
-                                        <router-link :to="/album/+track.album.id" @click="emit('route-click')">
-                                            {{track.album.title}}</router-link>
+                                        <router-link :to="/album/ + track.album.id" @click="emit('route-click')">
+                                            {{ track.album.title }}</router-link>
                                     </div>
                                 </td>
                                 <td
                                     class="col-1 d-flex align-items-center justify-content-end text-nowrap text-truncate">
-                                    {{Math.floor(track.duration/60)}}:{{padWithZero(track.duration % 60)}}
+                                    {{ Math.floor(track.duration / 60) }}:{{ padWithZero(track.duration % 60) }}
                                 </td>
                             </tr>
                         </tbody>
@@ -126,9 +127,8 @@ function padWithZero(num) {
 async function playTrack(id) {
     sessionAction({
         func: async function op() {
-            await addToQueueStart([parseInt(id)]);
-            getQueueTracks().then(tracks => {
-                DZ.player.playTracks(tracks);
+            DZ.player.playTracks([parseInt(id)], async function (response) {
+                await addToQueueStart(response.tracks);
             });
         },
         object: id,
@@ -141,9 +141,8 @@ async function play(id) {
     notify({ n: "Loading radio..." });
     sessionAction({
         func: async function op() {
-            DZ.player.playRadio(parseInt(id));
-            DZ.api(`/radio/${id}/tracks`, async function (response) {
-                await addToQueueStart(response.data.map(item => parseInt(item.id)));
+            DZ.player.playRadio(parseInt(id), async function (response) {
+                await addToQueueStart(response.tracks);
             });
         },
         object: id,

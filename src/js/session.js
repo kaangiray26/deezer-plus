@@ -10,19 +10,17 @@ async function notifyPeer(obj) {
         window.dispatchEvent(new CustomEvent('peer', {
             detail: obj
         }));
-        return true;
     }
-    return false;
 }
 
 async function sessionAction(options) {
     store.stack.push(options.func);
-    let groupSession = await notifyPeer({
+    notifyPeer({
         type: 'execute',
         object: options.object,
         operation: options.operation
     });
-    if (!groupSession) {
+    if (!inGroupSession()) {
         let func = store.stack.pop();
         func();
     }

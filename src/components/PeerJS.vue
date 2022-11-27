@@ -182,34 +182,32 @@ props.conn.on("data", async function (data) {
         switch (data.operation) {
             case 'Track.play':
                 store.stack.push(async function op() {
-                    DZ.player.playTracks([parseInt(data.object)]);
-                    await addToQueueStart([parseInt(data.object)]);
+                    DZ.player.playTracks([parseInt(data.object)], async function (response) {
+                        await addToQueueStart(response.tracks);
+                    });
                 });
                 break;
 
             case 'Album.play':
                 store.stack.push(async function op() {
-                    DZ.player.playAlbum(parseInt(data.object));
-                    DZ.api('/album/' + data.object, async function (response) {
-                        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                    DZ.player.playAlbum(parseInt(data.object), async function (response) {
+                        await addToQueueStart(response.tracks);
                     });
                 });
                 break;
 
             case 'Playlist.play':
                 store.stack.push(async function op() {
-                    DZ.player.playPlaylist(parseInt(data.object));
-                    DZ.api('/playlist/' + data.object, async function (response) {
-                        await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+                    DZ.player.playPlaylist(parseInt(data.object), async function (response) {
+                        await addToQueueStart(response.tracks);
                     });
                 });
                 break;
 
             case 'Radio.play':
                 store.stack.push(async function op() {
-                    DZ.player.playRadio(parseInt(data.object));
-                    DZ.api(`/radio/${data.object}/tracks`, async function (response) {
-                        await addToQueueStart(response.data.map(item => parseInt(item.id)));
+                    DZ.player.playRadio(parseInt(data.object), async function (response) {
+                        await addToQueueStart(response.tracks);
                     });
                 });
                 break;
@@ -269,7 +267,6 @@ props.conn.on("data", async function (data) {
             case 'Queue.Track.add':
                 store.stack.push(async function op() {
                     await addToQueue([data.object]);
-                    window.dispatchEvent(new CustomEvent('queue'));
                 });
                 break;
 
@@ -277,7 +274,6 @@ props.conn.on("data", async function (data) {
                 store.stack.push(async function op() {
                     DZ.api('/album/' + data.object + '/tracks', async function (response) {
                         await addToQueue([...response.data.map(item => parseInt(item.id))]);
-                        window.dispatchEvent(new CustomEvent('queue'));
                     });
                 });
                 break;
@@ -286,7 +282,6 @@ props.conn.on("data", async function (data) {
                 store.stack.push(async function op() {
                     DZ.api('/playlist/' + data.object + '/tracks', async function (response) {
                         await addToQueue([...response.data.map(item => parseInt(item.id))]);
-                        window.dispatchEvent(new CustomEvent('queue'));
                     });
                 });
                 break;
@@ -295,7 +290,6 @@ props.conn.on("data", async function (data) {
                 store.stack.push(async function op() {
                     DZ.api('/radio/' + data.object + '/tracks', async function (response) {
                         await addToQueue([...response.data.map(item => parseInt(item.id))]);
-                        window.dispatchEvent(new CustomEvent('queue'));
                     });
                 });
                 break;
@@ -304,7 +298,6 @@ props.conn.on("data", async function (data) {
                 store.stack.push(async function op() {
                     getQueueTracks().then((tracks) => {
                         DZ.player.playTracks(tracks, data.object);
-                        window.dispatchEvent(new CustomEvent('queue'));
                     });
                 });
                 break;

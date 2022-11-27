@@ -11,10 +11,10 @@
                     </div>
                 </div>
             </figure>
-            <router-link :to="/playlist/+playlist_id">
+            <router-link :to="/playlist/ + playlist_id">
                 <div class="d-flex flex-column mt-2">
-                    <span class="text-truncate"><mark>{{user}}</mark></span>
-                    <span class="text-truncate">{{title}}</span>
+                    <span class="text-truncate"><mark>{{ user }}</mark></span>
+                    <span class="text-truncate">{{ title }}</span>
                 </div>
             </router-link>
         </div>
@@ -47,9 +47,8 @@ defineProps({
 async function play(id) {
     sessionAction({
         func: async function op() {
-            DZ.player.playPlaylist(parseInt(id));
-            DZ.api('/playlist/' + id, async function (response) {
-                await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+            DZ.player.playPlaylist(parseInt(id), async function (response) {
+                await addToQueueStart(response.tracks);
             });
         },
         object: id,

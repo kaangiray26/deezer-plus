@@ -145,8 +145,6 @@ defineExpose({
 });
 
 onMounted(() => {
-    console.log("GroupSession mounted");
-
     thisModalObj = new Modal(modalEle.value);
     peer.value = new Peer();
 
@@ -162,7 +160,6 @@ onMounted(() => {
     });
 
     peer.value.on('connection', connection => {
-        console.log("Connection!");
         conn.value = connection;
         peerInit.value = true;
     });

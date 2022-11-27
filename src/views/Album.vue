@@ -139,9 +139,8 @@ function numberWithCommas(x) {
 async function playTrack(id) {
     sessionAction({
         func: async function op() {
-            await addToQueueStart([parseInt(id)]);
-            getQueueTracks().then(tracks => {
-                DZ.player.playTracks(tracks);
+            DZ.player.playTracks([parseInt(id)], async function (response) {
+                await addToQueueStart(response.tracks);
             });
         },
         object: id,
@@ -154,9 +153,8 @@ async function play(id) {
     notify({ n: "Loading album..." });
     sessionAction({
         func: async function op() {
-            DZ.player.playAlbum(parseInt(id));
-            DZ.api('/album/' + id, async function (response) {
-                await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+            DZ.player.playAlbum(parseInt(id), async function (response) {
+                await addToQueueStart(response.tracks);
             });
         },
         object: id,

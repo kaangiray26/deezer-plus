@@ -13,9 +13,9 @@
                             <div class="row gx-1 gy-1" style="margin: 0px;padding: 0px;">
                                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
                                     v-for="item in recommendations.tracks">
-                                    <TrackRecommendation :id="item.track_id" :title="item.title"
-                                        :track_id="item.track_id" :album="item.album" :artist="item.artist"
-                                        :cover="item.cover"
+                                    <TrackRecommendation :id="item.track_id" :track_id="item.track_id"
+                                        :duration="item.duration" :title="item.title" :artist="item.artist"
+                                        :album="item.album" :cover="item.cover"
                                         @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </TrackRecommendation>
                                 </div>
@@ -240,9 +240,10 @@ function handleRecPlaylists(item) {
 function handleRecTracks(item) {
     recommendations.value.tracks.push({
         track_id: item.id,
+        duration: item.duration,
         title: item.title,
-        album: item.album,
         artist: item.artist,
+        album: item.album,
         cover: item.album.cover_medium,
     })
     return;

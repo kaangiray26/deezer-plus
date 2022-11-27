@@ -1,6 +1,6 @@
 <template>
-    <div class="card h-100 w-100 shadow-lg" :track_id="track_id" :album_id="album.id" :artist_id="artist.id"
-        type="tracks">
+    <div class="card h-100 w-100 shadow-lg" :track_id="track_id" :duration="duration" :title="title"
+        :artist_id="artist.id" :artist_name="artist.name" :album_id="album.id" :album_title="album.title" type="tracks">
         <div class="card-body d-flex flex-column">
             <figure class="d-flex flex-row justify-content-center">
                 <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
@@ -30,13 +30,16 @@ defineProps({
     track_id: {
         type: Number,
     },
+    duration: {
+        type: Number,
+    },
     title: {
         type: String,
     },
-    album: {
+    artist: {
         type: Object,
     },
-    artist: {
+    album: {
         type: Object,
     },
     cover: {
@@ -48,8 +51,9 @@ defineProps({
 async function play(id) {
     sessionAction({
         func: async function op() {
-            DZ.player.playTracks([parseInt(id)]);
-            await addToQueueStart([parseInt(id)]);
+            DZ.player.playTracks([parseInt(id)], async function (response) {
+                await addToQueueStart(response.tracks);
+            });
         },
         object: id,
         operation: 'Track.play',

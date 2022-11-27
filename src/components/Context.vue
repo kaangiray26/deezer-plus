@@ -129,9 +129,8 @@ async function contextMenuEvent(event) {
     if (event == 'playTrack') {
         sessionAction({
             func: async function op() {
-                await addToQueueStart([parseInt(selectedItem.value.attributes.track_id.value)]);
-                getQueueTracks().then(tracks => {
-                    DZ.player.playTracks(tracks);
+                DZ.player.playTracks([parseInt(selectedItem.value.attributes.track_id.value)], async function (response) {
+                    await addToQueueStart(response.tracks);
                 });
             },
             object: parseInt(selectedItem.value.attributes.track_id.value),
@@ -144,11 +143,8 @@ async function contextMenuEvent(event) {
     if (event == 'playAlbum') {
         sessionAction({
             func: async function op() {
-                DZ.api('/album/' + selectedItem.value.attributes.album_id.value, async function (response) {
-                    await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
-                    getQueueTracks().then(tracks => {
-                        DZ.player.playTracks(tracks);
-                    });
+                DZ.player.playAlbum([parseInt(selectedItem.value.attributes.track_id.value)], async function (response) {
+                    await addToQueueStart(response.tracks);
                 });
             },
             object: selectedItem.value.attributes.album_id.value,
@@ -161,11 +157,8 @@ async function contextMenuEvent(event) {
     if (event == 'playPlaylist') {
         sessionAction({
             func: async function op() {
-                DZ.api('/playlist/' + selectedItem.value.id, async function (response) {
-                    await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
-                    getQueueTracks().then(tracks => {
-                        DZ.player.playTracks(tracks);
-                    });
+                DZ.player.playPlaylist([parseInt(selectedItem.value.attributes.track_id.value)], async function (response) {
+                    await addToQueueStart(response.tracks);
                 });
             },
             object: selectedItem.value.id,
@@ -178,7 +171,9 @@ async function contextMenuEvent(event) {
     if (event == 'playRadio') {
         sessionAction({
             func: async function op() {
-                DZ.player.playRadio(parseInt(selectedItem.value.id));
+                DZ.player.playRadio([parseInt(selectedItem.value.attributes.track_id.value)], async function (response) {
+                    await addToQueueStart(response.tracks);
+                });
             },
             object: parseInt(selectedItem.value.id),
             operation: 'Radio.play',
@@ -189,11 +184,24 @@ async function contextMenuEvent(event) {
     // Add to Queue Events
     // Must be synchronized in groupSession: ok
     if (event == 'addTrackToQueue') {
+        let track = {
+            id: selectedItem.value.attributes.track_id.value,
+            duration: selectedItem.value.attributes.duration.value,
+            title: selectedItem.value.attributes.title.value,
+            artist: {
+                id: selectedItem.value.attributes.artist_id.value,
+                name: selectedItem.value.attributes.artist_name.value,
+            },
+            album: {
+                id: selectedItem.value.attributes.album_id.value,
+                title: selectedItem.value.attributes.album_title.value,
+            },
+        };
         sessionAction({
             func: async function op() {
-                await addToQueue([parseInt(selectedItem.value.attributes.track_id.value)]);
+                await addToQueue([track]);
             },
-            object: parseInt(selectedItem.value.attributes.track_id.value),
+            object: track,
             operation: 'Queue.Track.add',
         });
         notify({ n: "Added to the queue." });

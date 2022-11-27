@@ -11,10 +11,10 @@
                     </div>
                 </div>
             </figure>
-            <router-link :to="/album/+album_id">
+            <router-link :to="/album/ + album_id">
                 <div class="d-flex flex-column mt-2">
-                    <span class="text-truncate"><mark>{{artist.name}}</mark></span>
-                    <span class="text-truncate">{{title}}</span>
+                    <span class="text-truncate"><mark>{{ artist.name }}</mark></span>
+                    <span class="text-truncate">{{ title }}</span>
                 </div>
             </router-link>
         </div>
@@ -23,17 +23,20 @@
 
 <script setup>
 import { sessionAction } from '/js/session.js';
-import { addToQueueStart, getQueueTracks } from '/js/queue.js';
+import { addToQueueStart } from '/js/queue.js';
 
 defineProps({
     album_id: {
         type: Number,
     },
-    artist: {
-        type: Object,
+    tracks: {
+        type: Array,
     },
     title: {
         type: String,
+    },
+    artist: {
+        type: Object,
     },
     cover: {
         type: String,
@@ -44,9 +47,8 @@ defineProps({
 async function play(id) {
     sessionAction({
         func: async function op() {
-            DZ.player.playAlbum(parseInt(id));
-            DZ.api('/album/' + id, async function (response) {
-                await addToQueueStart(response.tracks.data.map(item => parseInt(item.id)));
+            DZ.player.playAlbum(parseInt(id), async function (response) {
+                await addToQueueStart(response.tracks);
             });
         },
         object: id,
