@@ -55,7 +55,6 @@ async function addToQueue(tracks) {
 async function addToQueueStart(tracks) {
     tracks.reverse();
     for (let track of tracks) {
-        console.log(track);
         store.queue.unshift({
             cover: `https://api.deezer.com/album/${track.album.id}/image`,
             duration: parseInt(track.duration),
@@ -83,4 +82,65 @@ async function getQueueTracks() {
     return getQueue().map(item => parseInt(item.track.id));
 }
 
-export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks, getCurrentTrack }
+function convert_track(track) {
+    return [{
+        id: track.id,
+        duration: track.duration,
+        title: track.title,
+        artist: {
+            id: track.artist.id,
+            name: track.artist.name,
+        },
+        album: {
+            id: track.album.id,
+            title: track.album.title,
+        },
+    }]
+}
+
+function convert_album(data, album_id, album_title) {
+    let tracks = [];
+    for (let track of data) {
+        tracks.push({
+            id: track.id,
+            duration: track.duration,
+            title: track.title,
+            artist: {
+                id: track.artist.id,
+                name: track.artist.name,
+            },
+            album: {
+                id: album_id,
+                title: album_title,
+            },
+        })
+    }
+    return tracks;
+}
+
+
+function convert_playlist(data) {
+    let tracks = [];
+    for (let track of data) {
+        tracks.push({
+            id: track.id,
+            duration: track.duration,
+            title: track.title,
+            artist: {
+                id: track.artist.id,
+                name: track.artist.name,
+            },
+            album: {
+                id: track.album.id,
+                title: track.album.title,
+            },
+        })
+    }
+    return tracks;
+}
+
+function convert_radio() {
+    //
+}
+
+export { addToQueue, addToQueueStart, removeFromQueue, getQueue, clearQueue, getQueueTracks, getCurrentTrack, convert_track, convert_album, convert_playlist }

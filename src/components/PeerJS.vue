@@ -55,7 +55,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { store, notify } from "/js/store.js";
-import { addToQueue, addToQueueStart, getQueueTracks, clearQueue } from '/js/queue.js';
+import { addToQueue, addToQueueStart, getQueueTracks, clearQueue, convert_track, convert_album, convert_playlist } from '/js/queue.js';
 
 const emit = defineEmits(['show', 'reset', 'reaction', 'message']);
 
@@ -266,14 +266,16 @@ props.conn.on("data", async function (data) {
 
             case 'Queue.Track.add':
                 store.stack.push(async function op() {
-                    await addToQueue([data.object]);
+                    DZ.api('/track/' + data.object, async function (response) {
+                        await addToQueue(convert_track(response));
+                    });
                 });
                 break;
 
             case 'Queue.Album.add':
                 store.stack.push(async function op() {
-                    DZ.api('/album/' + data.object + '/tracks', async function (response) {
-                        await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                    DZ.api('/album/' + data.object[0] + '/tracks', async function (response) {
+                        await addToQueue(convert_album(response.data, data.object[0], data.object[1]));
                     });
                 });
                 break;
@@ -281,7 +283,7 @@ props.conn.on("data", async function (data) {
             case 'Queue.Playlist.add':
                 store.stack.push(async function op() {
                     DZ.api('/playlist/' + data.object + '/tracks', async function (response) {
-                        await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                        await addToQueue(convert_playlist(response.data));
                     });
                 });
                 break;
@@ -289,7 +291,7 @@ props.conn.on("data", async function (data) {
             case 'Queue.Radio.add':
                 store.stack.push(async function op() {
                     DZ.api('/radio/' + data.object + '/tracks', async function (response) {
-                        await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                        await addToQueue(convert_playlist(response.data));
                     });
                 });
                 break;

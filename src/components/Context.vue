@@ -9,7 +9,7 @@
 <script setup>
 import { ref, nextTick } from "vue";
 import { addToFav, removeFromFav } from "/js/favs.js";
-import { addToQueue, addToQueueStart, getQueueTracks } from "/js/queue.js";
+import { addToQueue, addToQueueStart, convert_track, convert_album, convert_playlist } from "/js/queue.js";
 import { sessionAction } from '/js/session.js';
 import { notify } from '/js/store.js';
 
@@ -184,24 +184,13 @@ async function contextMenuEvent(event) {
     // Add to Queue Events
     // Must be synchronized in groupSession: ok
     if (event == 'addTrackToQueue') {
-        let track = {
-            id: selectedItem.value.attributes.track_id.value,
-            duration: selectedItem.value.attributes.duration.value,
-            title: selectedItem.value.attributes.title.value,
-            artist: {
-                id: selectedItem.value.attributes.artist_id.value,
-                name: selectedItem.value.attributes.artist_name.value,
-            },
-            album: {
-                id: selectedItem.value.attributes.album_id.value,
-                title: selectedItem.value.attributes.album_title.value,
-            },
-        };
         sessionAction({
             func: async function op() {
-                await addToQueue([track]);
+                DZ.api('/track/' + selectedItem.value.attributes.track_id.value, async function (response) {
+                    await addToQueue(convert_track(response));
+                });
             },
-            object: track,
+            object: selectedItem.value.attributes.track_id.value,
             operation: 'Queue.Track.add',
         });
         notify({ n: "Added to the queue." });
@@ -213,10 +202,10 @@ async function contextMenuEvent(event) {
         sessionAction({
             func: async function op() {
                 DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', async function (response) {
-                    await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                    await addToQueue(convert_album(response.data, selectedItem.value.attributes.album_id.value, selectedItem.value.attributes.album_title.value));
                 });
             },
-            object: selectedItem.value.attributes.album_id.value,
+            object: [selectedItem.value.attributes.album_id.value, selectedItem.value.attributes.album_title.value],
             operation: 'Queue.Album.add',
         });
         notify({ n: "Added to the queue." });
@@ -227,11 +216,11 @@ async function contextMenuEvent(event) {
     if (event == 'addPlaylistToQueue') {
         sessionAction({
             func: async function op() {
-                DZ.api('/playlist/' + selectedItem.value.id + '/tracks', async function (response) {
-                    await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                DZ.api('/playlist/' + selectedItem.value.attributes.playlist_id.value + '/tracks', async function (response) {
+                    await addToQueue(convert_playlist(response.data));
                 });
             },
-            object: selectedItem.value.id,
+            object: selectedItem.value.attributes.playlist_id.value,
             operation: 'Queue.Playlist.add',
         });
         notify({ n: "Added to the queue." });
@@ -242,11 +231,11 @@ async function contextMenuEvent(event) {
     if (event == 'addRadioToQueue') {
         sessionAction({
             func: async function op() {
-                DZ.api('/radio/' + selectedItem.value.id + '/tracks', async function (response) {
-                    await addToQueue([...response.data.map(item => parseInt(item.id))]);
+                DZ.api('/radio/' + selectedItem.value.attributes.radio_id.value + '/tracks', async function (response) {
+                    await addToQueue(convert_playlist(response.data));
                 });
             },
-            object: selectedItem.value.id,
+            object: selectedItem.value.attributes.radio_id.value,
             operation: 'Queue.Radio.add',
         });
         notify({ n: "Added to the queue." });

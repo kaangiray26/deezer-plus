@@ -143,7 +143,6 @@ function login() {
             return;
         }
 
-        console.log("Welcome!  Fetching your information.... ", response.authResponse);
         localStorage.setItem('token', response.authResponse.accessToken);
         localStorage.setItem('scrobbling', false);
 
