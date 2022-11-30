@@ -14,6 +14,14 @@ figure {
     margin: 0px;
 }
 
+.image-stable {
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
 a {
     color: var(--bs-dark);
     font-weight: bold;
@@ -60,6 +68,11 @@ caption {
     word-wrap: break-word;
 }
 
+.accordion-body {
+    background-color: #F6F8FA;
+    padding: 00.5rem;
+}
+
 .accordion-button::after {
     background-image: unset !important;
 }
@@ -82,6 +95,10 @@ caption {
 
 .card {
     --bs-card-border-width: 0px;
+}
+
+.card-body {
+    background-color: #fff;
 }
 
 .figure-img {

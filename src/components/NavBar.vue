@@ -9,7 +9,7 @@
                             <img src="/assets/Deezer_Logo_RVB_Black.svg" style="height:24px">
                         </div>
                     </router-link>
-                    <div class="input-group">
+                    <div class="input-group flex-nowrap">
                         <span class="input-group-text bi bi-search"
                             style="background: transparent;border-right-style: none;">
                         </span>

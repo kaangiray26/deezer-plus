@@ -1,7 +1,8 @@
 <template>
     <div v-if="navBarVisible" :style="{ 'height': navBar.clientHeight + 'px', 'color': 'transparent' }">
         {{ store.playerHeight = navBar.clientHeight }}</div>
-    <nav id="playerBar" ref="navBar" class="navbar navbar-light navbar-expand fixed-bottom" style="width: 100%;">
+    <nav id="playerBar" ref="navBar" class="d-none d-sm-flex navbar navbar-light navbar-expand fixed-bottom"
+        style="width: 100%;">
         <div class="container-fluid">
             <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
                 <div class="card-body border-dark d-flex flex-column">
@@ -57,6 +58,46 @@
             </div>
         </div>
     </nav>
+    <nav id="mobilePlayerBar" ref="mobileNavBar" class="d-sm-none navbar navbar-light navbar-expand fixed-bottom p-0"
+        style="width: 100%;" :class="{ 'visually-hidden': !mobileNavBarVisible }">
+        <div class="container-fluid px-0">
+            <div class="card shadow-lg" style="width: 100%;">
+                <div class="card-body border-top border-dark d-flex flex-column">
+                    <div class="d-flex" id="player">
+                        <div class="d-flex w-100 align-items-center">
+                            <div class="d-flex w-100 flex-column">
+                                <div class="d-flex flex-column mb-2">
+                                    <router-link :to="/album/ + album.id + '?track=' + track.id"
+                                        class="text-truncate">{{ track.title }}
+                                    </router-link>
+                                    <router-link :to="/artist/ + artist.id" class="text-truncate">{{
+                                            artist.title
+                                    }}</router-link>
+                                </div>
+                                <div class="d-flex flex-row align-items-center mb-2">
+                                    <div id="seekProgress" class="progress flex-fill" @click="seekProgress($event)">
+                                        <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                            :style="{ 'width': position + '%' }">
+                                            <span class="visually-hidden"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button class="btn btn-dark bi-skip-start-fill hover-color" type="button"
+                                        @click="buttonPrev"></button>
+                                    <button :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
+                                        class="btn btn-dark bi hover-color" type="button" @click="buttonPlay"></button>
+                                    <button class="btn btn-dark bi-skip-end-fill hover-color" type="button"
+                                        @click="buttonNext"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
     <Scrobbler ref="thisScrobbler" :isPlaying="isPlaying"></Scrobbler>
 </template>
 
@@ -65,6 +106,7 @@ import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
 import { sessionAction } from '/js/session.js';
 import { getQueueTracks } from '/js/queue.js';
+import Hammer from "hammerjs";
 
 import VolumeButton from "/components/VolumeButton.vue";
 import Scrobbler from "/components/Scrobbler.vue";
@@ -82,6 +124,9 @@ const artist = ref({ title: '', id: '' });
 
 const navBar = ref(null);
 const navBarVisible = ref(false);
+
+const mobileNavBar = ref(null);
+const mobileNavBarVisible = ref(true);
 
 let thisTooltip = ref(null);
 let thisScrobbler = ref(null);
@@ -254,6 +299,14 @@ async function showVolume() {
     thisTooltip.value.show();
 }
 
+async function showMobile() {
+    mobileNavBarVisible.value = true;
+}
+
+async function hideMobile() {
+    mobileNavBarVisible.value = false;
+}
+
 function padWithZero(num) {
     return String(num).padStart(2, '0');
 }
@@ -319,9 +372,17 @@ defineExpose({
     raiseVolume,
     lowerVolume,
     showVolume,
+    showMobile,
+    hideMobile,
 });
 
 onMounted(() => {
+    var hammertime = new Hammer(mobileNavBar.value);
+    hammertime.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+    hammertime.on("swipeup", function () {
+        emit('mobileView');
+    });
+
     let box = document.getElementById('seekProgress').getBoundingClientRect();
     progress_x.value = box.x;
     progress_width.value = box.width;

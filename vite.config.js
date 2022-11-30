@@ -18,6 +18,7 @@ export default defineConfig({
             'md5': path.resolve(__dirname, 'node_modules/md5'),
             'peerjs': path.resolve(__dirname, 'node_modules/peerjs'),
             'animejs': path.resolve(__dirname, 'node_modules/animejs/lib/anime.es.js'),
+            'hammerjs': path.resolve(__dirname, 'node_modules/hammerjs'),
         }
     },
 })
