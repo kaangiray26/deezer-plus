@@ -138,7 +138,6 @@ async function getLoginStatus(response) {
 
 function login() {
     DZ.login(function (response) {
-        console.log(response);
         if (!response.authResponse.accessToken) {
             alert('Login failed, please try again later.');
             return;

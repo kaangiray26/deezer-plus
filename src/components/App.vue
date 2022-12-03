@@ -152,14 +152,9 @@ async function keyPress(event) {
         thisPlayer.value.buttonNext();
         return;
     }
-
 }
 
 onMounted(() => {
-    navigator.__defineGetter__('userAgent', function () {
-        return ""
-    });
-
     window.focus();
     window.addEventListener('keydown', keyPress);
 
