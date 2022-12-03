@@ -1,6 +1,8 @@
 {
-    "short_name": "Deezer+",
+    "manifest_version": 2,
+    "version": "0.1",
     "name": "Deezer+: Deezer Web Player with extra features",
+    "short_name": "Deezer+",
     "icons": [
         {
             "src": "/images/deezer_192x192.png",
@@ -13,18 +15,6 @@
             "type": "image/png"
         },
         {
-            "src": "/images/deezer_192x192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
-            "src": "/images/deezer_512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
             "src": "/images/deezer_96x96.png",
             "sizes": "96x96",
             "type": "image/png"
@@ -32,9 +22,9 @@
     ],
     "id": "/",
     "start_url": "/",
-    "background_color": "#FFFFFF",
-    "theme_color": "#212529",
-    "display": "standalone",
     "description": "Deezer Web Player with extra features",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "display": "standalone",
+    "background_color": "#FFFFFF",
+    "theme_color": "#FFFFFF"
 }
