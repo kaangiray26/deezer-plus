@@ -4,7 +4,7 @@
         <div class="offcanvas-body">
             <div class="row h-100 justify-content-center align-items-end gx-0">
                 <div class="col h-100">
-                    <div class="card h-100">
+                    <div ref="cardView" class="card h-100">
                         <img :src="cover" class="card-img-top img-thumbnail image-stable mb-2">
                         <div class="card-body p-0 d-flex flex-column justify-content-end">
                             <div class="d-flex justify-content-between">
@@ -59,6 +59,7 @@ const emit = defineEmits(['queueButton', 'groupSession', 'buttonNext', 'buttonPl
 
 let offCanvasEle = ref(null);
 let thisOffCanvasObj = null;
+const cardView = ref(null);
 
 const cover = ref(null);
 
@@ -105,7 +106,7 @@ const props = defineProps({
         required: true
     },
     repeat_classes: {
-        type: Array,
+        type: Object,
         required: true
     },
     repeat: {
@@ -131,7 +132,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-    var hammertime = new Hammer(offCanvasEle.value);
+    var hammertime = new Hammer(cardView.value);
     hammertime.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
     hammertime.on("swipedown", function () {
         thisOffCanvasObj.hide();

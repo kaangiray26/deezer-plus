@@ -156,6 +156,10 @@ async function keyPress(event) {
 }
 
 onMounted(() => {
+    navigator.__defineGetter__('userAgent', function () {
+        return ""
+    });
+
     window.focus();
     window.addEventListener('keydown', keyPress);
 
