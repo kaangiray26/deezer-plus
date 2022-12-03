@@ -17,6 +17,7 @@ async function notify(obj) {
 
 const store = reactive({
     playerHeight: 0,
+    mobilePlayerHeight: 0,
     queue_index: 0,
     peer_status: 'disconnected',
     scrobbling: false,

@@ -1,55 +1,47 @@
 <template>
-    <div v-if="navBarVisible" :style="{ 'height': navBar.clientHeight + 'px', 'color': 'transparent' }">
-        {{ store.playerHeight = navBar.clientHeight }}</div>
-    <nav id="playerBar" ref="navBar" class="d-none d-sm-flex navbar navbar-light navbar-expand fixed-bottom"
-        style="width: 100%;">
-        <div class="container-fluid">
-            <div class="card border-dark border rounded shadow-lg" style="width: 100%;">
-                <div class="card-body border-dark d-flex flex-column">
-                    <div class="d-flex" id="player">
-                        <div class="d-flex flex-fill align-items-center">
-                            <div class="d-flex flex-column flex-fill">
-                                <div v-if="isLoaded" class="mx-2 mb-2">
-                                    <router-link :to="/album/ + album.id + '?track=' + track.id">{{ track.title }}
-                                    </router-link>
-                                    <span> - </span>
-                                    <router-link :to="/artist/ + artist.id">{{ artist.title }}</router-link>
+    <div ref="desktopPlayer" class="card border-top border-dark hide-on-mobile">
+        <div class="card-body d-flex flex-column">
+            <div class="d-flex" id="player">
+                <div class="d-flex flex-fill align-items-center">
+                    <div class="d-flex flex-column flex-fill">
+                        <div v-if="isLoaded" class="mx-2 mb-2">
+                            <router-link :to="/album/ + album.id + '?track=' + track.id">{{ track.title }}
+                            </router-link>
+                            <span> - </span>
+                            <router-link :to="/artist/ + artist.id">{{ artist.title }}</router-link>
+                        </div>
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="btn-group btn-group-sm me-4" role="group">
+                                <button class="btn btn-dark bi-skip-start-fill hover-color" type="button"
+                                    @click="buttonPrev"></button>
+                                <button :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
+                                    class="btn btn-dark bi hover-color" type="button" @click="buttonPlay"></button>
+                                <button class="btn btn-dark bi-skip-end-fill hover-color" type="button"
+                                    @click="buttonNext"></button>
+                            </div>
+                            <span class="font-monospace mx-2">{{ now }}</span>
+                            <div class="progress flex-fill" @click="seekProgress($event)">
+                                <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                    :style="{ 'width': position + '%' }">
+                                    <span class="visually-hidden"></span>
                                 </div>
-                                <div class="d-flex flex-row align-items-center">
-                                    <div class="btn-group btn-group-sm me-4" role="group">
-                                        <button class="btn btn-dark bi-skip-start-fill hover-color" type="button"
-                                            @click="buttonPrev"></button>
-                                        <button :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
-                                            class="btn btn-dark bi hover-color" type="button"
-                                            @click="buttonPlay"></button>
-                                        <button class="btn btn-dark bi-skip-end-fill hover-color" type="button"
-                                            @click="buttonNext"></button>
-                                    </div>
-                                    <span class="font-monospace mx-2">{{ now }}</span>
-                                    <div id="seekProgress" class="progress flex-fill" @click="seekProgress($event)">
-                                        <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                            :style="{ 'width': position + '%' }">
-                                            <span class="visually-hidden"></span>
-                                        </div>
-                                    </div>
-                                    <span class="font-monospace mx-2">{{ duration }}</span>
-                                    <div class="d-flex ms-4">
-                                        <div class="btn-group">
-                                            <button class="btn btn-dark bi bi-soundwave" type="button"
-                                                @click="emit('groupSession')">
-                                            </button>
-                                            <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
-                                                type="button" @click="buttonRepeat">
-                                            </button>
-                                            <VolumeButton ref="thisTooltip" @change-volume="changeVolume($event)"
-                                                @trigger-volume="triggerVolume" :mute="mute" :volumeLevel="volumeLevel">
-                                            </VolumeButton>
-                                            <button class="btn btn-dark bi bi-collection hover-color" type="button"
-                                                @click="emit('queueButton')">
-                                            </button>
-                                        </div>
-                                    </div>
+                            </div>
+                            <span class="font-monospace mx-2">{{ duration }}</span>
+                            <div class="d-flex ms-4">
+                                <div class="btn-group">
+                                    <button class="btn btn-dark bi bi-soundwave hover-color" type="button"
+                                        @click="emit('groupSession')">
+                                    </button>
+                                    <button class="btn btn-dark bi hover-color" :class="repeat_classes[repeat]"
+                                        type="button" @click="buttonRepeat">
+                                    </button>
+                                    <VolumeButton ref="thisTooltip" @change-volume="changeVolume($event)"
+                                        @trigger-volume="triggerVolume" :mute="mute" :volumeLevel="volumeLevel">
+                                    </VolumeButton>
+                                    <button class="btn btn-dark bi bi-collection hover-color" type="button"
+                                        @click="emit('queueButton')">
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -57,47 +49,47 @@
                 </div>
             </div>
         </div>
-    </nav>
-    <nav id="mobilePlayerBar" ref="mobileNavBar" class="d-sm-none navbar navbar-light navbar-expand fixed-bottom p-0"
-        style="width: 100%;" :class="{ 'visually-hidden': !mobileNavBarVisible }">
-        <div class="container-fluid px-0">
-            <div class="card shadow-lg" style="width: 100%;">
-                <div class="card-body border-top border-dark d-flex flex-column">
-                    <div class="d-flex" id="player">
-                        <div class="d-flex w-100 align-items-center">
-                            <div class="d-flex w-100 flex-column">
-                                <div class="d-flex flex-column mb-2">
-                                    <router-link :to="/album/ + album.id + '?track=' + track.id"
-                                        class="text-truncate">{{ track.title }}
-                                    </router-link>
-                                    <router-link :to="/artist/ + artist.id" class="text-truncate">{{
-                                            artist.title
-                                    }}</router-link>
-                                </div>
-                                <div class="d-flex flex-row align-items-center mb-2">
-                                    <div id="seekProgress" class="progress flex-fill" @click="seekProgress($event)">
-                                        <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                                            :style="{ 'width': position + '%' }">
-                                            <span class="visually-hidden"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <button class="btn btn-dark bi-skip-start-fill hover-color" type="button"
-                                        @click="buttonPrev"></button>
-                                    <button :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
-                                        class="btn btn-dark bi hover-color" type="button" @click="buttonPlay"></button>
-                                    <button class="btn btn-dark bi-skip-end-fill hover-color" type="button"
-                                        @click="buttonNext"></button>
+    </div>
+    <div ref="mobilePlayer" class="card border-top border-dark hide-on-desktop w-100">
+        <div class="card-body d-flex flex-column">
+            <div class="d-flex" id="player">
+                <div class="d-flex w-100 align-items-center">
+                    <div class="d-flex w-100 flex-column">
+                        <div class="d-flex flex-column mb-2">
+                            <router-link :to="/album/ + album.id + '?track=' + track.id" class="text-truncate">{{
+                                    track.title
+                            }}
+                            </router-link>
+                            <router-link :to="/artist/ + artist.id" class="text-truncate">{{
+                                    artist.title
+                            }}</router-link>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-2">
+                            <div class="progress flex-fill" @click="seekProgress($event)">
+                                <div class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                    :style="{ 'width': position + '%' }">
+                                    <span class="visually-hidden"></span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button class="btn btn-dark bi-skip-start-fill hover-color" type="button"
+                                @click="buttonPrev"></button>
+                            <button :class="{ 'bi-play-fill': !isPlaying, 'bi-pause-fill': isPlaying }"
+                                class="btn btn-dark bi hover-color" type="button" @click="buttonPlay"></button>
+                            <button class="btn btn-dark bi-skip-end-fill hover-color" type="button"
+                                @click="buttonNext"></button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+    <MobilePlayer ref="thisMobileView" :track="track" :album="album" :artist="artist" :position="position"
+        :repeat_classes="repeat_classes" :repeat="repeat" :now="now" :duration="duration" :isPlaying="isPlaying"
+        :seekProgress="seekProgress" @buttonPlay="buttonPlay" @buttonRepeat="buttonRepeat" @buttonPrev="buttonPrev"
+        @buttonNext="buttonNext" @groupSession="emit('groupSession')" @queueButton="emit('queueButton')" />
     <Scrobbler ref="thisScrobbler" :isPlaying="isPlaying"></Scrobbler>
 </template>
 
@@ -106,6 +98,7 @@ import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
 import { sessionAction } from '/js/session.js';
 import { getQueueTracks } from '/js/queue.js';
+import MobilePlayer from "./MobilePlayer.vue";
 import Hammer from "hammerjs";
 
 import VolumeButton from "/components/VolumeButton.vue";
@@ -122,11 +115,9 @@ const track = ref({ title: '', id: '', duration: 0 });
 const album = ref({ title: '', id: '' });
 const artist = ref({ title: '', id: '' });
 
-const navBar = ref(null);
-const navBarVisible = ref(false);
-
-const mobileNavBar = ref(null);
-const mobileNavBarVisible = ref(true);
+const desktopPlayer = ref(null);
+const mobilePlayer = ref(null);
+let thisMobileView = ref(null);
 
 let thisTooltip = ref(null);
 let thisScrobbler = ref(null);
@@ -140,10 +131,6 @@ const repeat_classes = {
 
 const mute = ref(false);
 const volumeLevel = ref(100);
-
-const progress_x = ref(0);
-const progress_width = ref(0);
-const progress_max = ref(0);
 
 const now = ref('00:00');
 const duration = ref('00:00');
@@ -226,7 +213,16 @@ async function buttonRepeat() {
 
 // Must be synchronized in groupSession: ok
 async function seekProgress(event) {
+    let src = null;
+
+    if (event.target.classList.contains('progress')) {
+        src = event.target;
+    } else {
+        src = event.target.parentElement;
+    }
+
     let pos = event.offsetX;
+    let width = src.offsetWidth;
 
     if (pos <= 0) {
         sessionAction({
@@ -239,7 +235,7 @@ async function seekProgress(event) {
         return;
     }
 
-    if (pos >= progress_width.value) {
+    if (pos >= width) {
         sessionAction({
             func: async function op() {
                 DZ.player.seek(100);
@@ -252,9 +248,9 @@ async function seekProgress(event) {
 
     sessionAction({
         func: async function op() {
-            DZ.player.seek(pos / progress_width.value * 100);
+            DZ.player.seek((pos / width) * 100);
         },
-        object: pos / progress_width.value * 100,
+        object: (pos / width) * 100,
         operation: 'Player.seek',
     });
 }
@@ -297,14 +293,6 @@ async function lowerVolume() {
 
 async function showVolume() {
     thisTooltip.value.show();
-}
-
-async function showMobile() {
-    mobileNavBarVisible.value = true;
-}
-
-async function hideMobile() {
-    mobileNavBarVisible.value = false;
 }
 
 function padWithZero(num) {
@@ -372,21 +360,13 @@ defineExpose({
     raiseVolume,
     lowerVolume,
     showVolume,
-    showMobile,
-    hideMobile,
 });
 
 onMounted(() => {
-    var hammertime = new Hammer(mobileNavBar.value);
+    var hammertime = new Hammer(mobilePlayer.value);
     hammertime.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
     hammertime.on("swipeup", function () {
-        emit('mobileView');
+        thisMobileView.value.toggle();
     });
-
-    let box = document.getElementById('seekProgress').getBoundingClientRect();
-    progress_x.value = box.x;
-    progress_width.value = box.width;
-    progress_max.value = box.x + box.width;
-    navBarVisible.value = true;
 });
 </script>

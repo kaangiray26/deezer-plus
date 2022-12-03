@@ -155,3 +155,28 @@ td {
 .toast-container {
     z-index: 1051;
 }
+
+.content-view {
+    flex: 1 1 auto;
+    overflow: scroll;
+}
+
+.player-view {
+    flex: 0 1;
+}
+
+.hide-on-mobile {
+    display: none !important;
+}
+
+@media (min-width: 576px) {
+    .hide-on-mobile {
+        display: flex !important;
+    }
+}
+
+@media (min-width: 576px) {
+    .hide-on-desktop {
+        display: none !important;
+    }
+}

@@ -1,15 +1,19 @@
 <template>
     <div @click="context_hide" @key.esc="context_hide" tabindex="0">
         <DeezerProvider @player_initialized="set_player_init" />
-        <HelpModal ref="thisHelpModal" />
         <div v-if="player_init">
+            <div class="d-flex flex-column vh-100 vw-100">
+                <div class="content-view pb-4" style="flex: 1 1 auto;">
+                    <NavBar ref="thisNavBar" @right-click="right_click" />
+                </div>
+                <div class="player-view">
+                    <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()"
+                        @groupSession="thisGroupSession.toggle()" />
+                </div>
+            </div>
+            <HelpModal ref="thisHelpModal" />
             <Context ref="thisContext" />
-            <NavBar ref="thisNavBar" @right-click="right_click" />
-            <Player ref="thisPlayer" @queueButton="thisOffCanvas.toggle()" @mobileView="thisMobileView.toggle()"
-                @groupSession="thisGroupSession.toggle()" />
             <Queue ref="thisOffCanvas" />
-            <MobilePlayer ref="thisMobileView" @showMobile="thisPlayer.showMobile()"
-                @hideMobile="thisPlayer.hideMobile()" />
             <Animation ref="thisAnimation" />
             <GroupSession ref="thisGroupSession" :key="groupKey" @reset="reset_group_session"
                 @reaction="thisAnimation.toggle($event)" @notify="notify($event)" @message="message($event)" />
@@ -29,14 +33,12 @@ import Context from '/components/Context.vue';
 import NavBar from '/components/NavBar.vue';
 import Player from '/components/Player.vue';
 import Queue from '/components/Queue.vue';
-import MobilePlayer from "./MobilePlayer.vue";
 import HelpModal from '/components/HelpModal.vue';
 import GroupSession from '/components/GroupSession.vue';
 import Animation from '/components/Animation.vue';
 
 let thisContext = ref(null);
 let thisOffCanvas = ref(null);
-let thisMobileView = ref(null);
 let thisNavBar = ref(null);
 let thisHelpModal = ref(null);
 let thisPlayer = ref(null);

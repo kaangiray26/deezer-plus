@@ -1,33 +1,38 @@
 <template>
-    <div class="container-fluid" style="height: 100%;width: 100%;margin: 0px;padding: 0px;">
-        <div class="card" style="width: 100%;">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <router-link to="/" class="page-heading-link hover-color me-2 disabled"
-                        style="padding: 0.25em;font-family: 'Secular One', sans-serif; cursor: pointer;">
-                        <div class="d-inline-flex position-relative ratio-1x1">
-                            <img src="/assets/Deezer_Logo_RVB_Black.svg" style="height:24px">
-                        </div>
-                    </router-link>
-                    <div class="input-group flex-nowrap">
-                        <span class="input-group-text bi bi-search"
-                            style="background: transparent;border-right-style: none;">
-                        </span>
-                        <input ref="search_input" class="form-control" type="text" id="searchField" placeholder="Search"
-                            style="background: transparent;border-left-style: none;" autocomplete="off"
-                            @keyup.enter="search($event)">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <router-link to="/" class="page-heading-link hide-on-mobile hover-color me-2 disabled"
+                    style="padding: 0.25em; cursor: pointer;">
+                    <div class="d-inline-flex position-relative ratio-1x1">
+                        <img src="/assets/Deezer_Logo_RVB_Black.svg" style="height:24px">
                     </div>
-                    <div class="ms-2">
-                        <button id="usernameTooltip" type="button" class="btn btn-dark position-relative"
-                            data-bs-toggle="tooltip" :data-bs-title="username" @click="openProfile">
-                            Profile
-                        </button>
-                    </div>
+                </router-link>
+                <router-link to="/" class="page-heading-link hide-on-desktop hover-color me-2 disabled"
+                    style="padding: 0.25em; cursor: pointer;">
+                    <img src="../assets/deezer.svg" style="height:24px">
+                </router-link>
+                <div class="input-group flex-nowrap me-2">
+                    <span class="input-group-text bi bi-search"
+                        style="background: transparent;border-right-style: none;">
+                    </span>
+                    <input ref="search_input" class="form-control" type="text" id="searchField" placeholder="Search"
+                        style="background: transparent;border-left-style: none;" autocomplete="off"
+                        @keyup.enter="search($event)">
+                </div>
+                <div>
+                    <button id="usernameTooltip" type="button" class="btn btn-dark position-relative hide-on-mobile"
+                        data-bs-toggle="tooltip" :data-bs-title="username" @click="openProfile">
+                        Profile
+                    </button>
+                    <button type="button" class="btn btn-dark bi bi-person-fill position-relative hide-on-desktop"
+                        @click="openProfile">
+                    </button>
                 </div>
             </div>
         </div>
-        <router-view @right-click="emit('right-click', $event)" />
     </div>
+    <router-view @right-click="emit('right-click', $event)" />
 </template>
 
 <script setup>
