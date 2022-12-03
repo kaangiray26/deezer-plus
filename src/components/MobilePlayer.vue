@@ -1,11 +1,11 @@
 <template>
-    <div id="MobileCanvas" ref="offCanvasEle" class="offcanvas offcanvas-bottom h-100" data-bs-backdrop="false"
+    <div id="MobileCanvas" ref="offCanvasEle" class="offcanvas offcanvas-bottom h-100 border-0" data-bs-backdrop="false"
         tabindex="-1" aria-labelledby="offcanvasBottomLabel" style="z-index: 1029;">
         <div class="offcanvas-body">
             <div class="row h-100 justify-content-center align-items-end gx-0">
                 <div class="col h-100">
                     <div class="card h-100">
-                        <img :src="cover" class="card-img-top image-stable mb-2">
+                        <img :src="cover" class="card-img-top img-thumbnail image-stable mb-2">
                         <div class="card-body p-0 d-flex flex-column justify-content-end">
                             <div class="d-flex justify-content-between">
                                 <span class="font-monospace mx-2">{{ now }}</span>
