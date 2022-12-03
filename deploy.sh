@@ -9,9 +9,6 @@ rm -rf src/dist
 # build
 npm run build
 
-# copy 404.png into the build output directory
-cp src/assets/404.png src/dist/assets/
-
 # navigate into the build output directory
 cd src/dist
 
