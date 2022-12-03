@@ -16,7 +16,6 @@ cp src/assets/404.png src/dist/assets/
 cd src/dist
 
 # if you are deploying to a custom domain
-echo '<script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>' > channel.html
 cp index.html 404.html
 
 git init
