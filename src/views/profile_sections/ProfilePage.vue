@@ -64,9 +64,6 @@ async function get_charts_tracks() {
 }
 
 onMounted(() => {
-    DZ.api(`/user/me/options?access_token=${localStorage.getItem("token")}`, function (response) {
-        console.log(response);
-    });
     get_charts_tracks();
 })
 </script>

@@ -70,8 +70,35 @@
                     </div>
                     <hr />
                     <div class="d-flex flex-column">
-                        <h1 class="mb-4" style="height: 32px; font-weight: 700;">User Agent</h1>
-                        <span class="fw-bold">{{ userAgent }}</span>
+                        <h1 class="mb-4" style="height: 32px; font-weight: 700;">Navigator</h1>
+                        <table class="table table-dark table-hover">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">userAgent</th>
+                                    <td>{{ navigator.userAgent }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">appVersion</th>
+                                    <td>{{ navigator.appVersion }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">platform</th>
+                                    <td>{{ navigator.platform }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">vendor</th>
+                                    <td>{{ navigator.vendor }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">product</th>
+                                    <td>{{ navigator.product }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">oscpu</th>
+                                    <td>{{ navigator.oscpu }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <hr />
                     <div class="d-flex flex-column">
@@ -101,7 +128,7 @@ import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
 
 const settingsLoaded = ref(false);
-const userAgent = ref(navigator.userAgent);
+const navigator = ref(window.navigator);
 const settings = ref({
     lastfm: {
         connected: false,

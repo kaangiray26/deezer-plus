@@ -157,7 +157,6 @@ function login() {
         localStorage.setItem('fav_radios', JSON.stringify([]));
 
         DZ.api(`/user/me?access_token=${localStorage.getItem("token")}`, data => {
-            console.log(data);
             localStorage.setItem('id', data.id);
             localStorage.setItem('username', data.name);
             hideModal();
