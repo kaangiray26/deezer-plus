@@ -14,3 +14,4 @@ Check out at https://deezer.buzl.uk
 - Last.fm `Now Scrobbling` support
 - Keyboard shortcuts
 - Responsive design for the mobile devices
+- Can be installed as a Progressive Web App (PWA)
