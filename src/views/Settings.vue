@@ -37,15 +37,16 @@
                             <tbody>
                                 <tr>
                                     <td>Username:</td>
-                                    <td class="fw-bolder">{{settings.lastfm.name}}</td>
+                                    <td class="fw-bolder">{{ settings.lastfm.name }}</td>
                                 </tr>
                                 <tr>
                                     <td>updateNowPlaying:</td>
                                     <td>
                                         <button class="btn"
                                             :class="{ 'btn-outline-danger': !store.scrobbling, 'btn-outline-success': store.scrobbling }"
-                                            @click="toggleScrobbling">{{store.scrobbling
-                                            ? 'Enabled' : 'Disabled'}}</button>
+                                            @click="toggleScrobbling">{{ store.scrobbling
+                                                    ? 'Enabled' : 'Disabled'
+                                            }}</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -66,6 +67,11 @@
                         <div class="input-group">
                             <button class="btn btn-outline-dark" @click="logout">Logout</button>
                         </div>
+                    </div>
+                    <hr />
+                    <div class="d-flex flex-column">
+                        <h1 class="mb-4" style="height: 32px; font-weight: 700;">User Agent</h1>
+                        <span class="fw-bold">{{ userAgent }}</span>
                     </div>
                     <hr />
                     <div class="d-flex flex-column">
@@ -95,7 +101,7 @@ import { ref, onMounted } from "vue";
 import { store } from '/js/store.js';
 
 const settingsLoaded = ref(false);
-
+const userAgent = ref(navigator.userAgent);
 const settings = ref({
     lastfm: {
         connected: false,
