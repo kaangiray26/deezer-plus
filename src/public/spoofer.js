@@ -2,8 +2,10 @@
 
 const keys = ['userAgent', 'appVersion', 'platform', 'vendor', 'product', 'oscpu'];
 
-for (let key of keys) {
-    Object.defineProperty(navigator, key, {
-        get: function () { return '.'; }
-    });
-}
+const {get} = Object.getOwnPropertyDescriptor(Navigator.prototype, 'userAgent');
+
+Object.defineProperty(Navigator.prototype, 'userAgent', {
+    get: function(){
+        return "Mozilla/5.0 (X11; Linux x86_64; rv:107.0) Gecko/20100101 Firefox/107.0";
+    }
+});
