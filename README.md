@@ -8,7 +8,7 @@ Check out at https://deezer.buzl.uk
 - Group Session (Listen together with a friend)
 - Do everything you can do with Deezer
 - Right click menu on everything
-- Easier access to elements
+- Easier and more quick access
 - Better queue operations
 - Sharing via Google
 - Last.fm `Now Scrobbling` support
