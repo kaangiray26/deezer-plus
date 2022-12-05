@@ -180,3 +180,7 @@ td {
         display: none !important;
     }
 }
+
+.placeholder-img {
+    background-image: linear-gradient(to bottom right, grey, var(--bs-dark));
+}

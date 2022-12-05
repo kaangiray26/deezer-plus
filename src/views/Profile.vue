@@ -7,13 +7,14 @@
             </button>
         </div>
     </div>
-    <div v-show="userLoaded" class="row justify-content-center gx-0">
+    <div class="row justify-content-center gx-0">
         <div class="card col-11">
             <div class="card-body rounded d-flex row shadow-lg">
                 <div class="col-auto">
                     <figure class="d-flex flex-row">
                         <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
-                            <img class="img-fluid figure-img rounded" :src="user.data.cover" />
+                            <img class="img-fluid figure-img rounded placeholder-img" :src="user.data.cover"
+                                height="250" width="250" />
                             <div class="position-absolute bottom-0">
                             </div>
                         </div>

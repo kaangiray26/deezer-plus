@@ -6,9 +6,9 @@
                     <img class="img-fluid figure-img rounded" :src="cover" />
                 </div>
             </figure>
-            <router-link :to="/user/+id">
+            <router-link :to="/user/ + id">
                 <div class="d-flex flex-column mt-2">
-                    <span class="text-truncate"><mark>{{name}}</mark></span>
+                    <span class="text-truncate"><mark>{{ name }}</mark></span>
                 </div>
             </router-link>
         </div>
