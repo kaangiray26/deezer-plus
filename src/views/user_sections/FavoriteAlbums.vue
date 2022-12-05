@@ -1,27 +1,27 @@
 <template>
     <ul class="nav nav-pills" role="tablist">
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/tracks'">Favorite Tracks
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'     +     user_id     +     '/tracks'">Favorite Tracks
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/playlists'">Playlists
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'     +     user_id     +     '/playlists'">Playlists
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link active fw-bolder" :to="'/user/'+user_id+'/albums'">Albums
+            <router-link class="nav-link active fw-bolder" :to="'/user/'     +     user_id     +     '/albums'">Albums
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/artists'">Artists
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'     +     user_id     +     '/artists'">Artists
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/following'">Following
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'     +     user_id     +     '/following'">Following
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'+user_id+'/followers'">Followers
+            <router-link class="nav-link fw-bolder text-dark" :to="'/user/'     +     user_id     +     '/followers'">Followers
             </router-link>
         </li>
     </ul>
@@ -32,7 +32,7 @@
                 <table class="table table-hover table-borderless caption-top">
                     <caption>
                         <span class="badge bg-primary">
-                            {{album_total}} results
+                            {{     album_total     }} results
                         </span>
                     </caption>
                     <thead>
@@ -47,7 +47,7 @@
                         <AlbumResult v-for="item in loved.albums" :id="item.album.id" :cover="item.cover"
                             :artist="item.artist" :album="item.album" :nb_tracks="item.nb_tracks"
                             :explicit_lyrics="item.explicit_lyrics"
-                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', {     'event':     $event, 'target':     $event.currentTarget     })">
                         </AlbumResult>
                     </tbody>
                 </table>
@@ -121,14 +121,15 @@ function handleAlbumSearchResponse(item) {
     return;
 }
 
-window.onscroll = () => {
-    if (((window.innerHeight + window.scrollY) >= document.body.scrollHeight) && searchFinished.value) {
-        next_search();
-    }
-};
-
 onMounted(() => {
     user_id.value = router.currentRoute.value.params.id;
     get_loved(router.currentRoute.value.params.id);
+
+    let content_view = document.querySelector('.content-view');
+    content_view.addEventListener("scroll", function () {
+        if ((content_view.scrollTop >= content_view.scrollTopMax) && searchFinished.value) {
+            next_search();
+        }
+    });
 });
 </script>

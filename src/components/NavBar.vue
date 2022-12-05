@@ -32,9 +32,7 @@
             </div>
         </div>
     </div>
-    <KeepAlive>
-        <router-view @right-click="emit('right-click', $event)" />
-    </KeepAlive>
+    <router-view @right-click="emit('right-click', $event)" />
 </template>
 
 <script setup>

@@ -381,17 +381,18 @@ async function search() {
     artist_search();
 }
 
-window.onscroll = () => {
-    if (((window.innerHeight + window.scrollY) >= document.body.scrollHeight) && searchFinished.value) {
-        next_search();
-    }
-};
-
 watch(query_param, () => {
     search();
 });
 
 onMounted(() => {
     search();
+
+    let content_view = document.querySelector('.content-view');
+    content_view.addEventListener("scroll", function () {
+        if ((content_view.scrollTop >= content_view.scrollTopMax) && searchFinished.value) {
+            next_search();
+        }
+    });
 });
 </script>

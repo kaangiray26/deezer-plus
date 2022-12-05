@@ -36,7 +36,7 @@
                 <table class="table table-hover table-borderless caption-top">
                     <caption>
                         <span class="badge bg-primary">
-                            {{playlist_total}} results
+                            {{ playlist_total }} results
                         </span>
                     </caption>
                     <thead>
@@ -49,7 +49,7 @@
                     <tbody @scroll.passive="onScroll($event)">
                         <PlaylistResult v-for="item in loved.playlists" :id="item.playlist.id" :cover="item.cover"
                             :playlist="item.playlist" :user="item.user" :nb_tracks="item.nb_tracks"
-                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                         </PlaylistResult>
                     </tbody>
                 </table>
@@ -119,13 +119,14 @@ function handlePlaylistSearchResponse(item) {
     return;
 }
 
-window.onscroll = () => {
-    if (((window.innerHeight + window.scrollY) >= document.body.scrollHeight) && searchFinished.value) {
-        next_search();
-    }
-};
-
 onMounted(() => {
     get_loved();
+
+    let content_view = document.querySelector('.content-view');
+    content_view.addEventListener("scroll", function () {
+        if ((content_view.scrollTop >= content_view.scrollTopMax) && searchFinished.value) {
+            next_search();
+        }
+    });
 })
 </script>

@@ -2,7 +2,7 @@
     <div @click="context_hide" @key.esc="context_hide" tabindex="0">
         <DeezerProvider @player_initialized="set_player_init" />
         <div v-if="player_init">
-            <div class="d-flex flex-column vh-100 vw-100">
+            <div class="complete-view d-flex flex-column vh-100 vw-100">
                 <div class="content-view pb-4" style="flex: 1 1 auto;">
                     <NavBar ref="thisNavBar" @right-click="right_click" />
                 </div>

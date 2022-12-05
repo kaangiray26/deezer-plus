@@ -36,7 +36,7 @@
                 <table class="table table-hover table-borderless caption-top">
                     <caption>
                         <span class="badge bg-primary">
-                            {{track_total}} results
+                            {{      track_total      }} results
                         </span>
                     </caption>
                     <thead>
@@ -50,7 +50,7 @@
                     <tbody @scroll.passive="onScroll($event)">
                         <TrackResult v-for="item in loved.tracks" :id="item.track.id" :cover="item.cover"
                             :artist="item.artist" :album="item.album" :track="item.track" :duration="item.duration"
-                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', {      'event':      $event, 'target':      $event.currentTarget      })">
                         </TrackResult>
                     </tbody>
                 </table>
@@ -124,13 +124,14 @@ function handleTrackSearchResponse(item) {
     return;
 }
 
-window.onscroll = () => {
-    if (((window.innerHeight + window.scrollY) >= document.body.scrollHeight) && searchFinished.value) {
-        next_search();
-    }
-};
-
 onMounted(() => {
     get_loved();
+
+    let content_view = document.querySelector('.content-view');
+    content_view.addEventListener("scroll", function () {
+        if ((content_view.scrollTop >= content_view.scrollTopMax) && searchFinished.value) {
+            next_search();
+        }
+    });
 })
 </script>

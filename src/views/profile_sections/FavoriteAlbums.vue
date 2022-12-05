@@ -36,7 +36,7 @@
                 <table class="table table-hover table-borderless caption-top">
                     <caption>
                         <span class="badge bg-primary">
-                            {{album_total}} results
+                            {{ album_total }} results
                         </span>
                     </caption>
                     <thead>
@@ -51,7 +51,7 @@
                         <AlbumResult v-for="item in loved.albums" :id="item.album.id" :cover="item.cover"
                             :artist="item.artist" :album="item.album" :nb_tracks="item.nb_tracks"
                             :explicit_lyrics="item.explicit_lyrics"
-                            @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                            @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                         </AlbumResult>
                     </tbody>
                 </table>
@@ -122,13 +122,14 @@ function handleAlbumSearchResponse(item) {
     return;
 }
 
-window.onscroll = () => {
-    if (((window.innerHeight + window.scrollY) >= document.body.scrollHeight) && searchFinished.value) {
-        next_search();
-    }
-};
-
 onMounted(() => {
     get_loved();
+
+    let content_view = document.querySelector('.content-view');
+    content_view.addEventListener("scroll", function () {
+        if ((content_view.scrollTop >= content_view.scrollTopMax) && searchFinished.value) {
+            next_search();
+        }
+    });
 })
 </script>
