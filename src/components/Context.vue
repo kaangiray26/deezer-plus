@@ -9,7 +9,7 @@
 <script setup>
 import { ref, nextTick } from "vue";
 import { addToFav, removeFromFav } from "/js/favs.js";
-import { addToQueue, addToQueueStart, convert_track, convert_album, convert_playlist } from "/js/queue.js";
+import { addToQueue, addToQueueStart, addToQueueNext, convert_track, convert_album, convert_playlist } from "/js/queue.js";
 import { sessionAction } from '/js/session.js';
 import { notify } from '/js/store.js';
 
@@ -178,6 +178,59 @@ async function contextMenuEvent(event) {
             object: parseInt(selectedItem.value.id),
             operation: 'Radio.play',
         });
+        return;
+    }
+
+    // Play next Events
+    if (event == 'playTrackNext') {
+        sessionAction({
+            func: async function op() {
+                DZ.api('/track/' + selectedItem.value.attributes.track_id.value, async function (response) {
+                    await addToQueueNext(convert_track(response));
+                });
+            },
+            object: parseInt(selectedItem.value.attributes.track_id.value),
+            operation: 'Track.playNext',
+        })
+        return;
+    }
+
+    if (event == 'playAlbumNext') {
+        sessionAction({
+            func: async function op() {
+                DZ.api('/album/' + selectedItem.value.attributes.album_id.value + '/tracks', async function (response) {
+                    await addToQueueNext(convert_album(response.data, selectedItem.value.attributes.album_id.value, selectedItem.value.attributes.album_title.value));
+                });
+            },
+            object: [selectedItem.value.attributes.album_id.value, selectedItem.value.attributes.album_title.value],
+            operation: 'Album.playNext',
+        })
+        return;
+    }
+
+    if (event == 'playPlaylistNext') {
+        sessionAction({
+            func: async function op() {
+                DZ.api('/playlist/' + selectedItem.value.attributes.playlist_id.value + '/tracks', async function (response) {
+                    await addToQueueNext(convert_playlist(response.data));
+                });
+            },
+            object: selectedItem.value.attributes.playlist_id.value,
+            operation: 'Playlist.playNext',
+        })
+        return;
+    }
+
+    if (event == 'playRadioNext') {
+        sessionAction({
+            func: async function op() {
+                DZ.api('/radio/' + selectedItem.value.attributes.radio_id.value + '/tracks', async function (response) {
+                    await addToQueueNext(convert_playlist(response.data));
+                });
+            },
+            object: selectedItem.value.attributes.radio_id.value,
+            operation: 'Radio.playNext',
+        })
         return;
     }
 

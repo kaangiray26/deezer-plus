@@ -32,11 +32,13 @@
             </div>
         </div>
     </div>
-    <router-view @right-click="emit('right-click', $event)" />
+    <KeepAlive>
+        <router-view @right-click="emit('right-click', $event)" />
+    </KeepAlive>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, KeepAlive } from "vue";
 import { Tooltip } from 'bootstrap';
 import router from "/router";
 

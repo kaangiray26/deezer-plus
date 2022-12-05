@@ -5,22 +5,22 @@
                 <ul class="nav nav-pills my-2" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a id="tracks-tab" class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-tracks"
-                            @click="currentSearchField='tracks'">Tracks
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a id="playlists-tab" class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-playlists"
-                            @click="currentSearchField='playlists'">Playlist
+                            @click="currentSearchField = 'tracks'">Tracks
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a id="albums-tab" class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-albums"
-                            @click="currentSearchField='albums'">Albums
+                            @click="currentSearchField = 'albums'">Albums
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a id="artists-tab" class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-artists"
-                            @click="currentSearchField='artists'">Artists
+                            @click="currentSearchField = 'artists'">Artists
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a id="playlists-tab" class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-playlists"
+                            @click="currentSearchField = 'playlists'">Playlist
                         </a>
                     </li>
                 </ul>
@@ -32,7 +32,7 @@
                                     <table class="table table-hover table-borderless caption-top">
                                         <caption>
                                             <span class="badge bg-primary">
-                                                {{track_total}} results
+                                                {{ track_total }} results
                                             </span>
                                         </caption>
                                         <thead>
@@ -54,7 +54,7 @@
                                             <TrackResult v-for="item in results.tracks" :id="item.track.id"
                                                 :cover="item.cover" :artist="item.artist" :album="item.album"
                                                 :track="item.track" :duration="item.duration"
-                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                             </TrackResult>
                                         </tbody>
                                     </table>
@@ -69,7 +69,7 @@
                                     <table class="table table-hover table-borderless caption-top">
                                         <caption>
                                             <span class="badge bg-primary">
-                                                {{playlist_total}} results
+                                                {{ playlist_total }} results
                                             </span>
                                         </caption>
                                         <thead>
@@ -88,7 +88,7 @@
                                             <PlaylistResult v-for="item in results.playlists" :id="item.playlist.id"
                                                 :cover="item.cover" :playlist="item.playlist" :user="item.user"
                                                 :nb_tracks="item.nb_tracks"
-                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                             </PlaylistResult>
                                         </tbody>
                                     </table>
@@ -103,7 +103,7 @@
                                     <table class="table table-hover table-borderless caption-top">
                                         <caption>
                                             <span class="badge bg-primary">
-                                                {{album_total}} results
+                                                {{ album_total }} results
                                             </span>
                                         </caption>
                                         <thead>
@@ -124,7 +124,7 @@
                                             <AlbumResult v-for="item in results.albums" :id="item.album.id"
                                                 :cover="item.cover" :artist="item.artist" :album="item.album"
                                                 :nb_tracks="item.nb_tracks" :explicit_lyrics="item.explicit_lyrics"
-                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                             </AlbumResult>
                                         </tbody>
                                     </table>
@@ -139,7 +139,7 @@
                                     <table class="table table-hover table-borderless caption-top">
                                         <caption>
                                             <span class="badge bg-primary">
-                                                {{artist_total}} results
+                                                {{ artist_total }} results
                                             </span>
                                         </caption>
                                         <thead>
@@ -158,7 +158,7 @@
                                             <ArtistResult v-for="item in results.artists" :id="item.artist.id"
                                                 :cover="item.cover" :artist="item.artist" :nb_album="item.nb_album"
                                                 :nb_fan="item.nb_fan"
-                                                @contextmenu.prevent="emit('right-click', {'event':$event, 'target':$event.currentTarget})">
+                                                @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                             </ArtistResult>
                                         </tbody>
                                     </table>

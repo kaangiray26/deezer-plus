@@ -25,6 +25,19 @@ const store = reactive({
     shared_secret: shared_secret,
     queue: [],
     stack: [],
+    recommendations_loaded: false,
+    recommendations: {
+        albums: [],
+        releases: [],
+        artists: [],
+        playlists: [],
+        tracks: [],
+        radios: []
+    },
+    charts_loaded: false,
+    charts: { tracks: [] },
+    profile_loaded: false,
+    profile: { data: {} },
 });
 
 export { store, notify }

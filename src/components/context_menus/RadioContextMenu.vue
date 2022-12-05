@@ -5,15 +5,19 @@
                     class="bi bi-play-fill me-1"></span>Play</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="emit('context-menu-event','addRadioToQueue')"><span
+            <button class="dropdown-item" type="button" @click="emit('context-menu-event', 'playRadioNext')"><span
+                    class="bi bi-fast-forward-fill me-1"></span>Play next</button>
+        </li>
+        <li>
+            <button class="dropdown-item" type="button" @click="emit('context-menu-event', 'addRadioToQueue')"><span
                     class="bi bi-music-note-list me-1"></span>Add to queue</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="emit('context-menu-event','openRadioPage')"><span
+            <button class="dropdown-item" type="button" @click="emit('context-menu-event', 'openRadioPage')"><span
                     class="bi bi-broadcast me-1"></span>Radio page</button>
         </li>
         <li>
-            <button class="dropdown-item" type="button" @click="emit('context-menu-event','shareRadio')"><span
+            <button class="dropdown-item" type="button" @click="emit('context-menu-event', 'shareRadio')"><span
                     class="bi bi-share-fill me-1"></span>Share</button>
         </li>
     </ul>

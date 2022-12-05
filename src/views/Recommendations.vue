@@ -34,8 +34,8 @@
                             <div class="row gx-1 gy-1" style="margin: 0px;padding: 0px;">
                                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
                                     v-for="item in recommendations.albums">
-                                    <AlbumRecommendation :id="item.album_id" :artist="item.artist" :title="item.title"
-                                        :cover="item.cover" :album_id="item.album_id"
+                                    <AlbumRecommendation :id="item.album_id" :album="item.album" :artist="item.artist"
+                                        :cover="item.cover"
                                         @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </AlbumRecommendation>
                                 </div>
@@ -54,8 +54,8 @@
                             <div class="row gx-1 gy-1" style="margin: 0px;padding: 0px;">
                                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2"
                                     v-for="item in recommendations.releases">
-                                    <AlbumRecommendation :id="item.album_id" :artist="item.artist" :title="item.title"
-                                        :cover="item.cover" :album_id="item.album_id"
+                                    <AlbumRecommendation :id="item.album_id" :album="item.album" :tracks="item.tracks"
+                                        :artist="item.artist" :cover="item.cover"
                                         @contextmenu.prevent="emit('right-click', { 'event': $event, 'target': $event.currentTarget })">
                                     </AlbumRecommendation>
                                 </div>
@@ -131,6 +131,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { store } from "/js/store";
 
 import TrackRecommendation from "./TrackRecommendation.vue";
 import AlbumRecommendation from './AlbumRecommendation.vue';
@@ -140,14 +141,7 @@ import RadioRecommendation from "./RadioRecommendation.vue";
 
 const emit = defineEmits(['right-click']);
 
-const recommendations = ref({
-    albums: [],
-    releases: [],
-    artists: [],
-    playlists: [],
-    tracks: [],
-    radios: []
-});
+const recommendations = ref(store.recommendations);
 
 const recsVisible = ref(false);
 
@@ -159,6 +153,7 @@ async function get_recommendations() {
     get_rec_playlists();
     get_rec_radios();
     recsVisible.value = true;
+    store.recommendations_loaded = true;
 }
 
 async function get_rec_albums() {
@@ -199,9 +194,11 @@ async function get_rec_radios() {
 
 function handleRecAlbums(item) {
     recommendations.value.albums.push({
-        album_id: item.id,
+        album: {
+            id: item.id,
+            title: item.title
+        },
         artist: item.artist,
-        title: item.title,
         cover: item.cover_medium,
     })
     return;
@@ -209,7 +206,10 @@ function handleRecAlbums(item) {
 
 function handleRecReleases(item) {
     recommendations.value.releases.push({
-        album_id: item.id,
+        album: {
+            id: item.id,
+            title: item.title
+        },
         artist: item.artist,
         title: item.title,
         cover: item.cover_medium,
@@ -259,6 +259,10 @@ function handleRecRadios(item) {
 }
 
 onMounted(() => {
-    get_recommendations();
+    if (!store.recommendations_loaded) {
+        get_recommendations();
+        return;
+    }
+    recsVisible.value = true;
 });
 </script>

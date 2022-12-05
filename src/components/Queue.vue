@@ -3,7 +3,10 @@
         aria-labelledby="offcanvasBottomLabel" style="height: 100%; z-index: 1029;">
         <div class="offcanvas-body">
             <div class="row justify-content-center gx-0">
-                <div class="btn-group bg-dark justify-content-end border p-2 mb-1" role="group">
+                <div class="btn-group bg-dark justify-content-between border p-2 mb-1" role="group">
+                    <div class="d-flex align-items-center">
+                        <button class="btn-close btn-close-white mx-2" @click="_toggle"></button>
+                    </div>
                     <div class="d-flex align-items-center">
                         <div>
                             <input type="checkbox" class="btn-check" id="btn-check" autocomplete="off"

@@ -212,6 +212,38 @@ props.conn.on("data", async function (data) {
                 });
                 break;
 
+            case 'Track.playNext':
+                store.stack.push(async function op() {
+                    DZ.api('/track/' + data.object, async function (response) {
+                        await addToQueueNext(convert_track(response));
+                    });
+                });
+                break;
+
+            case 'Album.playNext':
+                store.stack.push(async function op() {
+                    DZ.api('/album/' + data.object[0] + '/tracks', async function (response) {
+                        await addToQueueNext(convert_album(response.data, data.object[0], data.object[1]));
+                    });
+                });
+                break;
+
+            case 'Playlist.playNext':
+                store.stack.push(async function op() {
+                    DZ.api('/playlist/' + data.object + '/tracks', async function (response) {
+                        await addToQueueNext(convert_playlist(response.data));
+                    });
+                });
+                break;
+
+            case 'Radio.playNext':
+                store.stack.push(async function op() {
+                    DZ.api('/radio/' + data.object + '/tracks', async function (response) {
+                        await addToQueueNext(convert_playlist(response.data));
+                    });
+                });
+                break;
+
             case 'Player.play':
                 store.stack.push(async function op() {
                     DZ.player.play();

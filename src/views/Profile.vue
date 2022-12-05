@@ -13,7 +13,7 @@
                 <div class="col-auto">
                     <figure class="d-flex flex-row">
                         <div class="d-flex justify-content-end position-relative overflow-hidden ratio-1x1">
-                            <img class="img-fluid figure-img rounded" :src="user.cover" />
+                            <img class="img-fluid figure-img rounded" :src="user.data.cover" />
                             <div class="position-absolute bottom-0">
                             </div>
                         </div>
@@ -22,7 +22,8 @@
                 <div class="col">
                     <div class="d-inline-flex flex-column">
                         <router-link to="/profile">
-                            <h1 class="text-bold mb-2" style="font-size: 32px; font-weight: 700;">{{user.name}}</h1>
+                            <h1 class="text-bold mb-2" style="font-size: 32px; font-weight: 700;">{{ user.data.name }}
+                            </h1>
                         </router-link>
                         <router-link to="/settings" class="btn btn-outline-dark fw-bolder">Settings</router-link>
                     </div>
@@ -36,15 +37,16 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { store } from "/js/store.js";
 
 const emit = defineEmits(["right-click"]);
 
-const user = ref({});
+const user = ref(store.profile);
 const userLoaded = ref(false);
 
 async function get_user() {
     DZ.api(`/user/me?access_token=${localStorage.getItem("token")}`, function (response) {
-        user.value = {
+        user.value.data = {
             id: parseInt(response.id),
             name: response.name,
             cover: response.picture_medium,
@@ -52,9 +54,14 @@ async function get_user() {
         }
     });
     userLoaded.value = true;
+    store.profile_loaded = true;
 }
 
 onMounted(() => {
-    get_user();
+    if (!store.profile_loaded) {
+        get_user();
+        return;
+    }
+    userLoaded.value = true;
 })
 </script>

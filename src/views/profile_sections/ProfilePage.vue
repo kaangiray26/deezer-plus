@@ -47,23 +47,27 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { store } from "/js/store";
 import TrackRecommendation from "../TrackRecommendation.vue";
 
 const emit = defineEmits(["right-click"]);
 
 const chartsLoaded = ref(false);
-const charts = ref({
-    tracks: []
-});
+const charts = ref(store.charts);
 
 async function get_charts_tracks() {
     DZ.api(`/user/me/charts/tracks?access_token=${localStorage.getItem("token")}`, function (response) {
         charts.value.tracks = response.data;
+        chartsLoaded.value = true;
+        store.charts_loaded = true;
     });
-    chartsLoaded.value = true;
 }
 
 onMounted(() => {
-    get_charts_tracks();
+    if (!store.charts_loaded) {
+        get_charts_tracks();
+        return;
+    }
+    chartsLoaded.value = true;
 })
 </script>
