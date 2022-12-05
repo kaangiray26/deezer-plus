@@ -15,3 +15,6 @@ Check out at https://deezer.buzl.uk
 - Keyboard shortcuts
 - Responsive design for the mobile devices
 - Can be installed as a Progressive Web App (PWA)
+
+## Keyboard Shortcuts
+- Press the `H` button to display the keyboard shortcuts.
