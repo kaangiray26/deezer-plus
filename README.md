@@ -16,5 +16,5 @@ Check out at https://deezer.buzl.uk
 - Responsive design for the mobile devices
 - Can be installed as a Progressive Web App (PWA)
 
-## Help
-- Press the `H` button to display the help dialog.
+## Keyboard Shortcuts
+- Press the `H` button to display the keyboard shortcuts.
