@@ -24,7 +24,7 @@ Check out at https://deezer.buzl.uk
 - Press the `H` button to display the keyboard shortcuts.
 
 ## Troubleshooting
-- I can't play full songs but only 30 seconds of them.
+- I can't play full songs on a desktop browser.
 
   If you are using Firefox, the `Enhanced Tracking Protection` feature of the browser might interfere how the Deezer SDK works. To prevent this you can add an exception for the website. Go to the website `https://deezer.buzl.uk` and then find the `shield` icon on the left side of the address bar. Then just click on the switch and the website will be added to the exceptions. This should fix the problem and you don't need to turn off your adblockers.
   
