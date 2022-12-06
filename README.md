@@ -31,3 +31,17 @@ Check out at https://deezer.buzl.uk
 - I can't play full songs on a mobile browser.
 
   This is a known issue due to the Deezer's restrictions on the userAgent parameter. There isn't a solution for this issue yet and the Deezer team is checking on it right now. However, if you can change your userAgent on your mobile browser, you can listen to full songs without any issues. Just set the parameter to `Firefox/107.0`.
+
+## Update on the latest situation
+I've contacted with the Deezer team and they responded as the following:
+```
+...
+I'm sorry to let you know that our SDK
+is no longer available for developers to use,
+therefore Javascript SDK is no longer maintained.
+...
+
+This is horrible news, and you can help to raise an awareness on this topic.  
+* [Reddit discussion](https://redd.it/zebkcd)
+* [Deezer Community discussion](https://en.deezercommunity.com/features-feedback-44/help-wanted-deezer-javascript-sdk-is-no-longer-maintained-75670?postid=219524#post219524)
+```
