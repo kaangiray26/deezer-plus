@@ -43,4 +43,3 @@ therefore Javascript SDK is no longer maintained.
 This is horrible news, and you can help to raise an awareness on this topic.  
 * [Reddit discussion](https://redd.it/zebkcd)
 * [Deezer Community discussion](https://en.deezercommunity.com/features-feedback-44/help-wanted-deezer-javascript-sdk-is-no-longer-maintained-75670?postid=219524#post219524)
-```
