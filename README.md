@@ -35,11 +35,10 @@ Check out at https://deezer.buzl.uk
 ## Update on the latest situation
 I've contacted with the Deezer team and they responded as the following:
 ```
-...
 I'm sorry to let you know that our SDK
 is no longer available for developers to use,
 therefore Javascript SDK is no longer maintained.
-...
+```
 
 This is horrible news, and you can help to raise an awareness on this topic.  
 * [Reddit discussion](https://redd.it/zebkcd)
