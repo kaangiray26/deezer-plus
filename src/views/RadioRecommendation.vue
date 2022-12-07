@@ -22,6 +22,7 @@
 
 <script setup>
 import { sessionAction } from '/js/session.js';
+import { addToQueueStart, convert_playlist } from '/js/queue.js';
 
 defineProps({
     radio_id: {
@@ -46,7 +47,7 @@ async function play(id) {
     sessionAction({
         func: async function op() {
             DZ.player.playRadio(parseInt(id), async function (response) {
-                await addToQueueStart(response.tracks);
+                await addToQueueStart(convert_playlist(response.tracks));
             });
         },
         object: id,

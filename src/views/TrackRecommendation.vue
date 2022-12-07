@@ -24,7 +24,7 @@
 
 <script setup>
 import { sessionAction } from '/js/session.js';
-import { addToQueueStart } from '/js/queue.js';
+import { addToQueueStart, convert_track } from '/js/queue.js';
 
 defineProps({
     track_id: {
@@ -52,7 +52,7 @@ async function play(id) {
     sessionAction({
         func: async function op() {
             DZ.player.playTracks([parseInt(id)], async function (response) {
-                await addToQueueStart(response.tracks);
+                await addToQueueStart(convert_track(response.tracks[0]));
             });
         },
         object: id,

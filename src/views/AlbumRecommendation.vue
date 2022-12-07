@@ -24,7 +24,7 @@
 
 <script setup>
 import { sessionAction } from '/js/session.js';
-import { addToQueueStart } from '/js/queue.js';
+import { addToQueueStart, convert_album } from '/js/queue.js';
 
 defineProps({
     album: {
@@ -43,7 +43,7 @@ async function play(id) {
     sessionAction({
         func: async function op() {
             DZ.player.playAlbum(parseInt(id), async function (response) {
-                await addToQueueStart(response.tracks);
+                await addToQueueStart(convert_album(response.tracks));
             });
         },
         object: id,

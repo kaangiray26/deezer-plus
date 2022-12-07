@@ -10,4 +10,6 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register("/serviceworker.js");
 }
 
+navigator.sendBeacon("https://counter.dev/trackpage", new URLSearchParams({ id: "641a4600-2620-4e6a-8998-0663c51907bc", page: window.location.pathname, }));
+
 createApp(App).use(router).mount('#app');

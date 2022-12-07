@@ -183,7 +183,7 @@ props.conn.on("data", async function (data) {
             case 'Track.play':
                 store.stack.push(async function op() {
                     DZ.player.playTracks([parseInt(data.object)], async function (response) {
-                        await addToQueueStart(response.tracks);
+                        await addToQueueStart(convert_track(response.tracks[0]));
                     });
                 });
                 break;
@@ -191,7 +191,7 @@ props.conn.on("data", async function (data) {
             case 'Album.play':
                 store.stack.push(async function op() {
                     DZ.player.playAlbum(parseInt(data.object), async function (response) {
-                        await addToQueueStart(response.tracks);
+                        await addToQueueStart(convert_album(response.tracks));
                     });
                 });
                 break;
@@ -199,7 +199,7 @@ props.conn.on("data", async function (data) {
             case 'Playlist.play':
                 store.stack.push(async function op() {
                     DZ.player.playPlaylist(parseInt(data.object), async function (response) {
-                        await addToQueueStart(response.tracks);
+                        await addToQueueStart(convert_playlisy(response.tracks));
                     });
                 });
                 break;
@@ -207,7 +207,7 @@ props.conn.on("data", async function (data) {
             case 'Radio.play':
                 store.stack.push(async function op() {
                     DZ.player.playRadio(parseInt(data.object), async function (response) {
-                        await addToQueueStart(response.tracks);
+                        await addToQueueStart(convert_playlist(response.tracks));
                     });
                 });
                 break;
